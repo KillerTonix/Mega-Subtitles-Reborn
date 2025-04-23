@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <RootNamespace>Mega_Subtitles_Reborn</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Fonts\" />
+    <Folder Include="Utilitis\" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Resource Include="Fonts\Nunito-Black.ttf" />
+    <Resource Include="Fonts\Nunito-SemiBold.ttf" />
+  </ItemGroup>
+
+
+</Project>

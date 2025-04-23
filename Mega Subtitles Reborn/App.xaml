@@ -1,0 +1,10 @@
+﻿<Application x:Class="Mega_Subtitles_Reborn.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Mega_Subtitles_Reborn"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <FontFamily x:Key="NunitoBlack">pack://application:,,,/Fonts/#Nunito Black</FontFamily>
+        <FontFamily x:Key="NunitoSemiBold">pack://application:,,,/Fonts/#Nunito SemiBold</FontFamily>
+    </Application.Resources>
+</Application>
