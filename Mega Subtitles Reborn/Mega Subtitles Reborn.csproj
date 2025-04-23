@@ -11,7 +11,12 @@
 
   <ItemGroup>
     <Folder Include="Fonts\" />
-    <Folder Include="Utilitis\" />
+    <Folder Include="Utilitis\Subtitles\SrtProcessing\" />
+    <Folder Include="Utilitis\ToReaper\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   
   <ItemGroup>

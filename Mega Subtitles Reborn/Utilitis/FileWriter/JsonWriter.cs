@@ -1,0 +1,25 @@
+﻿using Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing;
+using System.IO;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+
+namespace Mega_Subtitles_Reborn.Utilitis.FileWriter
+{
+    class JsonWriter
+    {
+
+        public static void WriteAssSubtitlesEnteriesJson(List<AssSubtitlesEnteries> entries, string outputPath)
+        {
+            JsonSerializerOptions jsonSerializerOptions = new()
+            {
+                WriteIndented = true,
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            };
+            JsonSerializerOptions options = jsonSerializerOptions;
+
+            byte[] jsonBytes = JsonSerializer.SerializeToUtf8Bytes(entries, options);
+            File.WriteAllBytes(outputPath, jsonBytes);
+        }
+
+    }
+}
