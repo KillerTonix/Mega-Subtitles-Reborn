@@ -14,10 +14,11 @@ namespace Mega_Subtitles_Reborn.Utilitis.FileReader
 
             var jsonBytes = File.ReadAllBytes(inputPath);
 
-            JsonSerializerOptions options = new()
+            JsonSerializerOptions jsonSerializerOptions = new()
             {
                 Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             };
+            JsonSerializerOptions options = jsonSerializerOptions;
 
             var entries = JsonSerializer.Deserialize<List<AssSubtitlesEnteries>>(jsonBytes, options) ?? []; // return empty list if deserialization fails
 

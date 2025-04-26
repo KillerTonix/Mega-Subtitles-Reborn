@@ -8,20 +8,14 @@ using System.Windows.Media;
 
 namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
 {
-    public class AssParser
+    public static class AssParser
     {
         private static readonly MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
-        private static readonly string CurrentProjectName = mainWindow.CurrentProjectName;
-        private static readonly string ApplicationPath = AppDomain.CurrentDomain.BaseDirectory;
+        private static readonly string ProjectCacheFolderPath = Path.Combine(GeneralSettings.Default.ProjectCacheFolderPath, GeneralSettings.Default.CurrentProjectName) + ".json";
 
-        private static readonly string GlobalCacheFolderPath = Path.Combine(ApplicationPath, "Cache");
-
-        private static readonly string ProjectCacheFolderPath = Path.Combine(GlobalCacheFolderPath, CurrentProjectName);
-        private static readonly string ProjectCacheCacheFilePath = Path.Combine(ProjectCacheFolderPath, CurrentProjectName) + ".json";
-    
         public static void ParseAssFile(string filePath)
         {
-            DirectoryOrFileCheck.DirectoryCheck(ProjectCacheFolderPath);
+            DirectoryOrFileCheck.DirectoryCheck(GeneralSettings.Default.ProjectCacheFolderPath);
             List<SolidColorBrush> colorPalette = ListSolidColor.SolidColors();
             HashSet<string> uniqueActors = [];
 
@@ -66,15 +60,19 @@ namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
                     string GetField(string fieldName)
                     {
                         return fieldMap.TryGetValue(fieldName, out int index) && index < split.Count
-                            ? split[index].Trim()
-                            : "";
+                        ? split[index].Trim() : "";
                     }
 
+                    var format = GetField("Format");
+                    var layer = GetField("Layer");
                     var start = GetField("Start");
                     var end = GetField("End");
                     var style = GetField("Style");
                     var actor = GetField("Name");
+                    var effect = GetField("Effect");
                     var text = GetField("Text");
+
+                    if (actor == string.Empty) actor = "_Unknown_Actor_";
 
                     if (!actorColors.TryGetValue(actor, out SolidColorBrush? brush))
                     {
@@ -90,8 +88,8 @@ namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
                     {
                         Number = number++,
                         Color = hexColor,
-                        Start = TimeSpan.Parse(start, CultureInfo.InvariantCulture),
-                        End = TimeSpan.Parse(end, CultureInfo.InvariantCulture),
+                        Start = TimeSpan.Parse(start, CultureInfo.InvariantCulture).ToString(@"h\:mm\:ss\.f"),
+                        End = TimeSpan.Parse(end, CultureInfo.InvariantCulture).ToString(@"h\:mm\:ss\.f"),
                         Actor = actor,
                         Text = text,
                         Comments = ""
@@ -100,28 +98,30 @@ namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
             }
 
 
-            JsonWriter.WriteAssSubtitlesEnteriesJson(entries, ProjectCacheCacheFilePath);
+            JsonWriter.WriteAssSubtitlesEnteriesJson(entries, ProjectCacheFolderPath);
 
 
-            var ReadedJson = JsonReader.ReadAssSubtitlesEnteriesJson(ProjectCacheCacheFilePath);
+            var ReadedJson = JsonReader.ReadAssSubtitlesEnteriesJson(ProjectCacheFolderPath);
             foreach (var entry in ReadedJson)
             {
-                if (entry.Actor != null)                
-                    uniqueActors.Add(entry.Actor);                
+                if (entry.Actor != null)
+                    uniqueActors.Add(entry.Actor);
             }
 
             List<string> UniqueActorsList = [.. uniqueActors.OrderBy(actor => actor)];
             mainWindow.ActorsList.Items.Clear();
-            foreach (var actor in UniqueActorsList)
-                mainWindow.ActorsList.Items.Add(actor);
 
+            foreach (var actor in UniqueActorsList)
+            {
+                mainWindow.ActorsList.Items.Add(actor);
+            }
         }
 
         private static string ColorToHex(Color color)
         {
             return $"#{color.R:X2}{color.G:X2}{color.B:X2}";
         }
-              
+
 
 
         // Handles commas inside text (e.g., lines that have commas in the subtitle text)

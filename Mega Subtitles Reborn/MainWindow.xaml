@@ -170,7 +170,7 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="4.8*"/>
+            <RowDefinition Height="4.7*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
@@ -195,7 +195,7 @@
                         <GridViewColumn x:Name="ColorColumn" Header="Color">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Border Background="{Binding Color}" Width="20" Height="20" />
+                                    <Border Background="{Binding Color}" Width="20" Height="20" BorderBrush="Black" BorderThickness="1,1,1,1" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
@@ -211,7 +211,7 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <ComboBox x:Name="ActorComboBox"
-                                      ItemsSource="{Binding DataContext.AvailableActors, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                      ItemsSource="{Binding DataContext.AvailableActors, RelativeSource={RelativeSource AncestorType=Window}}"
                                       SelectedItem="{Binding Actor, UpdateSourceTrigger=PropertyChanged}"
                                       MinWidth="138" IsEditable="True">                                        
                                     </ComboBox>
@@ -228,7 +228,7 @@
                                 <DataTemplate>
                                     <TextBox
                                     Text="{Binding Comment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    MinWidth="435"
+                                    MinWidth="200"
                                     AcceptsTab="True"
                                     TextWrapping="Wrap"
                                     AcceptsReturn="True"
@@ -245,7 +245,7 @@
 
         <Grid x:Name="ActorsGrid" Grid.Column="1" Grid.Row="0" Margin="10,0,10,0">
             <StackPanel>
-                <ListBox x:Name="ActorsList" Grid.Column="1"  Height="335" ItemsSource="{Binding AvailableActors}"  HorizontalAlignment="Stretch" VerticalAlignment="Top" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionMode="Extended" HorizontalContentAlignment="Stretch" Background="#FFF8EDEB" FontFamily="Nunito SemiBold">
+                <ListBox x:Name="ActorsList" Grid.Column="1"  Height="335" HorizontalAlignment="Stretch" VerticalAlignment="Top" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionMode="Extended" HorizontalContentAlignment="Stretch" Background="#FFF8EDEB" FontFamily="Nunito SemiBold">
                     <ListBox.ContextMenu>
                         <ContextMenu>
                             <MenuItem x:Name="SetActorColorContext" Header="Set the color" />
@@ -256,13 +256,13 @@
                 </ListBox>
 
                 <Grid Margin="0,10,0,0">
-                    <Button x:Name="SelectAllActorsBtn" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="100" FontFamily="Nunito SemiBold" FontSize="14" Background="#FFFFF0C2" BorderBrush="#FFFBD485" Style="{DynamicResource CustomButtonStyleWithGreenOwer}">
+                    <Button x:Name="SelectAllActorsBtn" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="100" FontFamily="Nunito SemiBold" FontSize="14" Background="#FFFFF0C2" BorderBrush="#FFFBD485" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="SelectAllActorsBtn_Click">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                             <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE762;" FontSize="16" VerticalAlignment="Center" Margin="0,0,5,0"/>
                             <TextBlock Text="Select All" FontSize="14" />
                         </StackPanel>
                     </Button>
-                    <Button x:Name="ParseSubtitlesBtn" Height="25" VerticalAlignment="Top" HorizontalAlignment="Right" Width="100" HorizontalContentAlignment="Center" FontFamily="Nunito Black" FontSize="16" Background="#FF63CBD6" BorderBrush="#FF95E1D4" Style="{DynamicResource CustomButtonStyleWithGreenOwer}">
+                    <Button x:Name="ParseSubtitlesBtn" Height="25" VerticalAlignment="Top" HorizontalAlignment="Right" Width="100" HorizontalContentAlignment="Center" FontFamily="Nunito Black" FontSize="16" Background="#FF63CBD6" BorderBrush="#FF95E1D4" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="ParseSubtitlesBtn_Click">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                             <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE9F3;" FontSize="16" VerticalAlignment="Center" Margin="0,0,5,0"/>
                             <TextBlock Text="Parse" FontSize="14" />
@@ -319,19 +319,19 @@
             <StackPanel Orientation="Vertical" Margin="10,0,0,0">
                 <Label x:Name="SubtitlesLabel" Content="Subtitles" HorizontalAlignment="Center" Grid.Row="1" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
                 <Button x:Name="SelectSubtitlesBtn" Content="Select subtitles" Margin="0,0,0,10"  VerticalAlignment="Top" Width="150" HorizontalAlignment="Center" Visibility="Visible" FontFamily="Nunito SemiBold" FontSize="14" BorderBrush="{x:Null}" Style="{DynamicResource CustomButtonStyleWithRedOwer}" Click="SelectSubtitlesBtn_Click"/>
-                <Button x:Name="SaveSubtitlesBtn"  VerticalAlignment="Top" Width="150" Margin="0,0,0,10" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFFFDAB3">
+                <Button x:Name="SaveSubtitlesBtn"  VerticalAlignment="Top" Width="150" Margin="0,0,0,10" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFFFDAB3" Click="SaveSubtitlesBtn_Click">
                     <Grid Width="145">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74E;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
                         <TextBlock Text="Save subtitles" FontSize="14" HorizontalAlignment="Center" />
                     </Grid>
                 </Button>
-                <Button x:Name="ClearProjectBtn" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="150" Margin="0,0,0,10" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFFFDAB3">
+                <Button x:Name="ClearProjectBtn" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="150" Margin="0,0,0,10" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFFFDAB3" Click="ClearProjectBtn_Click">
                     <Grid Width="145">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xEA99;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
                         <TextBlock Text="Clear the project" FontSize="14" HorizontalAlignment="Center"/>
                     </Grid>
                 </Button>
-                <Button x:Name="OpenCacheFolderBtn" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="150" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFFFDAB3">
+                <Button x:Name="OpenCacheFolderBtn" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="150" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFFFDAB3" Click="OpenCacheFolderBtn_Click">
                     <Grid Width="145">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xED25;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
                         <TextBlock Text="Open cache folder" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>

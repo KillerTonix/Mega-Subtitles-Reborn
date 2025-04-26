@@ -3,12 +3,18 @@
     public class AssSubtitlesEnteries
     {
         public int Number { get; set; }
-        public string? Color { get; set; }
-        public TimeSpan? Start { get; set; }
-        public TimeSpan? End { get; set; }
-        public string? Actor { get; set; }
-        public string? Text { get; set; }
-        public string? Comments { get; set; }
 
+        public string Color { get; set; } = "";
+
+        public string Start { get; set; } = "";
+
+        public string End { get; set; } = "";
+
+        public string Actor { get; set; } = "";
+
+        public string Text { get; set; } = "";
+
+        public string Comments { get; set; } = "";
     }
+
 }

@@ -6,5 +6,6 @@
     <Application.Resources>
         <FontFamily x:Key="NunitoBlack">pack://application:,,,/Fonts/#Nunito Black</FontFamily>
         <FontFamily x:Key="NunitoSemiBold">pack://application:,,,/Fonts/#Nunito SemiBold</FontFamily>
+        <FontFamily x:Key="Hikasami">pack://application:,,,/Fonts/#Hikasami-VF</FontFamily>
     </Application.Resources>
 </Application>
