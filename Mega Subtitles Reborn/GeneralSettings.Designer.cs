@@ -94,5 +94,29 @@ namespace Mega_Subtitles_Reborn {
                 this["Language"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\")]
+        public string SubtitlesPath {
+            get {
+                return ((string)(this["SubtitlesPath"]));
+            }
+            set {
+                this["SubtitlesPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ProjectCahceJsonPath {
+            get {
+                return ((string)(this["ProjectCahceJsonPath"]));
+            }
+            set {
+                this["ProjectCahceJsonPath"] = value;
+            }
+        }
     }
 }

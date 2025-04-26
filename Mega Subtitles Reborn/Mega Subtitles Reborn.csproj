@@ -11,8 +11,8 @@
 
   <ItemGroup>
     <Folder Include="Fonts\" />
-    <Folder Include="Utilitis\Subtitles\SrtProcessing\" />
-    <Folder Include="Utilitis\ToReaper\" />
+    <Folder Include="Utilities\Subtitles\SrtProcessing\" />
+    <Folder Include="Utilities\ToReaper\" />
   </ItemGroup>
 
   <ItemGroup>

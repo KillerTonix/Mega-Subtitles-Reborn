@@ -20,5 +20,11 @@
     <Setting Name="Language" Type="System.String" Scope="User">
       <Value Profile="(Default)">En</Value>
     </Setting>
+    <Setting Name="SubtitlesPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\</Value>
+    </Setting>
+    <Setting Name="ProjectCahceJsonPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

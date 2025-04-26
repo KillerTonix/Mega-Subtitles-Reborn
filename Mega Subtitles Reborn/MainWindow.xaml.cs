@@ -1,5 +1,6 @@
 ﻿using Mega_Subtitles.Helper.Subtitles;
 using Mega_Subtitles_Reborn.Utilitis.FileReader;
+using Mega_Subtitles_Reborn.Utilitis.FileWriter;
 using Mega_Subtitles_Reborn.Utilitis.Logger;
 using Mega_Subtitles_Reborn.Utilitis.PreRun;
 using Mega_Subtitles_Reborn.Utilitis.Subtitles;
@@ -8,10 +9,8 @@ using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection.PortableExecutable;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 
 
 namespace Mega_Subtitles_Reborn
@@ -25,7 +24,7 @@ namespace Mega_Subtitles_Reborn
 
         public ObservableCollection<AssSubtitlesEnteries> SubtitleEntries { get; set; } = [];
         public ObservableCollection<string> AvailableActors { get; set; } = [];
-
+        public Dictionary<string, SolidColorBrush> ActorsAndColorsDict = [];
 
         public MainWindow()
         {
@@ -46,6 +45,7 @@ namespace Mega_Subtitles_Reborn
             if (InputFilePath != null && InputFileType != null)
             {
                 FileTypeSplitter.TypeSplitter(InputFilePath, InputFileType);
+                
             }
         }
 
@@ -53,17 +53,18 @@ namespace Mega_Subtitles_Reborn
         {
             try
             {
-                string ProjectCacheFolderPath = Path.Combine(GeneralSettings.Default.ProjectCacheFolderPath, GeneralSettings.Default.CurrentProjectName) + ".json";
 
                 if (ActorsList.SelectedItems.Count > 0)
                 {
-                    var jsonRead = JsonReader.ReadAssSubtitlesEnteriesJson(ProjectCacheFolderPath);
+                    //var jsonRead = JsonReader.ReadAssSubtitlesEnteriesJson(ProjectCacheFolderPath);
+                    var subtitlesData = JsonReader.ReadAssSubtitlesDataJson(GeneralSettings.Default.ProjectCahceJsonPath);
+                    List<AssSubtitlesEnteries> entries = subtitlesData.Entries;
 
                     var selectedActors = ActorsList.SelectedItems
                         .Cast<string>() // Change if using a different type
                         .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
-                    var filteredEntries = jsonRead
+                    var filteredEntries = entries
                         .Where(entry => selectedActors.Contains(entry.Actor)).ToList();
 
                     // Clear current and add new items
@@ -103,7 +104,6 @@ namespace Mega_Subtitles_Reborn
 
         private void OpenCacheFolderBtn_Click(object sender, RoutedEventArgs e)
         {
-
             Process.Start("explorer.exe", "\"" + GeneralSettings.Default.ProjectCacheFolderPath + "\"");
         }
 
@@ -122,8 +122,6 @@ namespace Mega_Subtitles_Reborn
             if (result == MessageBoxResult.Yes)
             {
                 Directory.Delete(GeneralSettings.Default.ProjectCacheFolderPath, true);
-
-
             }
         }
 
@@ -137,7 +135,7 @@ namespace Mega_Subtitles_Reborn
             bool? result = saveFileDialog1.ShowDialog();
             if (result == true)
             {
-
+                AssFileWriter.WriteAssFile(saveFileDialog1.FileName);
             }
         }
     }

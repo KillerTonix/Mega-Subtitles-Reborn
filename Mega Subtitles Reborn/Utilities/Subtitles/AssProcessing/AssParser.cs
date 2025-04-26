@@ -1,0 +1,120 @@
+﻿using Mega_Subtitles_Reborn.Helper.Subtitles.ASS;
+using Mega_Subtitles_Reborn.Utilitis.FileReader;
+using Mega_Subtitles_Reborn.Utilitis.FileWriter;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Windows;
+using System.Windows.Media;
+
+namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
+{
+    public static class AssParser
+    {
+        private static readonly MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
+
+        public static void ParseAssFile(string filePath)
+        {
+            DirectoryOrFileCheck.DirectoryCheck(GeneralSettings.Default.ProjectCacheFolderPath);
+            List<SolidColorBrush> colorPalette = ListSolidColor.SolidColors();
+            HashSet<string> uniqueActors = [];
+
+            var lines = File.ReadAllLines(filePath);
+            var entries = new List<AssSubtitlesEnteries>();
+            int number = 1;
+            int colorIndex = 0;
+
+            string DialoguePattern = @"Dialogue:\s+(\d+),([0-9:.,]+),([0-9:.,]+),\s*(.*?),\s*(.*?),\s*(\d+),\s*(\d+),\s*(\d+),\s*(.*?)(?:,{(.*)})?$";
+            string BracerPattern = @"\{.*?\}";
+
+
+            foreach (var rawLine in lines)
+            {
+                if (rawLine.StartsWith("Dialogue:"))
+                {
+                    var match = Regex.Match(rawLine, DialoguePattern);
+
+                    if (match.Success)
+                    {
+                        string actor = string.Empty;
+                        string checkingText = match.Groups[9].Value.Trim().TrimStart(',');
+                        if (match.Groups[5].Value.Trim().Length > 0)
+                            actor = match.Groups[5].Value.Trim();
+                        else
+                        {
+                            var BracerMatch = Regex.Match(checkingText, BracerPattern);
+
+                            actor = "_Unknown_Actor_";
+                            if (BracerMatch.Success)
+                                continue;
+                        }
+
+                        if (!mainWindow.ActorsAndColorsDict.TryGetValue(actor, out SolidColorBrush? value))
+                        {
+                            value = colorPalette[colorIndex % colorPalette.Count];
+                            mainWindow.ActorsAndColorsDict[actor] = value;
+                            colorIndex++;
+                        }
+                                               
+
+                        entries.Add(new AssSubtitlesEnteries
+                        {
+                            Number = number++,
+                            Color = value.ToString(),
+                            Layer = match.Groups[1].Value.Trim(),
+                            Start = match.Groups[2].Value.Trim(),
+                            End = match.Groups[3].Value.Trim(),
+                            Style = match.Groups[4].Value.Trim(),
+                            Actor = actor,
+                            Effect = match.Groups[8].Value.Trim(),
+                            Text = RemoveTextTags(match.Groups[9].Value.Trim().TrimStart(',')),
+                            Comment = ""
+                        });                      
+                    }
+                }               
+            }
+
+
+            var data = new SubtitlesData
+            {
+                SubtitlesPath = GeneralSettings.Default.SubtitlesPath,
+                Entries = entries
+            };
+
+            JsonWriter.WriteAssSubtitlesDataJson(data, GeneralSettings.Default.ProjectCahceJsonPath);
+
+
+
+            var subtitlesData = JsonReader.ReadAssSubtitlesDataJson(GeneralSettings.Default.ProjectCahceJsonPath);
+            List<AssSubtitlesEnteries> subtitleseEntries = subtitlesData.Entries;
+            foreach (var entry in subtitleseEntries)
+            {
+                if (entry.Actor != null)
+                    uniqueActors.Add(entry.Actor);
+            }
+
+            List<string> UniqueActorsList = [.. uniqueActors.OrderBy(actor => actor)];
+            mainWindow.ActorsList.Items.Clear();
+
+            foreach (var actor in UniqueActorsList)
+            {
+                mainWindow.ActorsList.Items.Add(actor);
+            }
+        }
+
+        public static string RemoveTextTags(string text)
+        {
+            try
+            {
+                string result = Regex.Replace(text, @"\{.*?\}", string.Empty);
+                result = Regex.Replace(result, @"\<.*?\>", string.Empty);
+                return result.Replace(@" \N", Environment.NewLine).Replace(@"\N ", Environment.NewLine).Replace(@"\N", Environment.NewLine);
+            }
+            catch (Exception ex)
+            {
+                Logger.ExceptionLogger.LogException(ex, "AssParser", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
+                return text;
+            }
+        }
+
+    }
+}

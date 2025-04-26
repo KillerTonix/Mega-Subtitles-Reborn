@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Windows;
 
 namespace Mega_Subtitles_Reborn.Utilitis.Logger
@@ -25,6 +26,7 @@ namespace Mega_Subtitles_Reborn.Utilitis.Logger
                 writer.WriteLine("----------------------------------------");
                 writer.WriteLine();
                 MessageBox.Show($"Вовремя работы программы возникла ошибка.\nПодробнее об ошибке можно прочитать в файле{LogFilePath}", "Оповещение", MessageBoxButton.OK, MessageBoxImage.Error);
+                Process.Start("explorer.exe", "\"" + LogFilePath + "\"");
             }
             catch (Exception loggingEx)
             {

@@ -1,4 +1,5 @@
-﻿using Mega_Subtitles_Reborn.Utilitis.Logger;
+﻿using Mega_Subtitles_Reborn;
+using Mega_Subtitles_Reborn.Utilitis.Logger;
 using Microsoft.Win32;
 using System.IO;
 
@@ -12,7 +13,7 @@ namespace Mega_Subtitles.Helper.Subtitles
             {  
                 OpenFileDialog openFileDialog = new()
                 {
-                    Filter = "Subtitles (*.ass; *.srt; *.vtt)| *.ass; *.srt; *.vtt",
+                    Filter = "Subtitles (*.ass; *.srt;)| *.ass; *.srt;",
                     Title = "Select the subtitle file",
                     Multiselect = false,
                     CheckFileExists = true,   // Ensure selected file exists
@@ -20,9 +21,13 @@ namespace Mega_Subtitles.Helper.Subtitles
                 };
 
                 // Show the dialog and check if the user selected a file
-                if (openFileDialog.ShowDialog() == true)                                   
-                    return (openFileDialog.FileName, Path.GetExtension(openFileDialog.FileName));                
-                else                
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    GeneralSettings.Default.SubtitlesPath = openFileDialog.FileName;
+                    GeneralSettings.Default.Save();
+                    return (openFileDialog.FileName, Path.GetExtension(openFileDialog.FileName));
+                }
+                else
                     return (null, null);                
             }
             catch (Exception ex)
