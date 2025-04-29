@@ -93,11 +93,11 @@ namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
             }
 
             List<string> UniqueActorsList = [.. uniqueActors.OrderBy(actor => actor)];
-            mainWindow.ActorsList.Items.Clear();
+            mainWindow.AvailableActors.Clear();
 
             foreach (var actor in UniqueActorsList)
             {
-                mainWindow.ActorsList.Items.Add(actor);
+                mainWindow.AvailableActors.Add(actor);
             }
         }
 

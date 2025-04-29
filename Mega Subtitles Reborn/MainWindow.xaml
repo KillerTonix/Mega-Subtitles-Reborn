@@ -213,7 +213,7 @@
                                     <ComboBox x:Name="ActorComboBox"
                                       ItemsSource="{Binding DataContext.AvailableActors, RelativeSource={RelativeSource AncestorType=Window}}"
                                       SelectedItem="{Binding Actor, UpdateSourceTrigger=PropertyChanged}"
-                                      MinWidth="138" IsEditable="True">                                        
+                                      MinWidth="138" IsEditable="True" LostFocus="ActorComboBox_LostFocus">                                        
                                     </ComboBox>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
@@ -226,13 +226,13 @@
                         <GridViewColumn x:Name="CommentsColumn" Header="Comment">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBox
+                                    <TextBox x:Name="CommentsTextBox"
                                     Text="{Binding Comment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     MinWidth="200"
                                     AcceptsTab="True"
                                     TextWrapping="Wrap"
                                     AcceptsReturn="True"
-                                    FontFamily="Nunito SemiBold">
+                                    FontFamily="Nunito SemiBold" LostFocus="CommentsTextBox_LostFocus">
                                     </TextBox>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
@@ -248,9 +248,9 @@
                 <ListBox x:Name="ActorsList" Grid.Column="1"  Height="335" HorizontalAlignment="Stretch" VerticalAlignment="Top" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionMode="Extended" HorizontalContentAlignment="Stretch" Background="#FFF8EDEB" FontFamily="Nunito SemiBold">
                     <ListBox.ContextMenu>
                         <ContextMenu>
-                            <MenuItem x:Name="SetActorColorContext" Header="Set the color" />
-                            <MenuItem x:Name="RenameActorContext" Header="Rename an actor" />
-                            <MenuItem x:Name="DeleteActorContext" Header="Delete an actor" />
+                            <MenuItem x:Name="SetActorColorContext" Header="Set the color" Click="SetActorColorContext_Click" />
+                            <MenuItem x:Name="RenameActorContext" Header="Rename an actor" Click="RenameActorContext_Click" />
+                            <MenuItem x:Name="DeleteActorContext" Header="Delete an actor" Click="DeleteActorContext_Click" />
                         </ContextMenu>
                     </ListBox.ContextMenu>
                 </ListBox>
@@ -281,13 +281,13 @@
 
                 <Label x:Name="commandsLabel" Content="" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14"/>
 
-                <Grid x:Name="ColorPickerGrid" Visibility="Collapsed" Height="90" >
+                <Grid x:Name="ColorPickerGrid" Visibility="Visible" Height="90" >
                     <StackPanel Orientation="Vertical">
                         <Label x:Name="ChangeColorLabel" Content="Change color for" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14" />
                         <Label x:Name="ChangeColorActorLabel" Content="ActorName" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito Black" FontSize="14" HorizontalAlignment="Center" />
                     </StackPanel>
 
-                    <ComboBox x:Name="ColorPickerCombobox" SelectedIndex="{Binding SelectedColorIndex}" HorizontalAlignment="Left" Height="25" VerticalAlignment="Bottom" Width="75" FontFamily="Nunito SemiBold" FontSize="14">
+                    <ComboBox x:Name="ColorPickerCombobox" SelectedIndex="{Binding SelectedColorIndex}" HorizontalAlignment="Left" Height="25" VerticalAlignment="Bottom" Width="70" FontFamily="Nunito SemiBold" FontSize="14">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <Border Width="20" Height="20" Background="{Binding}"/>
@@ -295,19 +295,19 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
 
-                    <Button x:Name="SetColorBtn" Content="Set color" HorizontalAlignment="Center" Height="25" VerticalAlignment="Bottom" Width="75" FontFamily="Nunito SemiBold" FontSize="14"/>
-                    <Button x:Name="CancelBtn2" Content="Cancel" HorizontalAlignment="Right" Height="25" VerticalAlignment="Bottom" Width="75" FontFamily="Nunito SemiBold" FontSize="14"/>
+                    <Button x:Name="SetColorBtn" Content="Set color" HorizontalAlignment="Center" Height="25" VerticalAlignment="Bottom" Width="70" FontFamily="Nunito SemiBold" FontSize="14" Click="SetColorBtn_Click"/>
+                    <Button x:Name="ColorPickerCancelBtn" Content="Cancel" HorizontalAlignment="Right" Height="25" VerticalAlignment="Bottom" Width="70" FontFamily="Nunito SemiBold" FontSize="14" Click="ColorPickerCancelBtn_Click"/>
                 </Grid>
 
-                <Grid x:Name="ActorReanameGrid" Height="110" Visibility="Collapsed" >
+                <Grid x:Name="ActorReanameGrid" Height="110" Visibility="Visible" >
                     <StackPanel Orientation="Vertical">
                         <Label x:Name="RenameActorLabel" Content="Change color for" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14" />
                         <Label x:Name="ActorLabel" Content="ActorName" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito Black" FontSize="14" HorizontalAlignment="Center" />
                         <TextBox x:Name="ActorTextBox" HorizontalAlignment="Stretch" FontFamily="Nunito SemiBold" FontSize="14"/>
                     </StackPanel>
 
-                    <Button x:Name="RenameBtn" Content="Rename" HorizontalAlignment="Left" Height="25" VerticalAlignment="Bottom" Width="75" FontFamily="Nunito SemiBold" FontSize="14" />
-                    <Button x:Name="CancelBtn" Content="Cancel" HorizontalAlignment="Right" Height="25" VerticalAlignment="Bottom" Width="75" FontFamily="Nunito SemiBold" FontSize="14"/>
+                    <Button x:Name="RenameBtn" Content="Rename" HorizontalAlignment="Left" Height="25" VerticalAlignment="Bottom" Width="70" FontFamily="Nunito SemiBold" FontSize="14" Click="RenameBtn_Click" />
+                    <Button x:Name="ActorReanameCancelBtn" Content="Cancel" HorizontalAlignment="Right" Height="25" VerticalAlignment="Bottom" Width="70" FontFamily="Nunito SemiBold" FontSize="14" Click="ActorReanameCancelBtn_Click"/>
                 </Grid>
 
             </StackPanel>
@@ -318,7 +318,7 @@
         <StackPanel x:Name="ButtonsFooter" Orientation="Horizontal" Grid.Column="0" Grid.Row="1" Margin="0,10,0,0" >
             <StackPanel Orientation="Vertical" Margin="10,0,0,0">
                 <Label x:Name="SubtitlesLabel" Content="Subtitles" HorizontalAlignment="Center" Grid.Row="1" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
-                <Button x:Name="SelectSubtitlesBtn" Content="Select subtitles" Margin="0,0,0,10"  VerticalAlignment="Top" Width="150" HorizontalAlignment="Center" Visibility="Visible" FontFamily="Nunito SemiBold" FontSize="14" BorderBrush="{x:Null}" Style="{DynamicResource CustomButtonStyleWithRedOwer}" Click="SelectSubtitlesBtn_Click"/>
+                <Button x:Name="SelectSubtitlesBtn" Content="Select subtitles" Margin="0,0,0,10"  VerticalAlignment="Top" Width="150" HorizontalAlignment="Center" Visibility="Collapsed" FontFamily="Nunito SemiBold" FontSize="14" BorderBrush="{x:Null}" Style="{DynamicResource CustomButtonStyleWithRedOwer}" Click="SelectSubtitlesBtn_Click"/>
                 <Button x:Name="SaveSubtitlesBtn"  VerticalAlignment="Top" Width="150" Margin="0,0,0,10" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFFFDAB3" Click="SaveSubtitlesBtn_Click">
                     <Grid Width="145">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74E;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />

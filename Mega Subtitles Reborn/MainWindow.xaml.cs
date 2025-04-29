@@ -1,4 +1,6 @@
 ﻿using Mega_Subtitles.Helper.Subtitles;
+using Mega_Subtitles_Reborn.Helper.Subtitles.ASS;
+using Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing;
 using Mega_Subtitles_Reborn.Utilitis.FileReader;
 using Mega_Subtitles_Reborn.Utilitis.FileWriter;
 using Mega_Subtitles_Reborn.Utilitis.Logger;
@@ -9,7 +11,10 @@ using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Windows;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Media;
 
 
@@ -23,19 +28,40 @@ namespace Mega_Subtitles_Reborn
 
 
         public ObservableCollection<AssSubtitlesEnteries> SubtitleEntries { get; set; } = [];
+        public CollectionViewSource subtitleViewSource = new();
+
         public ObservableCollection<string> AvailableActors { get; set; } = [];
         public Dictionary<string, SolidColorBrush> ActorsAndColorsDict = [];
+      
+
 
         public MainWindow()
         {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
 
-            DataContext = this;
+            SubtitleEntries = [];
+            AvailableActors = [""];
+
+            subtitleViewSource = new CollectionViewSource
+            {
+                Source = SubtitleEntries
+            };
+            ActorsList.ItemsSource = AvailableActors;
+            RegionManagerListView.ItemsSource = subtitleViewSource.View;
+
+
+            this.DataContext = this;
+            ActorsList.DataContext = this;
+
+            ColorPickerCombobox.ItemsSource = ListSolidColor.SolidColors();
+
+            this.Title = "Mega Subtitles Reborn v" + Assembly.GetExecutingAssembly().GetName().Version?.ToString();
         }
         private void MainWindow_Loaded(object sender, EventArgs e)
         {
             PreRunCheckAndRealize.CheckAndRealize();
+            SelectSubtitlesBtn.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
         }
 
 
@@ -45,7 +71,7 @@ namespace Mega_Subtitles_Reborn
             if (InputFilePath != null && InputFileType != null)
             {
                 FileTypeSplitter.TypeSplitter(InputFilePath, InputFileType);
-                
+
             }
         }
 
@@ -64,8 +90,10 @@ namespace Mega_Subtitles_Reborn
                         .Cast<string>() // Change if using a different type
                         .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
+#pragma warning disable CS8604 // Possible null reference argument.
                     var filteredEntries = entries
                         .Where(entry => selectedActors.Contains(entry.Actor)).ToList();
+#pragma warning restore CS8604 // Possible null reference argument.
 
                     // Clear current and add new items
                     SubtitleEntries.Clear();
@@ -74,17 +102,7 @@ namespace Mega_Subtitles_Reborn
                         SubtitleEntries.Add(entry);
                     }
 
-                    RegionManagerListView.Items.Refresh(); // Optional, in case bindings don’t update immediately
-
-
-                    AvailableActors.Clear();
-                    foreach (var actor in filteredEntries.Select(e => e.Actor).Distinct(StringComparer.OrdinalIgnoreCase))
-                    {
-                        if (actor != null)
-                        {
-                            AvailableActors.Add(actor);
-                        }
-                    }                   
+                    RegionManagerListView.Items.Refresh(); // Optional, in case bindings don’t update immediately                   
 
                 }
             }
@@ -137,6 +155,73 @@ namespace Mega_Subtitles_Reborn
             {
                 AssFileWriter.WriteAssFile(saveFileDialog1.FileName);
             }
+        }
+
+        private void ActorComboBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            SaveJson();
+        }
+
+        private void CommentsTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            SaveJson();
+        }
+
+        private void SaveJson()
+        {
+            var data = new SubtitlesData
+            {
+                SubtitlesPath = GeneralSettings.Default.SubtitlesPath,
+                Entries = [.. SubtitleEntries]
+            };
+
+            JsonWriter.WriteAssSubtitlesDataJson(data, GeneralSettings.Default.ProjectCahceJsonPath);
+        }
+               
+        private void SetActorColorContext_Click(object sender, RoutedEventArgs e)
+        {
+            if (ActorsList.SelectedItem is string _)
+            {
+                ColorPickerGrid.Visibility = Visibility.Visible;
+                ActorReanameGrid.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void RenameActorContext_Click(object sender, RoutedEventArgs e)
+        {
+            if (ActorsList.SelectedItem is string actorName)
+            {               
+                ActorLabel.Content = actorName;
+                ActorTextBox.Text = actorName;
+                ActorReanameGrid.Visibility = Visibility.Visible;
+                ColorPickerGrid.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void DeleteActorContext_Click(object sender, RoutedEventArgs e)
+        {
+            ActorsProcessing.DeleteActor();
+        }
+
+
+        private void SetColorBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ActorsProcessing.SetActorColor();
+        }
+
+        private void ColorPickerCancelBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ColorPickerGrid.Visibility = Visibility.Hidden;
+        }
+
+        private void ActorReanameCancelBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ActorReanameGrid.Visibility = Visibility.Hidden;
+        }
+
+        private void RenameBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ActorsProcessing.RenameActor();
         }
     }
 }

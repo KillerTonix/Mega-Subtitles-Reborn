@@ -1,6 +1,7 @@
-﻿using Mega_Subtitles_Reborn.Utilitis.FileWriter;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using System.Text.Json.Serialization;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
 {
@@ -15,8 +16,7 @@ namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
         public string End { get; set; } = "";
         public string Text { get; set; } = "";
 
-
-
+        
         private string? _color;
         public string? Color
         {
@@ -59,19 +59,7 @@ namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void SaveJson()
-        {
-            if (App.Current.MainWindow is MainWindow mainWindow)
-            {
-                var data = new SubtitlesData
-                {
-                    SubtitlesPath = GeneralSettings.Default.SubtitlesPath,
-                    Entries = [.. mainWindow.SubtitleEntries]
-                };
-
-                JsonWriter.WriteAssSubtitlesDataJson(data, GeneralSettings.Default.ProjectCahceJsonPath);
-            }
-        }
+        
 
 
         private void UpdateColor()
