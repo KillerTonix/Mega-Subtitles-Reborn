@@ -1,5 +1,6 @@
 ﻿using Mega_Subtitles.Helper.Subtitles;
 using Mega_Subtitles_Reborn.Helper.Subtitles.ASS;
+using Mega_Subtitles_Reborn.Utilities.FileWriter;
 using Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing;
 using Mega_Subtitles_Reborn.Utilitis.FileReader;
 using Mega_Subtitles_Reborn.Utilitis.FileWriter;
@@ -32,7 +33,7 @@ namespace Mega_Subtitles_Reborn
 
         public ObservableCollection<string> AvailableActors { get; set; } = [];
         public Dictionary<string, SolidColorBrush> ActorsAndColorsDict = [];
-      
+
 
 
         public MainWindow()
@@ -177,7 +178,7 @@ namespace Mega_Subtitles_Reborn
 
             JsonWriter.WriteAssSubtitlesDataJson(data, GeneralSettings.Default.ProjectCahceJsonPath);
         }
-               
+
         private void SetActorColorContext_Click(object sender, RoutedEventArgs e)
         {
             if (ActorsList.SelectedItem is string _)
@@ -190,7 +191,7 @@ namespace Mega_Subtitles_Reborn
         private void RenameActorContext_Click(object sender, RoutedEventArgs e)
         {
             if (ActorsList.SelectedItem is string actorName)
-            {               
+            {
                 ActorLabel.Content = actorName;
                 ActorTextBox.Text = actorName;
                 ActorReanameGrid.Visibility = Visibility.Visible;
@@ -222,6 +223,16 @@ namespace Mega_Subtitles_Reborn
         private void RenameBtn_Click(object sender, RoutedEventArgs e)
         {
             ActorsProcessing.RenameActor();
+        }
+
+        private void SeparateExportCommentsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            CommentsWriter.WriteSeparatedComments();
+        }
+
+        private void FullExportCommentsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            CommentsWriter.WriteFullComments();
         }
     }
 }

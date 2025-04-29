@@ -419,13 +419,13 @@
                     <TextBlock Text="Import" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
                 </Grid>
             </Button>
-            <Button x:Name="SeparateExportCommentsBtn" Margin="0,10,0,10" VerticalAlignment="Top" HorizontalAlignment="Center" Width="150" Background="#FFEAC9C1" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithGreenOwer}">
+            <Button x:Name="SeparateExportCommentsBtn" Margin="0,10,0,10" VerticalAlignment="Top" HorizontalAlignment="Center" Width="150" Background="#FFEAC9C1" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="SeparateExportCommentsBtn_Click">
                 <Grid Width="145">
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74E;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <TextBlock Text="Separate export" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
                 </Grid>
             </Button>
-            <Button x:Name="FullExportCommentsBtn"  VerticalAlignment="Top" HorizontalAlignment="Center" Width="150" Background="#FFEAC9C1" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithGreenOwer}">
+            <Button x:Name="FullExportCommentsBtn"  VerticalAlignment="Top" HorizontalAlignment="Center" Width="150" Background="#FFEAC9C1" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="FullExportCommentsBtn_Click">
                 <Grid Width="145">
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xEA35;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <TextBlock Text="Full export" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
