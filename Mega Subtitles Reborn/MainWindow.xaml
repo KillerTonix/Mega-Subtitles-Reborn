@@ -413,7 +413,7 @@
 
         <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1" Margin="0,10,0,0">
             <Label x:Name="CommentsLabel" Content="Comments" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14"/>
-            <Button x:Name="ImportCommentsBtn" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="150" Background="#FFEFCFE3" BorderBrush="#FFE27396" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithGreenOwer}">
+            <Button x:Name="ImportCommentsBtn" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="150" Background="#FFEFCFE3" BorderBrush="#FFE27396" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="ImportCommentsBtn_Click">
                 <Grid Width="145">
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xEA53;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <TextBlock Text="Import" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>

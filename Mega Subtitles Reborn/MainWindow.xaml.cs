@@ -1,5 +1,6 @@
 ﻿using Mega_Subtitles.Helper.Subtitles;
 using Mega_Subtitles_Reborn.Helper.Subtitles.ASS;
+using Mega_Subtitles_Reborn.Utilities.FileReader;
 using Mega_Subtitles_Reborn.Utilities.FileWriter;
 using Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing;
 using Mega_Subtitles_Reborn.Utilitis.FileReader;
@@ -233,6 +234,11 @@ namespace Mega_Subtitles_Reborn
         private void FullExportCommentsBtn_Click(object sender, RoutedEventArgs e)
         {
             CommentsWriter.WriteFullComments();
+        }
+
+        private void ImportCommentsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            CommentsReader.ReadComments();
         }
     }
 }
