@@ -1,5 +1,4 @@
-﻿using Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 
@@ -17,7 +16,7 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing
 
                 if (string.IsNullOrEmpty(actorName) || string.IsNullOrEmpty(selectedColor)) return;
 
-                foreach (var entry in mainWindow.subtitleViewSource.View.OfType<AssSubtitlesEnteries>())
+                foreach (var entry in mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>())
                 {
                     if (entry.Actor == actorName)
                     {
@@ -53,10 +52,10 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    string? targetColor = mainWindow.subtitleViewSource.View.OfType<AssSubtitlesEnteries>()
+                    string? targetColor = mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>()
                         .FirstOrDefault(e => e.Actor == newName && e.Color != null)?.Color;
 
-                    foreach (var entry in mainWindow.subtitleViewSource.View.OfType<AssSubtitlesEnteries>().Where(e => e.Actor == selectedActor))
+                    foreach (var entry in mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>().Where(e => e.Actor == selectedActor))
                     {
                         entry.Actor = newName;
                         if (targetColor != null)
@@ -89,7 +88,7 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing
                 var result = MessageBox.Show("Are you sure you want to delete the actor?", "Notification", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result != MessageBoxResult.Yes) return;                
 
-                foreach (var entry in mainWindow.subtitleViewSource.View.OfType<AssSubtitlesEnteries>())
+                foreach (var entry in mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>())
                 {
                     if (entry.Actor == selectedActor)
                         UpdateActorNames(selectedActor, "_Unknown_Actor_");
@@ -104,7 +103,7 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing
 
         private static void UpdateActorNames(string oldName, string newName)
         {
-            foreach (var entry in mainWindow.subtitleViewSource.View.OfType<AssSubtitlesEnteries>())
+            foreach (var entry in mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>())
             {
                 if (entry.Actor == oldName)
                 {

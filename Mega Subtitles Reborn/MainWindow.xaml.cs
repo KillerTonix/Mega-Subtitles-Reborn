@@ -2,13 +2,13 @@
 using Mega_Subtitles_Reborn.Helper.Subtitles.ASS;
 using Mega_Subtitles_Reborn.Utilities.FileReader;
 using Mega_Subtitles_Reborn.Utilities.FileWriter;
+using Mega_Subtitles_Reborn.Utilities.Subtitles;
 using Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing;
 using Mega_Subtitles_Reborn.Utilitis.FileReader;
 using Mega_Subtitles_Reborn.Utilitis.FileWriter;
 using Mega_Subtitles_Reborn.Utilitis.Logger;
 using Mega_Subtitles_Reborn.Utilitis.PreRun;
 using Mega_Subtitles_Reborn.Utilitis.Subtitles;
-using Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -29,7 +29,7 @@ namespace Mega_Subtitles_Reborn
     {
 
 
-        public ObservableCollection<AssSubtitlesEnteries> SubtitleEntries { get; set; } = [];
+        public ObservableCollection<SubtitlesEnteries> SubtitleEntries { get; set; } = [];
         public CollectionViewSource subtitleViewSource = new();
 
         public ObservableCollection<string> AvailableActors { get; set; } = [];
@@ -86,7 +86,7 @@ namespace Mega_Subtitles_Reborn
                 {
                     //var jsonRead = JsonReader.ReadAssSubtitlesEnteriesJson(ProjectCacheFolderPath);
                     var subtitlesData = JsonReader.ReadAssSubtitlesDataJson(GeneralSettings.Default.ProjectCahceJsonPath);
-                    List<AssSubtitlesEnteries> entries = subtitlesData.Entries;
+                    List<SubtitlesEnteries> entries = subtitlesData.Entries;
 
                     var selectedActors = ActorsList.SelectedItems
                         .Cast<string>() // Change if using a different type
@@ -139,10 +139,9 @@ namespace Mega_Subtitles_Reborn
             }
 
             var result = MessageBox.Show(messageText, messageHeader, MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (result == MessageBoxResult.Yes)
-            {
+            if (result == MessageBoxResult.Yes)            
                 Directory.Delete(GeneralSettings.Default.ProjectCacheFolderPath, true);
-            }
+            
         }
 
         private void SaveSubtitlesBtn_Click(object sender, RoutedEventArgs e)
@@ -153,10 +152,9 @@ namespace Mega_Subtitles_Reborn
                 Title = "Save the subtitle file"
             };
             bool? result = saveFileDialog1.ShowDialog();
-            if (result == true)
-            {
+            if (result == true)            
                 AssFileWriter.WriteAssFile(saveFileDialog1.FileName);
-            }
+            
         }
 
         private void ActorComboBox_LostFocus(object sender, RoutedEventArgs e)
@@ -209,6 +207,7 @@ namespace Mega_Subtitles_Reborn
         private void SetColorBtn_Click(object sender, RoutedEventArgs e)
         {
             ActorsProcessing.SetActorColor();
+            ColorPickerGrid.Visibility = Visibility.Hidden;
         }
 
         private void ColorPickerCancelBtn_Click(object sender, RoutedEventArgs e)
@@ -224,6 +223,7 @@ namespace Mega_Subtitles_Reborn
         private void RenameBtn_Click(object sender, RoutedEventArgs e)
         {
             ActorsProcessing.RenameActor();
+            ActorReanameGrid.Visibility = Visibility.Hidden;
         }
 
         private void SeparateExportCommentsBtn_Click(object sender, RoutedEventArgs e)
@@ -239,6 +239,11 @@ namespace Mega_Subtitles_Reborn
         private void ImportCommentsBtn_Click(object sender, RoutedEventArgs e)
         {
             CommentsReader.ReadComments();
+        }
+
+        private void FilterActorsBtn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

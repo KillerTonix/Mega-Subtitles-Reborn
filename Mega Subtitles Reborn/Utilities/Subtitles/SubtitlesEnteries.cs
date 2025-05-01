@@ -3,9 +3,9 @@ using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Media;
 
-namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
+namespace Mega_Subtitles_Reborn.Utilities.Subtitles
 {
-    public class AssSubtitlesEnteries : INotifyPropertyChanged
+    public class SubtitlesEnteries : INotifyPropertyChanged
     {
 
         public string Layer { get; set; } = "";

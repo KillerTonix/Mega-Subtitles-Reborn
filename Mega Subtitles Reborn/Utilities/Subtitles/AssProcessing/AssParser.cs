@@ -1,4 +1,5 @@
 ﻿using Mega_Subtitles_Reborn.Helper.Subtitles.ASS;
+using Mega_Subtitles_Reborn.Utilities.Subtitles;
 using Mega_Subtitles_Reborn.Utilitis.FileReader;
 using Mega_Subtitles_Reborn.Utilitis.FileWriter;
 using System.IO;
@@ -19,7 +20,7 @@ namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
             HashSet<string> uniqueActors = [];
 
             var lines = File.ReadAllLines(filePath);
-            var entries = new List<AssSubtitlesEnteries>();
+            var entries = new List<SubtitlesEnteries>();
             int number = 1;
             int colorIndex = 0;
 
@@ -56,7 +57,7 @@ namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
                         }
                                                
 
-                        entries.Add(new AssSubtitlesEnteries
+                        entries.Add(new SubtitlesEnteries
                         {
                             Number = number++,
                             Color = value.ToString(),
@@ -85,7 +86,7 @@ namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
 
 
             var subtitlesData = JsonReader.ReadAssSubtitlesDataJson(GeneralSettings.Default.ProjectCahceJsonPath);
-            List<AssSubtitlesEnteries> subtitleseEntries = subtitlesData.Entries;
+            List<SubtitlesEnteries> subtitleseEntries = subtitlesData.Entries;
             foreach (var entry in subtitleseEntries)
             {
                 if (entry.Actor != null)

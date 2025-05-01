@@ -1,4 +1,4 @@
-﻿using Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing;
+﻿using Mega_Subtitles_Reborn.Utilities.Subtitles;
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.IO;
@@ -32,7 +32,7 @@ namespace Mega_Subtitles_Reborn.Utilities.FileWriter
         {
             string OutputPath = SelectOutputFolder(GetProjectName(), isFullExport: false);
 
-            var groupedByActor = mainWindow.subtitleViewSource.View.OfType<AssSubtitlesEnteries>().GroupBy(entry => entry.Actor);
+            var groupedByActor = mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>().GroupBy(entry => entry.Actor);
 
             foreach (var actorGroup in groupedByActor)
             {

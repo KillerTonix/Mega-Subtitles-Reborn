@@ -1,5 +1,5 @@
-﻿using Mega_Subtitles_Reborn.Utilitis.FileReader;
-using Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing;
+﻿using Mega_Subtitles_Reborn.Utilities.Subtitles;
+using Mega_Subtitles_Reborn.Utilitis.FileReader;
 using System.IO;
 using System.Text;
 
@@ -14,7 +14,7 @@ namespace Mega_Subtitles_Reborn.Utilitis.FileWriter
 
             using var writer = new StreamWriter(assFilePath, true, Encoding.UTF8);
             writer.WriteLine(ChangeAssHeader(GetAssHeader(subtitlesData.SubtitlesPath)));
-            List<AssSubtitlesEnteries> entries = subtitlesData.Entries;
+            List<SubtitlesEnteries> entries = subtitlesData.Entries;
 
             foreach (var item in entries)
             {

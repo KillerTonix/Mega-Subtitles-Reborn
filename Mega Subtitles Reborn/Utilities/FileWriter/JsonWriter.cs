@@ -1,4 +1,4 @@
-﻿using Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing;
+﻿using Mega_Subtitles_Reborn.Utilities.Subtitles;
 using System.IO;
 using System.Text.Encodings.Web;
 using System.Text.Json;

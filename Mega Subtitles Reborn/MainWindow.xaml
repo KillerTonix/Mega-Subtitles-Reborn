@@ -270,7 +270,7 @@
                     </Button>
 
 
-                    <Button x:Name="FilterActorsBtn" HorizontalAlignment="Center" Height="25" VerticalAlignment="Top" Width="100" Margin="0,30,0,0" FontFamily="Nunito SemiBold" FontSize="14" Background="#FFFFF0C2" BorderBrush="#FFFBD485" Style="{DynamicResource CustomButtonStyleWithGreenOwer}">
+                    <Button x:Name="FilterActorsBtn" HorizontalAlignment="Center" Height="25" VerticalAlignment="Top" Width="100" Margin="0,30,0,0" FontFamily="Nunito SemiBold" FontSize="14" Background="#FFFFF0C2" BorderBrush="#FFFBD485" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="FilterActorsBtn_Click">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                             <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE71C;" FontSize="16" VerticalAlignment="Center" Margin="0,0,5,0"/>
                             <TextBlock Text="Filter" FontSize="14" />
@@ -281,7 +281,7 @@
 
                 <Label x:Name="commandsLabel" Content="" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14"/>
 
-                <Grid x:Name="ColorPickerGrid" Visibility="Visible" Height="90" >
+                <Grid x:Name="ColorPickerGrid" Visibility="Hidden" Height="90" >
                     <StackPanel Orientation="Vertical">
                         <Label x:Name="ChangeColorLabel" Content="Change color for" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14" />
                         <Label x:Name="ChangeColorActorLabel" Content="ActorName" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito Black" FontSize="14" HorizontalAlignment="Center" />
@@ -299,7 +299,7 @@
                     <Button x:Name="ColorPickerCancelBtn" Content="Cancel" HorizontalAlignment="Right" Height="25" VerticalAlignment="Bottom" Width="70" FontFamily="Nunito SemiBold" FontSize="14" Click="ColorPickerCancelBtn_Click"/>
                 </Grid>
 
-                <Grid x:Name="ActorReanameGrid" Height="110" Visibility="Visible" >
+                <Grid x:Name="ActorReanameGrid" Height="110" Visibility="Hidden" >
                     <StackPanel Orientation="Vertical">
                         <Label x:Name="RenameActorLabel" Content="Change color for" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14" />
                         <Label x:Name="ActorLabel" Content="ActorName" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito Black" FontSize="14" HorizontalAlignment="Center" />
