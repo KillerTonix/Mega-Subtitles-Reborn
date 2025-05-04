@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media;
 
-namespace Mega_Subtitles_Reborn.Helper.Subtitles.ASS
+namespace Mega_Subtitles_Reborn.Utilities.Subtitles
 {
     public class ListSolidColor
     {

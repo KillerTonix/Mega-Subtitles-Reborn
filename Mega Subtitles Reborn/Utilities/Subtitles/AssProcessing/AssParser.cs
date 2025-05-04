@@ -1,5 +1,4 @@
-﻿using Mega_Subtitles_Reborn.Helper.Subtitles.ASS;
-using Mega_Subtitles_Reborn.Utilities.Subtitles;
+﻿using Mega_Subtitles_Reborn.Utilities.Subtitles;
 using Mega_Subtitles_Reborn.Utilitis.FileReader;
 using Mega_Subtitles_Reborn.Utilitis.FileWriter;
 using System.IO;

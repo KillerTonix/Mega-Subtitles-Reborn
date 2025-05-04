@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel;
-using System.Text.Json.Serialization;
 using System.Windows;
-using System.Windows.Media;
 
 namespace Mega_Subtitles_Reborn.Utilities.Subtitles
 {

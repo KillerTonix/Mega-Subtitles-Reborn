@@ -1,5 +1,4 @@
 ﻿using Mega_Subtitles.Helper.Subtitles;
-using Mega_Subtitles_Reborn.Helper.Subtitles.ASS;
 using Mega_Subtitles_Reborn.Utilities.FileReader;
 using Mega_Subtitles_Reborn.Utilities.FileWriter;
 using Mega_Subtitles_Reborn.Utilities.Subtitles;
@@ -139,9 +138,9 @@ namespace Mega_Subtitles_Reborn
             }
 
             var result = MessageBox.Show(messageText, messageHeader, MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (result == MessageBoxResult.Yes)            
+            if (result == MessageBoxResult.Yes)
                 Directory.Delete(GeneralSettings.Default.ProjectCacheFolderPath, true);
-            
+
         }
 
         private void SaveSubtitlesBtn_Click(object sender, RoutedEventArgs e)
@@ -152,9 +151,11 @@ namespace Mega_Subtitles_Reborn
                 Title = "Save the subtitle file"
             };
             bool? result = saveFileDialog1.ShowDialog();
-            if (result == true)            
-                AssFileWriter.WriteAssFile(saveFileDialog1.FileName);
-            
+            if (result == true)
+                if (Path.GetExtension(saveFileDialog1.FileName) == ".ass")
+                    AssFileWriter.WriteAssFile(saveFileDialog1.FileName);
+                else
+                    SrtFileWriter.WriteSrtFile(saveFileDialog1.FileName);
         }
 
         private void ActorComboBox_LostFocus(object sender, RoutedEventArgs e)

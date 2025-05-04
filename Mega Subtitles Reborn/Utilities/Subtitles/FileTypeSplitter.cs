@@ -1,4 +1,5 @@
-﻿using Mega_Subtitles_Reborn.Utilitis.Logger;
+﻿using Mega_Subtitles_Reborn.Utilities.Subtitles.SrtProcessing;
+using Mega_Subtitles_Reborn.Utilitis.Logger;
 using Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing;
 using System.Windows;
 
@@ -19,7 +20,7 @@ namespace Mega_Subtitles_Reborn.Utilitis.Subtitles
                             AssParser.ParseAssFile(InputFilePath);
                             break;
                         case ".srt":
-                            //SRT.SrtSubtitlesParser.SrtFillingFields(InputFilePath);  // Call method for .srt file processing       
+                            SrtParser.ParseSrtFile(InputFilePath);
                             break;
                     }
                 }
