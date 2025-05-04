@@ -1,4 +1,5 @@
 ﻿using Mega_Subtitles.Helper.Subtitles;
+using Mega_Subtitles_Reborn.Utilities;
 using Mega_Subtitles_Reborn.Utilities.FileReader;
 using Mega_Subtitles_Reborn.Utilities.FileWriter;
 using Mega_Subtitles_Reborn.Utilities.Subtitles;
@@ -244,6 +245,37 @@ namespace Mega_Subtitles_Reborn
 
         private void FilterActorsBtn_Click(object sender, RoutedEventArgs e)
         {
+
+        }
+
+        private void DeleteLineListViewContext_Click(object sender, RoutedEventArgs e)
+        {
+            RegionManagerLineUtil.DublicateOrDeleteLine("Delete");          
+        }
+
+        private void DublicateLineListViewContext_Click(object sender, RoutedEventArgs e)
+        {
+            RegionManagerLineUtil.DublicateOrDeleteLine("Dublicate");          
+        }
+
+        private void CopyTimingsListViewContext_Click(object sender, RoutedEventArgs e)
+        {
+            CopyToClipboard.CopyText("timings");
+        }
+
+        private void CopyTextListViewContext_Click(object sender, RoutedEventArgs e)
+        {
+            CopyToClipboard.CopyText("text");           
+        }
+
+        private void CopyCommentsListViewContext_Click(object sender, RoutedEventArgs e)
+        {
+            CopyToClipboard.CopyText("comments");
+        }
+
+        private void ClearCommentsListViewContext_Click(object sender, RoutedEventArgs e)
+        {
+            RegionManagerLineUtil.ClearComments();
 
         }
     }

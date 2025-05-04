@@ -175,15 +175,15 @@
         </Grid.RowDefinitions>
 
         <Grid>
-            <ListView x:Name="RegionManagerListView" ItemsSource="{Binding SubtitleEntries}"  Background="#FFF8EDEB" SelectionMode="Single" FontFamily="Nunito SemiBold">
+            <ListView x:Name="RegionManagerListView" ItemsSource="{Binding SubtitleEntries}"  Background="#FFF8EDEB" FontFamily="Nunito SemiBold">
                 <ListView.ContextMenu>
                     <ContextMenu>
-                        <MenuItem x:Name="DeleteLineListViewContext" Header="Delete line" />
-                        <MenuItem x:Name="DublicateLineListViewContext" Header="Duplicate line" />
-                        <MenuItem x:Name="CopyTimingsListViewContext" Header="Copy Timings" />
-                        <MenuItem x:Name="CopyTextListViewContext" Header="Copy Text" />
-                        <MenuItem x:Name="CopyCommentsListViewContext" Header="Copy Comment" />
-                        <MenuItem x:Name="ClearCommentListViewContext" Header="Clear Comment" />
+                        <MenuItem x:Name="DeleteLineListViewContext" Header="Delete line" Click="DeleteLineListViewContext_Click" />
+                        <MenuItem x:Name="DublicateLineListViewContext" Header="Duplicate line" Click="DublicateLineListViewContext_Click" />
+                        <MenuItem x:Name="CopyTimingsListViewContext" Header="Copy Timings" Click="CopyTimingsListViewContext_Click" />
+                        <MenuItem x:Name="CopyTextListViewContext" Header="Copy Text" Click="CopyTextListViewContext_Click" />
+                        <MenuItem x:Name="CopyCommentsListViewContext" Header="Copy Comment" Click="CopyCommentsListViewContext_Click" />
+                        <MenuItem x:Name="ClearCommentsListViewContext" Header="Clear Comment" Click="ClearCommentsListViewContext_Click" />
                     </ContextMenu>
                 </ListView.ContextMenu>
                 <ListView.View>
