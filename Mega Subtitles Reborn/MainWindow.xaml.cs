@@ -17,6 +17,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 
 
@@ -35,6 +36,9 @@ namespace Mega_Subtitles_Reborn
         public ObservableCollection<string> AvailableActors { get; set; } = [];
         public Dictionary<string, SolidColorBrush> ActorsAndColorsDict = [];
 
+        public List<int> _matchedIndices = [];
+        public int _currentMatchIndex = -1;
+        public string _lastKeyword = "";
 
 
         public MainWindow()
@@ -250,12 +254,12 @@ namespace Mega_Subtitles_Reborn
 
         private void DeleteLineListViewContext_Click(object sender, RoutedEventArgs e)
         {
-            RegionManagerLineUtil.DublicateOrDeleteLine("Delete");          
+            RegionManagerLineUtil.DublicateOrDeleteLine("Delete");
         }
 
         private void DublicateLineListViewContext_Click(object sender, RoutedEventArgs e)
         {
-            RegionManagerLineUtil.DublicateOrDeleteLine("Dublicate");          
+            RegionManagerLineUtil.DublicateOrDeleteLine("Dublicate");
         }
 
         private void CopyTimingsListViewContext_Click(object sender, RoutedEventArgs e)
@@ -265,7 +269,7 @@ namespace Mega_Subtitles_Reborn
 
         private void CopyTextListViewContext_Click(object sender, RoutedEventArgs e)
         {
-            CopyToClipboard.CopyText("text");           
+            CopyToClipboard.CopyText("text");
         }
 
         private void CopyCommentsListViewContext_Click(object sender, RoutedEventArgs e)
@@ -278,5 +282,19 @@ namespace Mega_Subtitles_Reborn
             RegionManagerLineUtil.ClearComments();
 
         }
+
+        private void GeneralWindow_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            base.OnPreviewKeyDown(e);
+
+            if (e.Key == Key.F && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                var findWindow = new FindWindow { Owner = this };
+                findWindow.ShowDialog();
+            }
+        }
+
+       
+
     }
 }

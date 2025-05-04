@@ -4,13 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Mega_Subtitles_Reborn"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Name="GeneralWindow"
         x:Class="Mega_Subtitles_Reborn.MainWindow"
         mc:Ignorable="d"
         Title="Mega Subtitles Reborn" 
         Height="820" Width="1366" Background="#FF1F1F23" 
         WindowStartupLocation="CenterScreen" Visibility="Visible" WindowState="Normal"
-        ShowInTaskbar="True" ResizeMode="CanResize" SizeToContent="Manual" MinHeight="785" MinWidth="1260">
+        ShowInTaskbar="True" ResizeMode="CanResize" SizeToContent="Manual" MinHeight="785" MinWidth="1260" PreviewKeyDown="GeneralWindow_PreviewKeyDown">
 
 
     <Window.Resources>
