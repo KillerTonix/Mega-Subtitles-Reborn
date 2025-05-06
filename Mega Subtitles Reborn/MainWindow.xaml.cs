@@ -31,6 +31,7 @@ namespace Mega_Subtitles_Reborn
 
 
         public ObservableCollection<SubtitlesEnteries> SubtitleEntries { get; set; } = [];
+        public ObservableCollection<ActorsEnteries> ActorEnteries { get; set; } = [];
         public CollectionViewSource subtitleViewSource = new();
 
         public ObservableCollection<string> AvailableActors { get; set; } = [];
@@ -47,18 +48,18 @@ namespace Mega_Subtitles_Reborn
             Loaded += MainWindow_Loaded;
 
             SubtitleEntries = [];
+            ActorEnteries = [];
             AvailableActors = [""];
 
             subtitleViewSource = new CollectionViewSource
             {
                 Source = SubtitleEntries
             };
-            ActorsList.ItemsSource = AvailableActors;
             RegionManagerListView.ItemsSource = subtitleViewSource.View;
-
+            ActorsListView.ItemsSource = ActorEnteries;
 
             this.DataContext = this;
-            ActorsList.DataContext = this;
+            ActorsListView.DataContext = this;
 
             ColorPickerCombobox.ItemsSource = ListSolidColor.SolidColors();
 
@@ -85,45 +86,43 @@ namespace Mega_Subtitles_Reborn
         {
             try
             {
-
-                if (ActorsList.SelectedItems.Count > 0)
+                if (ActorsListView.SelectedItems.Count > 0)
                 {
-                    //var jsonRead = JsonReader.ReadAssSubtitlesEnteriesJson(ProjectCacheFolderPath);
                     var subtitlesData = JsonReader.ReadAssSubtitlesDataJson(GeneralSettings.Default.ProjectCahceJsonPath);
                     List<SubtitlesEnteries> entries = subtitlesData.Entries;
 
-                    var selectedActors = ActorsList.SelectedItems
-                        .Cast<string>() // Change if using a different type
+                    var selectedActors = ActorsListView.SelectedItems
+                        .Cast<ActorsEnteries>()
+                        .Select(a => a.Actors)
+                        .Where(name => !string.IsNullOrWhiteSpace(name))
                         .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
-#pragma warning disable CS8604 // Possible null reference argument.
                     var filteredEntries = entries
-                        .Where(entry => selectedActors.Contains(entry.Actor)).ToList();
-#pragma warning restore CS8604 // Possible null reference argument.
+                        .Where(entry => selectedActors.Contains(entry.Actor))
+                        .ToList();
 
-                    // Clear current and add new items
                     SubtitleEntries.Clear();
                     foreach (var entry in filteredEntries)
                     {
                         SubtitleEntries.Add(entry);
                     }
 
-                    RegionManagerListView.Items.Refresh(); // Optional, in case bindings don’t update immediately                   
+                    RegionManagerListView.Items.Refresh(); // Optional               
 
                 }
             }
             catch (Exception ex)
             {
-                ExceptionLogger.LogException(ex, "MainWindow", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
+                ExceptionLogger.LogException(ex, "MainWindow", MethodBase.GetCurrentMethod()?.Name);
             }
         }
 
         private void SelectAllActorsBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (ActorsList.SelectedItems.Count == ActorsList.Items.Count)
-                ActorsList.UnselectAll();
+            if (ActorsListView.SelectedItems.Count == ActorsListView.Items.Count)
+                ActorsListView.UnselectAll();
             else
-                ActorsList.SelectAll();
+                ActorsListView.SelectAll();
         }
 
         private void OpenCacheFolderBtn_Click(object sender, RoutedEventArgs e)
@@ -186,22 +185,21 @@ namespace Mega_Subtitles_Reborn
 
         private void SetActorColorContext_Click(object sender, RoutedEventArgs e)
         {
-            if (ActorsList.SelectedItem is string _)
-            {
-                ColorPickerGrid.Visibility = Visibility.Visible;
-                ActorReanameGrid.Visibility = Visibility.Hidden;
-            }
+            var selectedActors = ActorsListView.SelectedItems.Cast<ActorsEnteries>().Select(a => a.Actors).ToList();
+            ChangeColorActorLabel.Content = selectedActors[0];
+
+            ColorPickerGrid.Visibility = Visibility.Visible;
+            ActorReanameGrid.Visibility = Visibility.Hidden;
         }
 
         private void RenameActorContext_Click(object sender, RoutedEventArgs e)
         {
-            if (ActorsList.SelectedItem is string actorName)
-            {
-                ActorLabel.Content = actorName;
-                ActorTextBox.Text = actorName;
-                ActorReanameGrid.Visibility = Visibility.Visible;
-                ColorPickerGrid.Visibility = Visibility.Hidden;
-            }
+            var selectedActors = ActorsListView.SelectedItems.Cast<ActorsEnteries>().Select(a => a.Actors).ToList();
+            ActorLabel.Content = selectedActors[0];
+            ActorTextBox.Text = selectedActors[0];
+           
+            ActorReanameGrid.Visibility = Visibility.Visible;
+            ColorPickerGrid.Visibility = Visibility.Hidden;
         }
 
         private void DeleteActorContext_Click(object sender, RoutedEventArgs e)
@@ -294,7 +292,7 @@ namespace Mega_Subtitles_Reborn
             }
         }
 
-       
+
 
     }
 }

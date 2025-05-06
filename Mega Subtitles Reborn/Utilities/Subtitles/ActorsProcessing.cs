@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing
@@ -10,7 +9,9 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing
 
         public static void SetActorColor()
         {
-            if (mainWindow.ActorsList.SelectedItem is string actorName)
+            var selectedActors = mainWindow.ActorsListView.SelectedItems.Cast<ActorsEnteries>().Select(a => a.Actors).ToList();
+
+            if (selectedActors[0] is string actorName)
             {
                 var selectedColor = mainWindow.ColorPickerCombobox.SelectedItem?.ToString();
 
@@ -23,20 +24,30 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing
                         entry.Color = selectedColor;
                     }
                 }
-
+                foreach (var entry in mainWindow.ActorEnteries)
+                {
+                    if (entry.Actors == actorName)
+                    {
+                        entry.ActorsColor = selectedColor;
+                    }
+                }
+                mainWindow.ActorsListView.Items.Refresh();
                 mainWindow.RegionManagerListView.Items.Refresh();
             }
         }
 
         public static void RenameActor()
         {
-            if (mainWindow.ActorsList.SelectedItem is not string selectedActor)
+            var selectedActors = mainWindow.ActorsListView.SelectedItems.Cast<ActorsEnteries>().Select(a => a.Actors).ToList();
+
+            if (selectedActors[0] is not string selectedActor)
             {
                 MessageBox.Show("Please select an actor to rename.", "No Actor Selected", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            int index = mainWindow.ActorsList.Items.IndexOf(selectedActor);
 
+            var item = mainWindow.ActorEnteries.Select((actor, index) => new { actor, index }).FirstOrDefault(a => a.actor.Actors == selectedActor);
+            int index = item.index;
             string? newName = mainWindow.ActorTextBox.Text?.Trim();
             if (string.IsNullOrEmpty(newName))
             {
@@ -61,7 +72,7 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing
                         if (targetColor != null)
                             entry.Color = targetColor;
                     }
-                    mainWindow.AvailableActors?.Remove(selectedActor);
+
                     RefreshActorsList(newName, index: index);
                 }
                 else
@@ -82,11 +93,12 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing
 
         public static void DeleteActor()
         {
-            if (mainWindow.ActorsList.SelectedItem is string selectedActor)
-            {
+            var selectedActors = mainWindow.ActorsListView.SelectedItems.Cast<ActorsEnteries>().Select(a => a.Actors).ToList();
 
+            if (selectedActors[0] is string selectedActor)
+            {
                 var result = MessageBox.Show("Are you sure you want to delete the actor?", "Notification", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result != MessageBoxResult.Yes) return;                
+                if (result != MessageBoxResult.Yes) return;
 
                 foreach (var entry in mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>())
                 {
@@ -116,18 +128,60 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing
 
         private static void RefreshActorsList(string newName, string? removeName = null, int index = -1)
         {
-            if (!string.IsNullOrEmpty(removeName))
-                mainWindow.AvailableActors?.Remove(removeName);
+            if (mainWindow.AvailableActors == null || mainWindow.ActorEnteries == null)
+                return;
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            ActorsEnteries? oldEntry = null;
+
+            // Remove old name from AvailableActors
+            if (!string.IsNullOrEmpty(removeName))
+            {
+                mainWindow.AvailableActors.Remove(removeName);
+
+                // Find and remove from ActorEnteries, store reference
+                oldEntry = mainWindow.ActorEnteries.FirstOrDefault(entry => entry.Actors == removeName);
+                if (oldEntry != null)
+                {
+                    mainWindow.ActorEnteries.Remove(oldEntry);
+                }
+            }
+
+            // Update actor name in ActorsListView.ItemsSource
             if (!mainWindow.AvailableActors.Contains(newName))
             {
-                if (index != -1)
-                    ((ObservableCollection<string>)mainWindow.ActorsList.ItemsSource)[index] = newName;
-                mainWindow.AvailableActors?.Add(newName);
+                if (index != -1 && mainWindow.ActorsListView.ItemsSource is ObservableCollection<string> actorsSource)
+                {
+                    if (index >= 0 && index < actorsSource.Count)
+                        actorsSource[index] = newName;
+                }
+
+                mainWindow.AvailableActors.Add(newName);
             }
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+
+            // Check if newName already exists in ActorEnteries
+            if (!mainWindow.ActorEnteries.Any(entry => entry.Actors == newName))
+            {
+                var newEntry = new ActorsEnteries
+                {
+                    ActorsNumber = index + 1,
+                    Actors = newName,
+                    ActorsColor = oldEntry?.ActorsColor,          // Preserve color
+                    ActorsLineCount = oldEntry?.ActorsLineCount ?? 0 // Preserve line count
+                };
+
+                if (index >= 0 && index <= mainWindow.ActorEnteries.Count)
+                {
+                    mainWindow.ActorEnteries.Insert(index, newEntry);
+                }
+                else
+                {
+                    mainWindow.ActorEnteries.Add(newEntry);
+                }
+            }
         }
+
+
+
 
         private static string GetUniqueName(string baseName, List<string> existingNames)
         {

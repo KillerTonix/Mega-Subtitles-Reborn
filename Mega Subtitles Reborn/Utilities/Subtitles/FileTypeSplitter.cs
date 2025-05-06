@@ -1,6 +1,7 @@
 ﻿using Mega_Subtitles_Reborn.Utilities.Subtitles.SrtProcessing;
 using Mega_Subtitles_Reborn.Utilitis.Logger;
 using Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing;
+using System.Reflection;
 using System.Windows;
 
 namespace Mega_Subtitles_Reborn.Utilitis.Subtitles
@@ -27,7 +28,7 @@ namespace Mega_Subtitles_Reborn.Utilitis.Subtitles
             }
             catch (Exception ex)
             {
-                ExceptionLogger.LogException(ex, "FileTypeSplitter", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
+                ExceptionLogger.LogException(ex, "FileTypeSplitter", MethodBase.GetCurrentMethod()?.Name);
             }
         }
     }

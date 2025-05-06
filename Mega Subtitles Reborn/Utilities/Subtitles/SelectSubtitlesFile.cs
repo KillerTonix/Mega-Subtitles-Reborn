@@ -2,6 +2,7 @@
 using Mega_Subtitles_Reborn.Utilitis.Logger;
 using Microsoft.Win32;
 using System.IO;
+using System.Reflection;
 
 namespace Mega_Subtitles.Helper.Subtitles
 {
@@ -32,7 +33,7 @@ namespace Mega_Subtitles.Helper.Subtitles
             }
             catch (Exception ex)
             {
-                ExceptionLogger.LogException(ex, "SelectSubtitlesFile", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
+                ExceptionLogger.LogException(ex, "SelectSubtitlesFile", MethodBase.GetCurrentMethod()?.Name);
                 return (null, null);
             }
         }

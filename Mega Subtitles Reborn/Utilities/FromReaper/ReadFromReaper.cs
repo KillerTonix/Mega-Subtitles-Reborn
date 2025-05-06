@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace Mega_Subtitles_Reborn.Utilitis.FromReaper
@@ -30,7 +31,7 @@ namespace Mega_Subtitles_Reborn.Utilitis.FromReaper
             }
             catch (Exception ex)
             {
-                Logger.ExceptionLogger.LogException(ex, "FileReader", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
+                Logger.ExceptionLogger.LogException(ex, "FileReader", MethodBase.GetCurrentMethod()?.Name);
                 return string.Empty;
             }
         }

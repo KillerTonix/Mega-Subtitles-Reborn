@@ -2,6 +2,7 @@
 using Mega_Subtitles_Reborn.Utilitis.FileReader;
 using Mega_Subtitles_Reborn.Utilitis.FileWriter;
 using System.IO;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media;
@@ -20,6 +21,8 @@ namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
 
             var lines = File.ReadAllLines(filePath);
             var entries = new List<SubtitlesEnteries>();
+            var actorsEntries = new List<ActorsEnteries>();
+
             int number = 1;
             int colorIndex = 0;
 
@@ -95,10 +98,23 @@ namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
             List<string> UniqueActorsList = [.. uniqueActors.OrderBy(actor => actor)];
             mainWindow.AvailableActors.Clear();
 
+            int actorIndex = 1;
+
             foreach (var actor in UniqueActorsList)
             {
+                int lineCount = subtitleseEntries.Count(e => e.Actor == actor);
                 mainWindow.AvailableActors.Add(actor);
+                actorsEntries.Add(new ActorsEnteries
+                {
+                    ActorsNumber = actorIndex++,
+                    Actors = actor,
+                    ActorsLineCount = lineCount
+                    // ActorsColor is auto-set by UpdateColor() in the setter
+                });
             }
+
+            foreach (var entry in actorsEntries)
+                mainWindow.ActorEnteries.Add(entry);
         }
 
         public static string RemoveTextTags(string text)
@@ -111,7 +127,7 @@ namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
             }
             catch (Exception ex)
             {
-                Logger.ExceptionLogger.LogException(ex, "AssParser", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
+                Logger.ExceptionLogger.LogException(ex, "AssParser", MethodBase.GetCurrentMethod()?.Name);
                 return text;
             }
         }

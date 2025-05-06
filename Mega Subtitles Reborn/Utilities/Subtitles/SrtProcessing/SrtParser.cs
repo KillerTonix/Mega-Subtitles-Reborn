@@ -1,6 +1,7 @@
 ﻿using Mega_Subtitles_Reborn.Utilitis;
 using Mega_Subtitles_Reborn.Utilitis.FileWriter;
 using System.IO;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media;
@@ -18,6 +19,8 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.SrtProcessing
 
             var lines = File.ReadAllLines(filePath);
             var entries = new List<SubtitlesEnteries>();
+            var actorsEntries = new List<ActorsEnteries>();
+
             int i = 0;
 
             while (i < lines.Length)
@@ -72,7 +75,14 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.SrtProcessing
 
             mainWindow.AvailableActors.Clear();
             mainWindow.AvailableActors.Add("_Unknown_Actor_");
-
+            actorsEntries.Add(new ActorsEnteries
+            {
+                ActorsNumber = 1,
+                Actors = "_Unknown_Actor_",
+                ActorsLineCount = i
+            });
+            foreach (var entry in actorsEntries)
+                mainWindow.ActorEnteries.Add(entry);
         }
 
 
@@ -85,7 +95,7 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.SrtProcessing
             }
             catch (Exception ex)
             {
-                Utilitis.Logger.ExceptionLogger.LogException(ex, "SrtParser", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
+                Utilitis.Logger.ExceptionLogger.LogException(ex, "SrtParser", MethodBase.GetCurrentMethod()?.Name);
                 return text;
             }
         }
