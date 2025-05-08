@@ -197,7 +197,7 @@ namespace Mega_Subtitles_Reborn
             var selectedActors = ActorsListView.SelectedItems.Cast<ActorsEnteries>().Select(a => a.Actors).ToList();
             ActorLabel.Content = selectedActors[0];
             ActorTextBox.Text = selectedActors[0];
-           
+
             ActorReanameGrid.Visibility = Visibility.Visible;
             ColorPickerGrid.Visibility = Visibility.Hidden;
         }
@@ -292,7 +292,9 @@ namespace Mega_Subtitles_Reborn
             }
         }
 
-
-
+        private void RegionManagerListView_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            RegionManagerLineUtil.SetActorHotkeys(e);
+        }
     }
 }

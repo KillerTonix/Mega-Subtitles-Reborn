@@ -175,7 +175,7 @@
         </Grid.RowDefinitions>
 
         <Grid>
-            <ListView x:Name="RegionManagerListView" ItemsSource="{Binding SubtitleEntries}"  Background="#FFF8EDEB" FontFamily="Nunito SemiBold">
+            <ListView x:Name="RegionManagerListView" ItemsSource="{Binding SubtitleEntries}"  Background="#FFF8EDEB" FontFamily="Nunito SemiBold" PreviewKeyDown="RegionManagerListView_PreviewKeyDown">
                 <ListView.ContextMenu>
                     <ContextMenu>
                         <MenuItem x:Name="DeleteLineListViewContext" Header="Delete line" Click="DeleteLineListViewContext_Click" />
