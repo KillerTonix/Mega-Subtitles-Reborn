@@ -149,17 +149,8 @@ namespace Mega_Subtitles_Reborn
 
         private void SaveSubtitlesBtn_Click(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog saveFileDialog1 = new()
-            {
-                Filter = "ASS Subtitles|*.ass|SRT Subtitles|*.srt",
-                Title = "Save the subtitle file"
-            };
-            bool? result = saveFileDialog1.ShowDialog();
-            if (result == true)
-                if (Path.GetExtension(saveFileDialog1.FileName) == ".ass")
-                    AssFileWriter.WriteAssFile(saveFileDialog1.FileName);
-                else
-                    SrtFileWriter.WriteSrtFile(saveFileDialog1.FileName);
+            var saveSubtitlesWindow = new SaveSubtitlesWindow { Owner = this };
+            saveSubtitlesWindow.ShowDialog();           
         }
 
         private void ActorComboBox_LostFocus(object sender, RoutedEventArgs e)

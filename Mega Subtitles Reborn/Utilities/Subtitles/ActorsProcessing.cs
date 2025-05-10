@@ -47,7 +47,9 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing
             }
 
             var item = mainWindow.ActorEnteries.Select((actor, index) => new { actor, index }).FirstOrDefault(a => a.actor.Actors == selectedActor);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             int index = item.index;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
             string? newName = mainWindow.ActorTextBox.Text?.Trim();
             if (string.IsNullOrEmpty(newName))
             {
