@@ -158,7 +158,7 @@
             </StackPanel>            
         </Grid>
 
-        <Button x:Name="SaveBtn" Margin="0,10,0,0" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" Width="150" Background="#FFEAC9C1" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="SaveBtn_Click">
+        <Button x:Name="SaveBtn" Margin="0,10,0,0" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" Width="150" Background="#FFEFCFE3" BorderBrush="#FFE27396" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="SaveBtn_Click">
             <Grid Width="145">
                 <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74E;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
                 <TextBlock Text="Save" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>

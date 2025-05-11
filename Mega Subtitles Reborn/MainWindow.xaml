@@ -12,6 +12,19 @@
         WindowStartupLocation="CenterScreen" Visibility="Visible" WindowState="Normal"
         ShowInTaskbar="True" ResizeMode="CanResize" SizeToContent="Manual" MinHeight="785" MinWidth="1260" PreviewKeyDown="GeneralWindow_PreviewKeyDown">
 
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Control" Key="S" Command="{Binding CtrlS}" />
+        <KeyBinding Modifiers="Control" Key="I" Command="{Binding CtrlI}" />
+        <KeyBinding Modifiers="Control" Key="E" Command="{Binding CtrlE}" />
+        <KeyBinding Modifiers="Shift" Key="E" Command="{Binding ShiftE}" />
+        <KeyBinding Modifiers="Control" Key="O" Command="{Binding CtrlO}" />
+        <KeyBinding Modifiers="Control" Key="D" Command="{Binding CtrlD}" />
+        <KeyBinding Modifiers="Control" Key="M" Command="{Binding CtrlM}" />
+        <KeyBinding Modifiers="Control" Key="R" Command="{Binding CtrlR}" />
+        <KeyBinding Modifiers="Control" Key="A" Command="{Binding CtrlA}" />
+        <KeyBinding Modifiers="Control" Key="P" Command="{Binding CtrlP}" />
+        <KeyBinding Modifiers="Control" Key="F" Command="{Binding CtrlF}" />
+    </Window.InputBindings>
 
     <Window.Resources>
         <Style x:Key="CustomToggleButton" TargetType="ToggleButton">
@@ -408,13 +421,13 @@
 
             <StackPanel Orientation="Vertical" Margin="20,0,0,0">
                 <Label x:Name="CheckLabel" Content="Check" HorizontalAlignment="Center"  Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
-                <ToggleButton x:Name="CheckForMissingBtn" HorizontalAlignment="Center" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Style="{StaticResource CustomToggleButton}" Width="155" Margin="0,0,0,10" >
+                <ToggleButton x:Name="CheckForMissingBtn" HorizontalAlignment="Center" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Style="{StaticResource CustomToggleButton}" Width="155" Margin="0,0,0,10" Checked="CheckForMissingBtn_Checked" >
                     <Grid Width="145">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xEC54;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
                         <TextBlock Text="Check for missing" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
                     </Grid>
                 </ToggleButton>
-                <ToggleButton x:Name="CheckForRepeatsBtn" VerticalAlignment="Top" Foreground="Black"   HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource CustomToggleButton}" Width="155" BorderBrush="#FF707070">
+                <ToggleButton x:Name="CheckForRepeatsBtn" VerticalAlignment="Top" Foreground="Black"   HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource CustomToggleButton}" Width="155" BorderBrush="#FF707070" Checked="CheckForRepeatsBtn_Checked">
                     <Grid Width="145">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE716;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
                         <TextBlock Text="Check for repeats" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>

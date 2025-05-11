@@ -1,4 +1,5 @@
 ﻿using Mega_Subtitles_Reborn.Utilities.Subtitles;
+using System;
 using System.Windows;
 using System.Windows.Input;
 
@@ -39,10 +40,11 @@ namespace Mega_Subtitles_Reborn.Utilities
             mainWindow.RegionManagerListView.Items.Refresh();
         }
 
-        public static void SetActorHotkeys(KeyEventArgs e)
+
+
+        public static void ParseHotKeys(KeyEventArgs e)
         {
             if (mainWindow == null) return;
-
             int index = -1;
 
             if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
@@ -79,6 +81,15 @@ namespace Mega_Subtitles_Reborn.Utilities
                     _ => -1
                 };
             }
+            if (index > 0)
+                SetActorHotkeys(e, index);
+
+
+
+        }
+
+        public static void SetActorHotkeys(KeyEventArgs e, int index = -1)
+        {
 
             if (index < 0) return;
 

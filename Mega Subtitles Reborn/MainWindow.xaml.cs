@@ -9,7 +9,6 @@ using Mega_Subtitles_Reborn.Utilitis.FileWriter;
 using Mega_Subtitles_Reborn.Utilitis.Logger;
 using Mega_Subtitles_Reborn.Utilitis.PreRun;
 using Mega_Subtitles_Reborn.Utilitis.Subtitles;
-using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -28,7 +27,17 @@ namespace Mega_Subtitles_Reborn
     /// </summary>
     public partial class MainWindow : Window
     {
-
+        public RoutedCommand CtrlS { get; set; } = new();
+        public RoutedCommand CtrlI { get; set; } = new();
+        public RoutedCommand CtrlE { get; set; } = new();
+        public RoutedCommand ShiftE { get; set; } = new();
+        public RoutedCommand CtrlO { get; set; } = new();
+        public RoutedCommand CtrlD { get; set; } = new();
+        public RoutedCommand CtrlM { get; set; } = new();
+        public RoutedCommand CtrlR { get; set; } = new();
+        public RoutedCommand CtrlA { get; set; } = new();
+        public RoutedCommand CtrlP { get; set; } = new();
+        public RoutedCommand CtrlF { get; set; } = new();
 
         public ObservableCollection<SubtitlesEnteries> SubtitleEntries { get; set; } = [];
         public ObservableCollection<ActorsEnteries> ActorEnteries { get; set; } = [];
@@ -61,7 +70,10 @@ namespace Mega_Subtitles_Reborn
             this.DataContext = this;
             ActorsListView.DataContext = this;
 
+            SetupHotKeys();
+
             ColorPickerCombobox.ItemsSource = ListSolidColor.SolidColors();
+
 
             this.Title = "Mega Subtitles Reborn v" + Assembly.GetExecutingAssembly().GetName().Version?.ToString();
         }
@@ -150,7 +162,7 @@ namespace Mega_Subtitles_Reborn
         private void SaveSubtitlesBtn_Click(object sender, RoutedEventArgs e)
         {
             var saveSubtitlesWindow = new SaveSubtitlesWindow { Owner = this };
-            saveSubtitlesWindow.ShowDialog();           
+            saveSubtitlesWindow.ShowDialog();
         }
 
         private void ActorComboBox_LostFocus(object sender, RoutedEventArgs e)
@@ -274,18 +286,75 @@ namespace Mega_Subtitles_Reborn
 
         private void GeneralWindow_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            base.OnPreviewKeyDown(e);
 
-            if (e.Key == Key.F && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-            {
-                var findWindow = new FindWindow { Owner = this };
-                findWindow.ShowDialog();
-            }
         }
 
         private void RegionManagerListView_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            RegionManagerLineUtil.SetActorHotkeys(e);
+            RegionManagerLineUtil.ParseHotKeys(e);
+        }
+
+
+
+
+        private void SetupHotKeys()
+        {
+            try
+            {
+                // Save subtitles hotkey (CTRL + S)
+                this.CommandBindings.Add(new CommandBinding(CtrlS, SaveSubtitlesBtn_Click));
+
+                // Import Comments hotkey (CTRL + I)
+                this.CommandBindings.Add(new CommandBinding(CtrlI, ImportCommentsBtn_Click));
+
+                // Export Full Comments hotkey (CTRL + E)
+                this.CommandBindings.Add(new CommandBinding(CtrlE, FullExportCommentsBtn_Click));
+
+                // Export Separated Comments hotkey (SHIFT + E)                
+                this.CommandBindings.Add(new CommandBinding(ShiftE, SeparateExportCommentsBtn_Click));
+
+                // Open cache folder hotkey (CTRL + O)
+                this.CommandBindings.Add(new CommandBinding(CtrlO, OpenCacheFolderBtn_Click));
+
+                // Clear the project hotkey (CTRL + D)
+                this.CommandBindings.Add(new CommandBinding(CtrlD, ClearProjectBtn_Click));
+
+                // Check for missing hotkey (CTRL + M)
+                this.CommandBindings.Add(new CommandBinding(CtrlM, CheckForMissingBtn_Checked));
+
+                // Check for repeats hotkey (CTRL + R)
+                this.CommandBindings.Add(new CommandBinding(CtrlR, CheckForRepeatsBtn_Checked));
+
+                // Select All hotkey (CTRL + A)
+                this.CommandBindings.Add(new CommandBinding(CtrlA, SelectAllActorsBtn_Click));
+
+                // Parse hotkey (CTRL + P)
+                this.CommandBindings.Add(new CommandBinding(CtrlP, ParseSubtitlesBtn_Click));
+
+                // Find hotkey (CTRL + F)
+                this.CommandBindings.Add(new CommandBinding(CtrlF, OpenFindWindow));
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions
+                MessageBox.Show($"Error setting up hotkeys: {ex.Message}");
+            }
+        }
+
+        private void CheckForRepeatsBtn_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CheckForMissingBtn_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OpenFindWindow(object sender, RoutedEventArgs e)
+        {
+            var findWindow = new FindWindow { Owner = this };
+            findWindow.ShowDialog();
         }
     }
 }
