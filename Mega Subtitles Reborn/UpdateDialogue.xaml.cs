@@ -1,7 +1,6 @@
-﻿using AutoUpdaterDotNET;
+﻿using System.Net;
 using System.Windows;
 
-#pragma warning disable CA1416 // Validate platform compatibility
 namespace Mega_Subtitles_Reborn
 {
     /// <summary>
@@ -14,25 +13,21 @@ namespace Mega_Subtitles_Reborn
         {
             InitializeComponent();
 
-            string? assemblyinfo =  System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString();
+            string? assemblyinfo = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString();
             OldVersionText.Text = $"You have versio {assemblyinfo} installed.";
 
         }
 
-        private void YesClick(object sender, RoutedEventArgs e)
-        {
-            AutoUpdater.HttpUserAgent = "AutoUpdater";
-            AutoUpdater.ShowSkipButton = true;
-            AutoUpdater.ShowRemindLaterButton = true;
-            AutoUpdater.LetUserSelectRemindLater = true;
 
-            AutoUpdater.Start(@"https://github.com/KillerTonix/Mega-Subtitles-Reborn/blob/master/Mega%20Subtitles%20Reborn/updates.xml");
+        private void SkipBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
 
         }
 
-        private void Skip(object sender, RoutedEventArgs e)
+        private void UpdateBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
     }
 }

@@ -22,11 +22,30 @@ namespace Mega_Subtitles_Reborn.Utilitis.FileReader
 
             var subtitlesData = JsonSerializer.Deserialize<SubtitlesData>(jsonBytes, options);
 
-            if (subtitlesData == null)
-                throw new Exception("Failed to deserialize subtitles JSON.");
-
-            return subtitlesData;
+            return subtitlesData ?? throw new Exception("Failed to deserialize subtitles JSON.");
         }
+
+        public static List<string> ReadVersionJson(string inputPath)
+        {
+
+            DirectoryOrFileCheck.CheckFileExistingAndNotEmpty(inputPath);
+
+            var jsonBytes = File.ReadAllBytes(inputPath);
+
+            JsonSerializerOptions options = new()
+            {
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                PropertyNameCaseInsensitive = true // so it ignores casing issues
+            };
+
+            var Data = JsonSerializer.Deserialize<List<string>>(jsonBytes, options);
+
+            if (Data == null)
+                return [];
+
+            return Data;
+        }
+
     }
 
 }

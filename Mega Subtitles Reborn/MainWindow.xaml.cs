@@ -1,10 +1,10 @@
-﻿using AutoUpdaterDotNET;
-using Mega_Subtitles.Helper.Subtitles;
+﻿using Mega_Subtitles.Helper.Subtitles;
 using Mega_Subtitles_Reborn.Utilities;
 using Mega_Subtitles_Reborn.Utilities.FileReader;
 using Mega_Subtitles_Reborn.Utilities.FileWriter;
 using Mega_Subtitles_Reborn.Utilities.Subtitles;
 using Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing;
+using Mega_Subtitles_Reborn.Utilitis;
 using Mega_Subtitles_Reborn.Utilitis.FileReader;
 using Mega_Subtitles_Reborn.Utilitis.FileWriter;
 using Mega_Subtitles_Reborn.Utilitis.Logger;
@@ -13,6 +13,7 @@ using Mega_Subtitles_Reborn.Utilitis.Subtitles;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls.Primitives;
@@ -80,10 +81,22 @@ namespace Mega_Subtitles_Reborn
         }
         private void MainWindow_Loaded(object sender, EventArgs e)
         {
-            //AutoUpdater.Start("https://github.com/KillerTonix/Mega-Subtitles-Reborn/blob/master/Mega%20Subtitles%20Reborn/updates.xml");
+            string VersionJsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp/Mega Subtitles Reborn/version.json");
+            DirectoryOrFileCheck.DirectoryCheck(VersionJsonPath.Replace("version.json", ""));
+
+#pragma warning disable SYSLIB0014 // Type or member is obsolete
+            using (WebClient client = new())
+            {
+                client.DownloadFile(@"https://raw.githubusercontent.com/KillerTonix/Mega-Subtitles-Reborn/refs/heads/master/Mega%20Subtitles%20Reborn/version.json", VersionJsonPath);
+            }
+#pragma warning restore SYSLIB0014 // Type or member is obsolete
+
+            List<string> result = JsonReader.ReadVersionJson(VersionJsonPath);
+            MessageBox.Show(result[0] + " : ", result[1]);
 
             PreRunCheckAndRealize.CheckAndRealize();
             SelectSubtitlesBtn.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+
         }
 
 
@@ -284,7 +297,7 @@ namespace Mega_Subtitles_Reborn
         {
             RegionManagerLineUtil.ClearComments();
         }
-               
+
         private void RegionManagerListView_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             RegionManagerLineUtil.ParseHotKeys(e);
