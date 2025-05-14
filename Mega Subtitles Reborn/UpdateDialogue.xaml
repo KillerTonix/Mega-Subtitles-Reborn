@@ -1,0 +1,24 @@
+﻿<Window x:Class="Mega_Subtitles_Reborn.UpdateDialogue"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Mega_Subtitles_Reborn"
+        mc:Ignorable="d"
+        Title="New Update Found" Height="320" Width="500" BorderBrush="#FF707070" WindowStyle="ToolWindow" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    
+    <Grid Background="#FF1F1F23">
+        <TextBlock x:Name="NewVersionText" Text="Mega Subtitles Reborn version 0.0.0.2 has been released!" HorizontalAlignment="Left" Margin="17,9,0,0" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
+        <TextBlock x:Name="OldVersionText" Text="You have versio 0.0.0.1 installed." HorizontalAlignment="Left" Margin="17,30,0,0" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14"/>
+        <TextBlock                         Text="Would you like to download it now?" HorizontalAlignment="Left" Margin="17,44,0,0" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14"/>
+        <TextBlock x:Name="ReleaseNotes_Header" Text="Release Notes:" HorizontalAlignment="Left" Margin="17,68,0,0" Grid.ColumnSpan="2" Grid.Row="1"  Height="14" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="12"/>
+        <Border BorderBrush="#646464" BorderThickness="1" Margin="17,93,17,45" Grid.Row="1" Grid.ColumnSpan="3">
+            <ScrollViewer Padding="5,5,5,5">
+                <StackPanel x:Name="ReleaseNotes">
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+        <Button Click="YesClick" ToolTip="Download and install the latest version" Content="Update"  Margin="10,0,0,10" Grid.Row="1" Grid.ColumnSpan="2" Padding="0,0,0,1" HorizontalAlignment="Left" Width="80" Height="26" VerticalAlignment="Bottom"/>
+        <Button Click="Skip" ToolTip="This will stop all future prompts until a newer version is released" Content="Skip"  Margin="0,0,10,10" Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="1" Padding="0,0,0,1" HorizontalAlignment="Right" Width="80" Height="26" VerticalAlignment="Bottom"/>
+    </Grid>
+</Window>

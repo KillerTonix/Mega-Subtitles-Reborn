@@ -80,9 +80,8 @@ namespace Mega_Subtitles_Reborn
         }
         private void MainWindow_Loaded(object sender, EventArgs e)
         {
-            AutoUpdater.Start("https://yourserver.com/updates.xml");
+            //AutoUpdater.Start("https://github.com/KillerTonix/Mega-Subtitles-Reborn/blob/master/Mega%20Subtitles%20Reborn/updates.xml");
 
-        //https://github.com/KillerTonix/Mega-Subtitles-Reborn/blob/master/README.md
             PreRunCheckAndRealize.CheckAndRealize();
             SelectSubtitlesBtn.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
         }
@@ -357,6 +356,12 @@ namespace Mega_Subtitles_Reborn
         private void FindDemoPhrasesBtn_Checked(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void SettingsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var updateWindow = new UpdateDialogue { Owner = this };
+            updateWindow.ShowDialog();
         }
     }
 }
