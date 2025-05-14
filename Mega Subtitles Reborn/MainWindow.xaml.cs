@@ -90,7 +90,6 @@ namespace Mega_Subtitles_Reborn
             if (InputFilePath != null && InputFileType != null)
             {
                 FileTypeSplitter.TypeSplitter(InputFilePath, InputFileType);
-
             }
         }
 
@@ -281,14 +280,8 @@ namespace Mega_Subtitles_Reborn
         private void ClearCommentsListViewContext_Click(object sender, RoutedEventArgs e)
         {
             RegionManagerLineUtil.ClearComments();
-
         }
-
-        private void GeneralWindow_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-
-        }
-
+               
         private void RegionManagerListView_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             RegionManagerLineUtil.ParseHotKeys(e);
@@ -355,6 +348,11 @@ namespace Mega_Subtitles_Reborn
         {
             var findWindow = new FindWindow { Owner = this };
             findWindow.ShowDialog();
+        }
+
+        private void FindDemoPhrasesBtn_Checked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
