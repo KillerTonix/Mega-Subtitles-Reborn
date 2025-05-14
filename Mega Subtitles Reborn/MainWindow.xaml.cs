@@ -1,4 +1,5 @@
-﻿using Mega_Subtitles.Helper.Subtitles;
+﻿using AutoUpdaterDotNET;
+using Mega_Subtitles.Helper.Subtitles;
 using Mega_Subtitles_Reborn.Utilities;
 using Mega_Subtitles_Reborn.Utilities.FileReader;
 using Mega_Subtitles_Reborn.Utilities.FileWriter;
@@ -79,6 +80,9 @@ namespace Mega_Subtitles_Reborn
         }
         private void MainWindow_Loaded(object sender, EventArgs e)
         {
+            AutoUpdater.Start("https://yourserver.com/updates.xml");
+
+        //https://github.com/KillerTonix/Mega-Subtitles-Reborn/blob/master/README.md
             PreRunCheckAndRealize.CheckAndRealize();
             SelectSubtitlesBtn.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
         }
