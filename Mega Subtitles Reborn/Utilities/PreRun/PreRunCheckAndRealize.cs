@@ -1,5 +1,6 @@
 ﻿using Mega_Subtitles_Reborn.Utilitis.FromReaper;
 using System.IO;
+using System.Windows;
 
 namespace Mega_Subtitles_Reborn.Utilitis.PreRun
 {
@@ -20,6 +21,9 @@ namespace Mega_Subtitles_Reborn.Utilitis.PreRun
             GeneralSettings.Default.CurrentProjectNameFilePath = Path.Combine(GeneralSettings.Default.GeneralCacheFolderPath, "CurrentProjectName.txt");
             GeneralSettings.Default.ProjectCacheFolderPath = Path.Combine(GeneralSettings.Default.GeneralCacheFolderPath, GeneralSettings.Default.CurrentProjectName);
             GeneralSettings.Default.ProjectCahceJsonPath = Path.Combine(GeneralSettings.Default.ProjectCacheFolderPath, GeneralSettings.Default.CurrentProjectName) + ".json";
+      
+           
+
             GeneralSettings.Default.Save();
         }
 

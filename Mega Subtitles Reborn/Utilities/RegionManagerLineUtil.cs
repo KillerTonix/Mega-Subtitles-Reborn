@@ -1,5 +1,4 @@
 ﻿using Mega_Subtitles_Reborn.Utilities.Subtitles;
-using System;
 using System.Windows;
 using System.Windows.Input;
 
@@ -13,13 +12,15 @@ namespace Mega_Subtitles_Reborn.Utilities
         {
 
             var selectedItems = mainWindow.RegionManagerListView.SelectedItems.Cast<SubtitlesEnteries>().ToList();
+            var ListViewItems = mainWindow.RegionManagerListView.Items.Cast<SubtitlesEnteries>().ToList();
+
 
             foreach (var item in selectedItems)
             {
                 switch (type)
                 {
                     case "Dublicate":
-                        mainWindow.SubtitleEntries.Insert(selectedItems.IndexOf(item), item);
+                        mainWindow.SubtitleEntries.Insert(ListViewItems.IndexOf(item), item);
                         break;
                     case "Delete":
                         mainWindow.SubtitleEntries.Remove(item);
