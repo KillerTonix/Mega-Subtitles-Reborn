@@ -1,0 +1,1 @@
+tar -xf Application.zip -C ApplicationPath

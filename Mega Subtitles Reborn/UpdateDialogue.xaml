@@ -113,17 +113,19 @@
     </Window.Resources>
     
     <Grid Background="#FF1F1F23">
-        <TextBlock x:Name="NewVersionText" Text="Mega Subtitles Reborn version 0.0.0.2 has been released!" HorizontalAlignment="Center" Margin="10,10,0,0" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
-        <TextBlock x:Name="OldVersionText" Text="You have versio 0.0.0.1 installed." HorizontalAlignment="Left" Margin="10,40,0,0" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14"/>
-        <TextBlock                         Text="Would you like to download it now?" HorizontalAlignment="Left" Margin="10,60,0,0" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14"/>
+        <TextBlock x:Name="NewVersionText" Text="Mega Subtitles Reborn version 6.6.6.2 has been released!" HorizontalAlignment="Center" Margin="10,10,0,0" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
+        <TextBlock x:Name="OldVersionText" Text="You have versio 1.5.9.1 installed." HorizontalAlignment="Left" Margin="10,40,0,0" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14"/>
+        <TextBlock x:Name="DownloadText" Text="Would you like to download it now?" HorizontalAlignment="Left" Margin="10,60,0,0" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14"/>
 
-        <Button x:Name="SkipBtn" Margin="10" HorizontalAlignment="Left" Height="25" VerticalAlignment="Bottom" Width="100" FontFamily="Nunito SemiBold" FontSize="14" Background="#FFFFF0C2" BorderBrush="#FFFBD485" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="SkipBtn_Click">
+        <ProgressBar x:Name="DownloadProgressBar" Height="5" VerticalAlignment="Bottom" Visibility="Hidden"/>
+
+        <Button x:Name="SkipBtn" Margin="10" HorizontalAlignment="Right" Height="25" VerticalAlignment="Bottom" Width="100" FontFamily="Nunito SemiBold" FontSize="14" Background="#FFFFF0C2" BorderBrush="#FFFBD485" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="SkipBtn_Click">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                 <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE8D8;" FontSize="16" VerticalAlignment="Center" Margin="0,0,5,0"/>
                 <TextBlock Text="Skip" FontSize="14" />
             </StackPanel>
         </Button>
-        <Button x:Name="UpdateBtn" Margin="10" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="100" HorizontalContentAlignment="Center" FontFamily="Nunito Black" FontSize="16" Background="#FF63CBD6" BorderBrush="#FF95E1D4" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="UpdateBtn_Click">
+        <Button x:Name="UpdateBtn" Margin="10" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="100" HorizontalContentAlignment="Center" FontFamily="Nunito Black" FontSize="16" Background="#FF63CBD6" BorderBrush="#FF95E1D4" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="UpdateBtn_Click">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                 <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE777;" FontSize="16" VerticalAlignment="Center" Margin="0,0,5,0"/>
                 <TextBlock Text="Update" FontSize="14" />

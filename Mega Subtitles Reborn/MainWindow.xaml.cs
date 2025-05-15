@@ -4,7 +4,6 @@ using Mega_Subtitles_Reborn.Utilities.FileReader;
 using Mega_Subtitles_Reborn.Utilities.FileWriter;
 using Mega_Subtitles_Reborn.Utilities.Subtitles;
 using Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing;
-using Mega_Subtitles_Reborn.Utilitis;
 using Mega_Subtitles_Reborn.Utilitis.FileReader;
 using Mega_Subtitles_Reborn.Utilitis.FileWriter;
 using Mega_Subtitles_Reborn.Utilitis.Logger;
@@ -13,13 +12,13 @@ using Mega_Subtitles_Reborn.Utilitis.Subtitles;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 
 namespace Mega_Subtitles_Reborn
@@ -47,6 +46,9 @@ namespace Mega_Subtitles_Reborn
 
         public ObservableCollection<string> AvailableActors { get; set; } = [];
         public Dictionary<string, SolidColorBrush> ActorsAndColorsDict = [];
+
+        public Version InternetVersionOfApplication = new();
+        public string? DownloadURL = "NAN";
 
         public List<int> _matchedIndices = [];
         public int _currentMatchIndex = -1;
@@ -81,22 +83,21 @@ namespace Mega_Subtitles_Reborn
         }
         private void MainWindow_Loaded(object sender, EventArgs e)
         {
-            string VersionJsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp/Mega Subtitles Reborn/version.json");
-            DirectoryOrFileCheck.DirectoryCheck(VersionJsonPath.Replace("version.json", ""));
+            CheckAppVersion.CheckVersion();
 
-#pragma warning disable SYSLIB0014 // Type or member is obsolete
-            using (WebClient client = new())
+
+            var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(200) };
+            timer.Start();
+            timer.Tick += (sender, args) =>
             {
-                client.DownloadFile(@"https://raw.githubusercontent.com/KillerTonix/Mega-Subtitles-Reborn/refs/heads/master/Mega%20Subtitles%20Reborn/version.json", VersionJsonPath);
-            }
-#pragma warning restore SYSLIB0014 // Type or member is obsolete
+                timer.Stop();
 
-            List<string> result = JsonReader.ReadVersionJson(VersionJsonPath);
-            MessageBox.Show(result[0] + " : ", result[1]);
-
-            PreRunCheckAndRealize.CheckAndRealize();
-            SelectSubtitlesBtn.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-
+                if (DownloadURL != null && DownloadURL == "NAN")
+                {
+                    PreRunCheckAndRealize.CheckAndRealize();
+                    SelectSubtitlesBtn.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                }
+            };
         }
 
 
@@ -373,8 +374,7 @@ namespace Mega_Subtitles_Reborn
 
         private void SettingsBtn_Click(object sender, RoutedEventArgs e)
         {
-            var updateWindow = new UpdateDialogue { Owner = this };
-            updateWindow.ShowDialog();
+
         }
     }
 }
