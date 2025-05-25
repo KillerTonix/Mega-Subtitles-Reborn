@@ -135,22 +135,22 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Orientation="Vertical" Grid.Column="0">
-                <Label Content="Save Settings" HorizontalAlignment="Center" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
+                <Label x:Name="SaveSettingsLabel" Content="Save сettings" HorizontalAlignment="Center" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
                 <StackPanel Margin="10,0,0,0" Orientation="Vertical">
-                    <RadioButton x:Name="SingleFileRadioBtn" Content="Single File" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"  IsChecked="True"/>
-                    <RadioButton x:Name="MultiFileRadioBtn" Content="Multi File"  Margin="0,10,0,10" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
+                    <RadioButton x:Name="SingleFileRadioBtn" Content="Single фile" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"  IsChecked="True"/>
+                    <RadioButton x:Name="MultiFileRadioBtn" Content="Multi фile"  Margin="0,10,0,10" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
                     
-                    <Button x:Name="SelectAllActorsBtn" HorizontalAlignment="Center" Height="25" VerticalAlignment="Top" Width="100" FontFamily="Nunito SemiBold" FontSize="14" Background="#FFFFF0C2" BorderBrush="#FFFBD485" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="SelectAllActorsBtn_Click">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                    <Button x:Name="SelectAllActorsBtn" HorizontalAlignment="Center" Height="25" VerticalAlignment="Top" Width="115" FontFamily="Nunito SemiBold" FontSize="14" Background="#FFFFF0C2" BorderBrush="#FFFBD485" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="SelectAllActorsBtn_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Width="110">
                             <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE762;" FontSize="16" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                            <TextBlock Text="Select All" FontSize="14" />
+                            <TextBlock x:Name="SelectAllActorsTB" Text="Select аll" FontSize="14" HorizontalAlignment="Center" />
                         </StackPanel>
                     </Button>
                 </StackPanel>
             </StackPanel>
             
             <StackPanel Orientation="Vertical" Grid.Column="1">
-                <Label Content="Save File Format" HorizontalAlignment="Center" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
+                <Label x:Name="SaveFileFormatLabel" Content="File format" HorizontalAlignment="Center" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
                 <StackPanel Margin="10,0,0,0" Width="150" HorizontalAlignment="Left" Orientation="Vertical">
                     <RadioButton x:Name="AssRadioBtn" Content="ASS" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
                     <RadioButton x:Name="SrtRadioBtn" Content="SRT" IsChecked="True" Margin="0,10,0,10" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
@@ -161,7 +161,7 @@
         <Button x:Name="SaveBtn" Margin="0,10,0,0" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" Width="150" Background="#FFEFCFE3" BorderBrush="#FFE27396" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="SaveBtn_Click">
             <Grid Width="145">
                 <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74E;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                <TextBlock Text="Save" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
+                <TextBlock x:Name="SaveTB" Text="Save" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
             </Grid>
         </Button>
 

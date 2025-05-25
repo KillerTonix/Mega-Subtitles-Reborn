@@ -1,7 +1,7 @@
-﻿using System.Diagnostics;
+﻿using Mega_Subtitles_Reborn.Utilitis.FileReader;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
-using System.Net.Http;
 using System.Reflection;
 using System.Windows;
 
@@ -23,12 +23,32 @@ namespace Mega_Subtitles_Reborn
         public UpdateDialogue()
         {
             InitializeComponent();
-
-            NewVersionText.Text = $"Mega Subtitles Reborn version {InternetVersionOfApplication} has been released!";
-            OldVersionText.Text = $"You have versio {LocalVersionOfApplication} installed";
+            Loaded += UpdateDialogue_Loaded;
+            
 
         }
+        private void UpdateDialogue_Loaded(object sender, EventArgs e)
+        {
+            int id = 0;
+            if (GeneralSettings.Default.Language == "Русский")
+            {
+                id = 1;
+                SkipTB.FontSize = 12;
+                UpdateTB.FontSize = 12;
+            }   
+                            
 
+            var lang = JsonReader.ReadLanguageJson("LanguagesFile.json");
+
+            UpdateDialogue1.Title = lang["UpdateDialogue1"][id];
+            NewVersionText.Text = lang["NewVersionText"][id].Replace("XYZ", InternetVersionOfApplication);
+            OldVersionText.Text = lang["OldVersionText"][id].Replace("XYZ", LocalVersionOfApplication);
+            DownloadText.Text = lang["DownloadText"][id];
+
+            SkipTB.Text = lang["SkipTB"][id];
+            UpdateTB.Text = lang["UpdateTB"][id];
+
+        }
 
         private void SkipBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -40,7 +60,9 @@ namespace Mega_Subtitles_Reborn
             DownloadProgressBar.Visibility = Visibility.Visible;
             DownloadProgressBar.Value = 0;
 
+#pragma warning disable SYSLIB0014 // Type or member is obsolete
             using WebClient client = new();
+#pragma warning restore SYSLIB0014 // Type or member is obsolete
             Uri uri = new(mainWindow.DownloadURL ?? "");
             client.DownloadFileAsync(uri, DownloadedContentPath);
             client.DownloadProgressChanged += Downloadprogress;
@@ -60,6 +82,11 @@ namespace Mega_Subtitles_Reborn
                     timeout 0 >nul
                     exit 
                     """");
+
+
+                if (GeneralSettings.Default.Language == "Русский")                
+                    MessageBox.Show("Приложение будет закрыто для обновления", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
+                
                 MessageBox.Show("Application will be closed for update", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 Process.Start("cmd", "/k UpdateProgram.bat");

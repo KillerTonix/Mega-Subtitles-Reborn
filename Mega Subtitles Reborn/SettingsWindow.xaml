@@ -1,14 +1,12 @@
-﻿<Window x:Name="FindWindow1" x:Class="Mega_Subtitles_Reborn.FindWindow"
+﻿<Window x:Name="SettingsWindow1" x:Class="Mega_Subtitles_Reborn.SettingsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Mega_Subtitles_Reborn"
         mc:Ignorable="d"
-        Title="Find" Height="120" Width="420"
-        ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
-        WindowStyle="ToolWindow" FontFamily="Nunito SemiBold" FontSize="14"
-        Background="#FF1F1F23" PreviewKeyDown="Window_PreviewKeyDown">
+        Title="Settings" Height="450" Width="550"  Background="#FF1F1F23" 
+        WindowStartupLocation="CenterScreen" Visibility="Visible" ResizeMode="NoResize" WindowStyle="ToolWindow" WindowState="Normal">
 
     <Window.Resources>
         <Style x:Key="FocusVisual">
@@ -114,19 +112,57 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
     </Window.Resources>
 
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.5*"/>
+            <ColumnDefinition Width="1.5*"/>
+        </Grid.ColumnDefinitions>
+       
+        
 
-    <StackPanel Margin="10" Orientation="Vertical">
-        <TextBox x:Name="SearchTextBox" VerticalAlignment="Center" FontFamily="Nunito SemiBold" FontSize="14" TextChanged="SearchTextBox_TextChanged" MouseDoubleClick="SearchTextBox_MouseDoubleClick"/>
+        <StackPanel Grid.Column ="0">           
+            <Label x:Name="LanguageLabel" Content="Language:" Margin="10" FontFamily="Nunito SemiBold" FontSize="14" Foreground="White"/>
+            <Label x:Name="ThemeLabel" Content="Theme:" Margin="10" FontFamily="Nunito SemiBold" FontSize="14" Foreground="White"/>
+            <Label x:Name="SaveMainWindowSizeLabel" Content="Save main window size:" Margin="10" FontFamily="Nunito SemiBold" FontSize="14" Foreground="White"/>
+            <Label x:Name="KeepDublicateCacheLabel" Content="Keep dublicate cache:" Margin="10" FontFamily="Nunito SemiBold" FontSize="14" Foreground="White"/>
+            
+        </StackPanel>
 
-        <Button x:Name="FindBtn" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Width="150" Background="#FFEFCFE3" BorderBrush="#FFE27396" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="Find_Click">
-            <Grid Width="145">
-                <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE721;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                <TextBlock x:Name="FindTB" Text="Find" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
+        
+        
+        
+        <StackPanel Grid.Column="1">
+            <ComboBox Name="LanguageComboBox" Width="100" HorizontalAlignment="Left" Margin="10" FontFamily="Nunito SemiBold" FontSize="14" DropDownClosed="LanguageComboBox_DropDownClosed">
+                <ComboBoxItem Content="English"/>
+                <ComboBoxItem Content="Русский"/>
+            </ComboBox>
+                       
+            <ComboBox Name="ThemeComboBox" Width="100" HorizontalAlignment="Left" Margin="10" FontFamily="Nunito SemiBold" FontSize="14" DropDownClosed="ThemeComboBox_DropDownClosed">
+                <ComboBoxItem x:Name="DarkComboBoxItem" Content="Dark"/>
+                <ComboBoxItem x:Name="LightComboBoxItem" Content="Light"/>
+            </ComboBox>
+
+            <StackPanel Orientation="Horizontal" Margin="10,25,10,0">
+                <RadioButton Content="Save" x:Name="SaveSizeRadioBtn" Margin="0,0,20,0" FontFamily="Nunito SemiBold" FontSize="14" Foreground="White" Checked="SaveSizeRadioBtn_Checked"/>
+                <RadioButton Content="Dont save" IsChecked="True" x:Name="DontSaveSizeRadioBtn" FontFamily="Nunito SemiBold" FontSize="14" Foreground="White" Checked="DontSaveSizeRadioBtn_Checked"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="10,30,10,0">
+                <RadioButton Content="Save" x:Name="SaveDublicateCacheRadioBtn" Margin="0,0,20,0" FontFamily="Nunito SemiBold" FontSize="14" Foreground="White" Checked="SaveDublicateCacheRadioBtn_Checked"/>
+                <RadioButton Content="Dont save" IsChecked="True" x:Name="DontSaveDublicateCacheRadioBtn" FontFamily="Nunito SemiBold" FontSize="14" Foreground="White" Checked="DontSaveDublicateCacheRadioBtn_Checked"/>
+            </StackPanel>
+
+
+        </StackPanel>
+        
+        <Button x:Name="ApplySettingsBtn" Grid.Column="1" HorizontalAlignment="Right" Margin="10"  VerticalAlignment="Bottom" Width="115" Background="#FF63CBD6" BorderBrush="#FF95E1D4" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="ApplySettingsBtn_Click">
+            <Grid Width="110">
+                <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE7F1;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                <TextBlock x:Name="ApplySettingsTB" Text="Apply" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
             </Grid>
         </Button>
 
-    </StackPanel>
+    </Grid>
 </Window>

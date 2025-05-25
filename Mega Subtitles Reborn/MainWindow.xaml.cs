@@ -75,10 +75,10 @@ namespace Mega_Subtitles_Reborn
             ActorsListView.DataContext = this;
 
             SetupHotKeys();
-
+            
             ColorPickerCombobox.ItemsSource = ListSolidColor.SolidColors();
 
-
+            LanguageChanger.UpdateLanguage();
             this.Title = "Mega Subtitles Reborn v" + Assembly.GetExecutingAssembly().GetName().Version?.ToString();
         }
         private void MainWindow_Loaded(object sender, EventArgs e)
@@ -374,7 +374,8 @@ namespace Mega_Subtitles_Reborn
 
         private void SettingsBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            var settingsWindow = new SettingsWindow { Owner = this };
+            settingsWindow.ShowDialog();
         }
     }
 }

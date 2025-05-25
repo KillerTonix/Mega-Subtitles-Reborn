@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Mega_Subtitles_Reborn.Utilitis.FileReader;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
@@ -15,8 +16,22 @@ namespace Mega_Subtitles_Reborn
         public FindWindow()
         {
             InitializeComponent();
+            Loaded += FindWindow_Loaded;
             SearchTextBox.Focus();
         }
+
+        private void FindWindow_Loaded(object sender, EventArgs e)
+        {
+            int id = 0;
+            if (GeneralSettings.Default.Language == "Русский")
+                id = 1;
+
+            var lang = JsonReader.ReadLanguageJson("LanguagesFile.json");
+
+            FindWindow1.Title = lang["FindWindow1"][id];
+            FindBtn.Content = lang["FindTB"][id];
+        }
+
 
         private void Find_Click(object sender, RoutedEventArgs e)
         {
@@ -36,14 +51,14 @@ namespace Mega_Subtitles_Reborn
 
                 mainWindow._currentMatchIndex = 0;
             }
-            else            
+            else
                 mainWindow._currentMatchIndex = (mainWindow._currentMatchIndex + 1) % mainWindow._matchedIndices.Count;
-            
+
 
             if (mainWindow._matchedIndices.Count > 0)
             {
-                int matchIndex = mainWindow._matchedIndices[mainWindow._currentMatchIndex];        
-                
+                int matchIndex = mainWindow._matchedIndices[mainWindow._currentMatchIndex];
+
                 mainWindow.RegionManagerListView.SelectedItems.Clear();
                 mainWindow.RegionManagerListView.SelectedItems.Add(mainWindow.SubtitleEntries[matchIndex]);
                 mainWindow.RegionManagerListView.ScrollIntoView(mainWindow.SubtitleEntries[matchIndex]);
@@ -51,6 +66,11 @@ namespace Mega_Subtitles_Reborn
             }
             else
             {
+                if (GeneralSettings.Default.Language == "Русский")
+                {
+                    MessageBox.Show("Совпадений не найдено.", "Поиск", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+
                 MessageBox.Show("No matches found.", "Search", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }

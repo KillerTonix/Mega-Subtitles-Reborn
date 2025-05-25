@@ -1,0 +1,98 @@
+﻿{
+  "DeleteLineListViewContext": [ "Delete a line", "Удалить строку" ],
+  "DublicateLineListViewContext": [ "Duplicate a line", "Дублировать строку" ],
+  "CopyTimingsListViewContext": [ "Copy timings", "Копировать тайминги" ],
+  "CopyTextListViewContext": [ "Copy text", "Копировать текст" ],
+  "CopyCommentsListViewContext": [ "Copy Comments", "Копировать комментарии" ],
+  "ClearCommentsListViewContext": [ "Clear Comment", "Очистить комментарии" ],
+
+  "ColorColumn": [ "Color", "Цвет" ],
+  "StartHeader": [ "Start", "Начало" ],
+  "EndHeader": [ "End", "Конец" ],
+  "ActorColumn": [ "Actor", "Актёр" ],
+  "TextHeader": [ "Text", "Текст" ],
+  "CommentsColumn": [ "Comments", "Комментарии" ],
+
+  "SetActorColorContext": [ "Set the color", "Задать цвет" ],
+  "RenameActorContext": [ "Rename an actor", "Переименовать актёра" ],
+  "DeleteActorContext": [ "Delete an actor", "Удалить актёра" ],
+
+  "ActorsColorColumn": [ "Color", "Цвет" ],
+  "ActorsColumnHeader": [ "Actor", "Актёр" ],
+  "ActorsLineCountHeader": [ "Line Count", "Количество строк" ],
+
+
+  "SelectAllActorsTB": [ "Select all", "Выбрать всех" ],
+  "ParseSubtitlesTB": [ "Parse", "Обработать" ],
+  "FilterActorsTB": [ "Filter", "Фильтровать" ],
+
+  "ChangeColorLabel": [ "Change color for", "Изменение цвет для" ],
+  "SetColorBtn": [ "Apply color", "Применить" ],
+  "ColorPickerCancelBtn": [ "Cancel", "Отмена" ],
+
+  "RenameActorLabel": [ "Rename an actor", "Переименовать актёра" ],
+  "ActorReanameBtn": [ "Rename", "Переименовать" ],
+  "ActorReanameCancelBtn": [ "Cancel", "Отмена" ],
+
+  "SubtitlesLabel": [ "Subtitles", "Субтитры" ],
+  "SelectSubtitlesBtn": [ "Select subtitles", "Выбрать субтитры" ],
+  "SaveSubtitlesTB": [ "Save subtitles", "Сохранить субтитры" ],
+  "ClearProjectTB": [ "Clear the project", "Очистить проект" ],
+  "OpenCacheFolderTB": [ "Open cache folder", "Открыть папку кэша" ],
+
+  "CommentsLabel": [ "Comments", "Комментарии" ],
+  "ViewOnlyWithCommentsTB": [ "View only with comments", "Только строки с комментариями" ],
+  "RegionsOnlyWithCommentsTB": [ "Regions only with comments", "Только регионы с комментариями" ],
+  "DeleteCommentsTB": [ "Delete comments of selected actors", "Удалить комментарии выбранных актёров" ],
+  "DeleteCommentsTB2": [ "Delete all comments", "Удалить все комментарии" ],
+
+  "ColorizeSettingsLabel": [ "Colorize Settings", "Настройки раскраски" ],
+  "ColorizeSelectedActorsTB": [ "Colorize regions of selected actors", "Раскрасить области выбранных актёров" ],
+  "ColorizeSelectedTracksTB": [ "Colorize tracks of selected actors", "Раскрасить дорожки выбранных актёров" ],
+  "ColorizeSelectedActorsCommentsTB": [ "Colorize regions with comments of selected actors", "Раскрасить регионы с комментариями выбранных актёров" ],
+  "ColorizeSelectedActorsCommentsTB2": [ "Colorize all regions with comments", "Раскрасить все регионы с комментариями" ],
+
+  "CheckLabel": [ "Check", "Проверка" ],
+  "CheckForMissingTB": [ "Check for missing", "Проверка на пропуски" ],
+  "CheckForRepeatsTB": [ "Check for repeats", "Проверка на повторы" ],
+  "FindDemoPhrasesTB": [ "Find Demo Phrases", "Найдите демо фразы" ],
+
+  "CommentsBlockLabel": [ "Comments", "Комментарии" ],
+  "ImportCommentsTB": [ "Import", "Импорт" ],
+  "SeparateExportCommentsTB": [ "Separated export", "Раздельный экспорт" ],
+  "FullExportCommentsTB": [ "Full export", "Полный экспорт" ],
+
+  "FindWindow1": [ "Find", "Найти" ],
+  "FindTB": [ "Find", "Найти" ],
+
+  "SaveSubtitlesWindow1": [ "Save subtitles", "Сохранение субтитров" ],
+  "SaveSettingsLabel": [ "Save subtitles", "Сохранение субтитров" ],
+  "SingleFileRadioBtn": [ "Single file", "Один файл" ],
+  "MultiFileRadioBtn": [ "Multi file", " Несколько файлов" ],
+  "SaveFileFormatLabel": [ "File format", "Формат файла" ],
+  "SaveTB": [ "Save", "Сохранить" ],
+
+  "UpdateDialogue1": [ "New Update Found", "Найдено новое обновление" ],
+  "NewVersionText": [ "Mega Subtitles Reborn version XYZ has been released!", "Вышла новая версия XYZ для Mega Subtitles Reborn" ],
+  "OldVersionText": [ "You have version XYZ installed", "У вас установлена версия XYZ" ],
+  "DownloadText": [ "Would you like to download it now?", "Хотите скачать его прямо сейчас?" ],
+  "SkipTB": [ "Skip", "Пропустить" ],
+  "UpdateTB": [ "Update", "Обновить" ],
+
+
+  "SettingsWindow1": [ "Settings", "Настройки" ],
+  "LanguageLabel": [ "Language", "Язык" ],
+  "ThemeLabel": [ "Theme", "Тема" ],
+  "SaveMainWindowSizeLabel": [ "Save main window size:", "Сохранить размер главного окна:" ],
+  "KeepDublicateCacheLabel": [ "Keep dublicate cache:", "Хранить дубликат кэша:" ],
+  "DarkComboBoxItem": [ "Dark", "Темный" ],
+  "LightComboBoxItem": ["Light","Светлый"],
+
+  "SaveSizeRadioBtn": [ "Save", "Сохранить" ],
+  "DontSaveSizeRadioBtn": [ "Don't save", "Не сохранить" ],
+
+  "SaveDublicateCacheRadioBtn": [ "Save", "Сохранить" ],
+  "DontSaveDublicateCacheRadioBtn": [ "Don't save", "Не сохранить" ],
+
+  "ApplySettingsTB": [ "Apply", "Применить" ]
+}

@@ -85,7 +85,7 @@ namespace Mega_Subtitles_Reborn {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("En")]
+        [global::System.Configuration.DefaultSettingValueAttribute("English")]
         public string Language {
             get {
                 return ((string)(this["Language"]));
@@ -109,13 +109,49 @@ namespace Mega_Subtitles_Reborn {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\")]
         public string ProjectCahceJsonPath {
             get {
                 return ((string)(this["ProjectCahceJsonPath"]));
             }
             set {
                 this["ProjectCahceJsonPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dark")]
+        public string Theme {
+            get {
+                return ((string)(this["Theme"]));
+            }
+            set {
+                this["Theme"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SaveWindowSize {
+            get {
+                return ((bool)(this["SaveWindowSize"]));
+            }
+            set {
+                this["SaveWindowSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SaveDublicateCache {
+            get {
+                return ((bool)(this["SaveDublicateCache"]));
+            }
+            set {
+                this["SaveDublicateCache"] = value;
             }
         }
     }

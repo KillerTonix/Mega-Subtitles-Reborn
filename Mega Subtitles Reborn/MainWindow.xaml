@@ -183,8 +183,8 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="4.7*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="4.6*"/>
+            <RowDefinition Height="1.1*"/>
         </Grid.RowDefinitions>
 
         <Grid>
@@ -195,7 +195,7 @@
                         <MenuItem x:Name="DublicateLineListViewContext" Header="Duplicate line" Click="DublicateLineListViewContext_Click" />
                         <MenuItem x:Name="CopyTimingsListViewContext" Header="Copy Timings" Click="CopyTimingsListViewContext_Click" />
                         <MenuItem x:Name="CopyTextListViewContext" Header="Copy Text" Click="CopyTextListViewContext_Click" />
-                        <MenuItem x:Name="CopyCommentsListViewContext" Header="Copy Comment" Click="CopyCommentsListViewContext_Click" />
+                        <MenuItem x:Name="CopyCommentsListViewContext" Header="Copy Comments" Click="CopyCommentsListViewContext_Click" />
                         <MenuItem x:Name="ClearCommentsListViewContext" Header="Clear Comment" Click="ClearCommentsListViewContext_Click" />
                     </ContextMenu>
                 </ListView.ContextMenu>
@@ -287,25 +287,24 @@
                 </ListView>
 
                 <Grid Margin="0,10,0,0">
-                    <Button x:Name="SelectAllActorsBtn" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="100" FontFamily="Nunito SemiBold" FontSize="14" Background="#FFFFF0C2" BorderBrush="#FFFBD485" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="SelectAllActorsBtn_Click">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE762;" FontSize="16" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                            <TextBlock Text="Select All" FontSize="14" />
-                        </StackPanel>
+                    <Button x:Name="SelectAllActorsBtn" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="115" FontFamily="Nunito SemiBold" FontSize="14" Background="#FFFFF0C2" BorderBrush="#FFFBD485" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="SelectAllActorsBtn_Click">
+                        <Grid Width="110">
+                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE762;" FontSize="16" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="SelectAllActorsTB" Text="Select All" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
+                        </Grid>
                     </Button>
-                    <Button x:Name="ParseSubtitlesBtn" Height="25" VerticalAlignment="Top" HorizontalAlignment="Right" Width="100" HorizontalContentAlignment="Center" FontFamily="Nunito Black" FontSize="16" Background="#FF63CBD6" BorderBrush="#FF95E1D4" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="ParseSubtitlesBtn_Click">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE9F3;" FontSize="16" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                            <TextBlock Text="Parse" FontSize="14" />
-                        </StackPanel>
+                    <Button x:Name="ParseSubtitlesBtn" Height="25" VerticalAlignment="Top" HorizontalAlignment="Right" Width="115" HorizontalContentAlignment="Center" FontFamily="Nunito Black" FontSize="16" Background="#FF63CBD6" BorderBrush="#FF95E1D4" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="ParseSubtitlesBtn_Click">
+                        <Grid Width="110">
+                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE9F3;" FontSize="16" VerticalAlignment="Center" />
+                            <TextBlock x:Name="ParseSubtitlesTB" Text="Parse" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0" />
+                        </Grid>
                     </Button>
 
-
-                    <Button x:Name="FilterActorsBtn" HorizontalAlignment="Center" Height="25" VerticalAlignment="Top" Width="100" Margin="0,30,0,0" FontFamily="Nunito SemiBold" FontSize="14" Background="#FFFFF0C2" BorderBrush="#FFFBD485" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="FilterActorsBtn_Click">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE71C;" FontSize="16" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                            <TextBlock Text="Filter" FontSize="14" />
-                        </StackPanel>
+                    <Button x:Name="FilterActorsBtn" HorizontalAlignment="Center" Height="25" VerticalAlignment="Top" Width="115" Margin="0,30,0,0" FontFamily="Nunito SemiBold" FontSize="14" Background="#FFFFF0C2" BorderBrush="#FFFBD485" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="FilterActorsBtn_Click">
+                        <Grid  Width="110">
+                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE71C;" FontSize="16" VerticalAlignment="Center" />
+                            <TextBlock x:Name="FilterActorsTB" Text="Filter" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
+                        </Grid>
                     </Button>
                     <Button x:Name="ParseSRTSubtitlesBtn" Content="Parse" Height="25"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="100" HorizontalContentAlignment="Center" Visibility="Collapsed" FontFamily="Nunito SemiBold" FontSize="14"/>
                 </Grid>
@@ -326,8 +325,8 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
 
-                    <Button x:Name="SetColorBtn" Content="Set color" HorizontalAlignment="Center" Height="25" VerticalAlignment="Bottom" Width="70" FontFamily="Nunito SemiBold" FontSize="14" Click="SetColorBtn_Click"/>
-                    <Button x:Name="ColorPickerCancelBtn" Content="Cancel" HorizontalAlignment="Right" Height="25" VerticalAlignment="Bottom" Width="70" FontFamily="Nunito SemiBold" FontSize="14" Click="ColorPickerCancelBtn_Click"/>
+                    <Button x:Name="SetColorBtn" Content="Set color" HorizontalAlignment="Center" Height="25" VerticalAlignment="Bottom" Width="70" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFFFDAB3" Click="SetColorBtn_Click"/>
+                    <Button x:Name="ColorPickerCancelBtn" Content="Cancel" HorizontalAlignment="Right" Height="25" VerticalAlignment="Bottom" Width="70" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFEAC9C1" Click="ColorPickerCancelBtn_Click"/>
                 </Grid>
 
                 <Grid x:Name="ActorReanameGrid" Height="110" Visibility="Hidden" >
@@ -337,8 +336,8 @@
                         <TextBox x:Name="ActorTextBox" HorizontalAlignment="Stretch" FontFamily="Nunito SemiBold" FontSize="14"/>
                     </StackPanel>
 
-                    <Button x:Name="RenameBtn" Content="Rename" HorizontalAlignment="Left" Height="25" VerticalAlignment="Bottom" Width="70" FontFamily="Nunito SemiBold" FontSize="14" Click="RenameBtn_Click" />
-                    <Button x:Name="ActorReanameCancelBtn" Content="Cancel" HorizontalAlignment="Right" Height="25" VerticalAlignment="Bottom" Width="70" FontFamily="Nunito SemiBold" FontSize="14" Click="ActorReanameCancelBtn_Click"/>
+                    <Button x:Name="ActorReanameBtn" Content="Rename" HorizontalAlignment="Left" Height="25" VerticalAlignment="Bottom" Width="70" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFFFDAB3" Click="RenameBtn_Click" />
+                    <Button x:Name="ActorReanameCancelBtn" Content="Cancel" HorizontalAlignment="Right" Height="25" VerticalAlignment="Bottom" Width="70"  FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFEAC9C1" Click="ActorReanameCancelBtn_Click"/>
                 </Grid>
 
             </StackPanel>
@@ -350,93 +349,93 @@
             <StackPanel Orientation="Vertical" Margin="10,0,0,0">
                 <Label x:Name="SubtitlesLabel" Content="Subtitles" HorizontalAlignment="Center" Grid.Row="1" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
                 <Button x:Name="SelectSubtitlesBtn" Content="Select subtitles" Margin="0,0,0,10"  VerticalAlignment="Top" Width="150" HorizontalAlignment="Center" Visibility="Collapsed" FontFamily="Nunito SemiBold" FontSize="14" BorderBrush="{x:Null}" Style="{DynamicResource CustomButtonStyleWithRedOwer}" Click="SelectSubtitlesBtn_Click"/>
-                <Button x:Name="SaveSubtitlesBtn"  VerticalAlignment="Top" Width="150" Margin="0,0,0,10" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFFFDAB3" Click="SaveSubtitlesBtn_Click">
-                    <Grid Width="145">
+                <Button x:Name="SaveSubtitlesBtn"  VerticalAlignment="Top" Width="155" Margin="0,0,0,10" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFFFDAB3" Click="SaveSubtitlesBtn_Click">
+                    <Grid Width="150">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74E;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                        <TextBlock Text="Save subtitles" FontSize="14" HorizontalAlignment="Center" />
+                        <TextBlock x:Name="SaveSubtitlesTB" Text="Save subtitles" FontSize="14" HorizontalAlignment="Center" TextAlignment="Center" Margin="10,0,0,0" />
                     </Grid>
                 </Button>
-                <Button x:Name="ClearProjectBtn" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="150" Margin="0,0,0,10" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFFFDAB3" Click="ClearProjectBtn_Click">
-                    <Grid Width="145">
+                <Button x:Name="ClearProjectBtn" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="155" Margin="0,0,0,10" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFFFDAB3" Click="ClearProjectBtn_Click">
+                    <Grid Width="150">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xEA99;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                        <TextBlock Text="Clear the project" FontSize="14" HorizontalAlignment="Center"/>
+                        <TextBlock x:Name="ClearProjectTB" Text="Clear the project" FontSize="14" HorizontalAlignment="Center" TextAlignment="Center" Margin="10,0,0,0"/>
                     </Grid>
                 </Button>
-                <Button x:Name="OpenCacheFolderBtn" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="150" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFFFDAB3" Click="OpenCacheFolderBtn_Click">
-                    <Grid Width="145">
+                <Button x:Name="OpenCacheFolderBtn" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="155" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFFFDAB3" Click="OpenCacheFolderBtn_Click">
+                    <Grid Width="150">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xED25;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                        <TextBlock Text="Open cache folder" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
+                        <TextBlock x:Name="OpenCacheFolderTB" Text="Open cache folder" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0" TextAlignment="Center"/>
                     </Grid>
                 </Button>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="20,0,0,0">
-                <Label x:Name="CommentsExpander" Content="Comments" HorizontalAlignment="Center" Grid.Row="1" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
+                <Label x:Name="CommentsLabel" Content="Comments" HorizontalAlignment="Center" Grid.Row="1" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
 
                 <ToggleButton x:Name="ViewOnlyWithCommentsBtn" Width="255" Margin="0,0,0,10" Style="{StaticResource CustomToggleButton}" HorizontalContentAlignment="Center" Background="#FFFFDAB3">
                     <Grid Width="250">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE90A;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                        <TextBlock Text="View only with comments" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
+                        <TextBlock x:Name="ViewOnlyWithCommentsTB" Text="View only with comments" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0" TextAlignment="Center"/>
                     </Grid>
                 </ToggleButton>
 
                 <ToggleButton x:Name="RegionsOnlyWithCommentsBtn" Width="255" Margin="0,0,0,10" Style="{StaticResource CustomToggleButton}" HorizontalContentAlignment="Center" Background="#FFFFDAB3">
                     <Grid Width="250">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE8A4;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                        <TextBlock Text="Regions only with comments" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
+                        <TextBlock x:Name="RegionsOnlyWithCommentsTB" Text="Regions only with comments" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0" TextAlignment="Center"/>
                     </Grid>
                 </ToggleButton>
 
                 <Button x:Name="DeleteCommentsBtn"  Width="255" HorizontalContentAlignment="Left" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFFFDAB3">
                     <Grid Width="250">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xED61;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                        <TextBlock Text="Delete comments of selected actors" TextWrapping="Wrap" HorizontalAlignment="Right" FontFamily="Nunito SemiBold" FontSize="14"/>
+                        <TextBlock x:Name="DeleteCommentsTB" Text="Delete comments of selected actors" TextWrapping="WrapWithOverflow" HorizontalAlignment="Right" FontFamily="Nunito SemiBold" FontSize="14" Width="230" TextAlignment="Center"/>
                     </Grid>
                 </Button>
 
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="20,0,0,0">
-                <Label x:Name="ColorizeExpander" Content="Colorize Settings" HorizontalAlignment="Center" Grid.Row="1" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
+                <Label x:Name="ColorizeSettingsLabel" Content="Colorize Settings" HorizontalAlignment="Center" Grid.Row="1" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
 
-                <ToggleButton x:Name="ColorizeSelectedActorsBtn" Margin="0,0,0,10" Style="{StaticResource CustomToggleButton}" HorizontalContentAlignment="Center" Background="#FFFFDAB3" Width="345">
-                    <Grid Width="340">
+                <ToggleButton x:Name="ColorizeSelectedActorsBtn" Margin="0,0,0,10" Style="{StaticResource CustomToggleButton}" HorizontalContentAlignment="Center" Background="#FFFFDAB3" Width="335">
+                    <Grid Width="330">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE790;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                        <TextBlock Text="Colorize regions of selected actors" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
+                        <TextBlock x:Name="ColorizeSelectedActorsTB" Text="Colorize regions of selected actors" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0" TextAlignment="Center"/>
                     </Grid>
                 </ToggleButton>
-                <ToggleButton x:Name="ColorizeSelectedTracksBtn" Margin="0,0,0,10" Style="{StaticResource CustomToggleButton}" HorizontalContentAlignment="Center" Background="#FFFFDAB3" Width="345">
-                    <Grid Width="340">
+                <ToggleButton x:Name="ColorizeSelectedTracksBtn" Margin="0,0,0,10" Style="{StaticResource CustomToggleButton}" HorizontalContentAlignment="Center" Background="#FFFFDAB3" Width="335">
+                    <Grid Width="330">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xed64;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                        <TextBlock Text="Colorize tracks of selected actors" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
+                        <TextBlock x:Name="ColorizeSelectedTracksTB" Text="Colorize tracks of selected actors" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0" TextAlignment="Center"/>
                     </Grid>
                 </ToggleButton>
-                <ToggleButton x:Name="ColorizeSelectedActorsCommentsBtn" HorizontalContentAlignment="Left" Style="{StaticResource CustomToggleButton}" Background="#FFFFDAB3" Width="345">
-                    <Grid Width="340">
+                <ToggleButton x:Name="ColorizeSelectedActorsCommentsBtn" HorizontalContentAlignment="Left" Style="{StaticResource CustomToggleButton}" Background="#FFFFDAB3" Width="335">
+                    <Grid Width="330">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xe7e6;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                        <TextBlock Text="Colorize regions with comments of selected actors" TextWrapping="Wrap" HorizontalAlignment="Right" FontFamily="Nunito SemiBold" FontSize="14"/>
+                        <TextBlock x:Name="ColorizeSelectedActorsCommentsTB" Text="Colorize regions with comments of selected actors" TextWrapping="WrapWithOverflow" HorizontalAlignment="Right" FontFamily="Nunito SemiBold" FontSize="14" Width="320" TextAlignment="Center"/>
                     </Grid>
                 </ToggleButton>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="20,0,0,0">
                 <Label x:Name="CheckLabel" Content="Check" HorizontalAlignment="Center"  Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
-                <ToggleButton x:Name="CheckForMissingBtn" HorizontalAlignment="Center" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Style="{StaticResource CustomToggleButton}" Width="155" Margin="0,0,0,10" Checked="CheckForMissingBtn_Checked" >
-                    <Grid Width="145">
+                <ToggleButton x:Name="CheckForMissingBtn" HorizontalAlignment="Center" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Style="{StaticResource CustomToggleButton}" Width="170" Margin="0,0,0,10" Checked="CheckForMissingBtn_Checked" >
+                    <Grid Width="160">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xEC54;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                        <TextBlock Text="Check for missing" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
+                        <TextBlock x:Name="CheckForMissingTB" Text="Check for missing" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0" TextAlignment="Center"/>
                     </Grid>
                 </ToggleButton>
-                <ToggleButton x:Name="CheckForRepeatsBtn" VerticalAlignment="Top" Foreground="Black"   HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource CustomToggleButton}" Width="155" Margin="0,0,0,10" BorderBrush="#FF707070" Checked="CheckForRepeatsBtn_Checked">
-                    <Grid Width="145">
+                <ToggleButton x:Name="CheckForRepeatsBtn" VerticalAlignment="Top" Foreground="Black"   HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource CustomToggleButton}" Width="170" Margin="0,0,0,10" BorderBrush="#FF707070" Checked="CheckForRepeatsBtn_Checked">
+                    <Grid Width="160">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE716;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                        <TextBlock Text="Check for repeats" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
+                        <TextBlock x:Name="CheckForRepeatsTB" Text="Check for repeats" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0" TextAlignment="Center"/>
                     </Grid>
                 </ToggleButton>
-                <ToggleButton x:Name="FindDemoPhrasesBtn" VerticalAlignment="Top" Foreground="Black"   HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource CustomToggleButton}" Width="155" BorderBrush="#FF707070" Checked="FindDemoPhrasesBtn_Checked">
-                    <Grid Width="145">
+                <ToggleButton x:Name="FindDemoPhrasesBtn" VerticalAlignment="Top" Foreground="Black"   HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource CustomToggleButton}" Width="170" BorderBrush="#FF707070" Checked="FindDemoPhrasesBtn_Checked">
+                    <Grid Width="160">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE779;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                        <TextBlock Text=" Find Demo Phrases" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
+                        <TextBlock x:Name="FindDemoPhrasesTB" Text="Find Demo Phrases" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0" TextAlignment="Center"/>
                     </Grid>
                 </ToggleButton>
             </StackPanel>
@@ -449,23 +448,23 @@
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1" Margin="0,10,0,0">
-            <Label x:Name="CommentsLabel" Content="Comments" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14"/>
+            <Label x:Name="CommentsBlockLabel" Content="Comments" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14"/>
             <Button x:Name="ImportCommentsBtn" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="150" Background="#FFEFCFE3" BorderBrush="#FFE27396" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="ImportCommentsBtn_Click">
                 <Grid Width="145">
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xEA53;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                    <TextBlock Text="Import" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
+                    <TextBlock x:Name="ImportCommentsTB" Text="Import" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0" TextAlignment="Center"/>
                 </Grid>
             </Button>
             <Button x:Name="SeparateExportCommentsBtn" Margin="0,10,0,10" VerticalAlignment="Top" HorizontalAlignment="Center" Width="150" Background="#FFEAC9C1" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="SeparateExportCommentsBtn_Click">
                 <Grid Width="145">
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74E;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                    <TextBlock Text="Separated export" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
+                    <TextBlock x:Name="SeparateExportCommentsTB" Text="Separated export" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0" TextAlignment="Center"/>
                 </Grid>
             </Button>
             <Button x:Name="FullExportCommentsBtn"  VerticalAlignment="Top" HorizontalAlignment="Center" Width="150" Background="#FFEAC9C1" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="FullExportCommentsBtn_Click">
                 <Grid Width="145">
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xEA35;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                    <TextBlock Text="Full export" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
+                    <TextBlock x:Name="FullExportCommentsTB" Text="Full export" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0" TextAlignment="Center"/>
                 </Grid>
             </Button>
         </StackPanel>

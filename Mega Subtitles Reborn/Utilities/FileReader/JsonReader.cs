@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace Mega_Subtitles_Reborn.Utilitis.FileReader
 {
-    public class JsonReader
+    public static class JsonReader
     {
         public static SubtitlesData ReadAssSubtitlesDataJson(string inputPath)
         {
@@ -28,7 +28,7 @@ namespace Mega_Subtitles_Reborn.Utilitis.FileReader
         }
 
         public static Dictionary<string, string> ReadVersionJson(string inputString)
-        {            
+        {
             var jsonBytes = Encoding.UTF8.GetBytes(inputString);
 
             JsonSerializerOptions jsonSerializerOptions = new()
@@ -42,6 +42,21 @@ namespace Mega_Subtitles_Reborn.Utilitis.FileReader
 
             return data ?? [];
         }
+
+        public static Dictionary<string, List<string>> ReadLanguageJson(string filePath)
+        {
+            JsonSerializerOptions options = new()
+            {
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                PropertyNameCaseInsensitive = true
+            };
+
+            string json = File.ReadAllText(filePath);
+
+            return JsonSerializer.Deserialize<Dictionary<string, List<string>>>(json, options);
+        }
+
+
 
 
     }

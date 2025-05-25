@@ -1,4 +1,5 @@
 ﻿using Mega_Subtitles_Reborn.Utilities.FileWriter;
+using Mega_Subtitles_Reborn.Utilitis.FileReader;
 using Mega_Subtitles_Reborn.Utilitis.FileWriter;
 using Microsoft.Win32;
 using System.Windows;
@@ -24,6 +25,28 @@ namespace Mega_Subtitles_Reborn
 
         private void SaveSubtitlesWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            int id = 0;
+            if (GeneralSettings.Default.Language == "Русский")
+            {
+                id = 1;
+                SelectAllActorsTB.FontSize = 12;
+            }
+            else
+            {
+                id = 0;
+                SelectAllActorsTB.FontSize = 14;
+            }
+
+            var lang = JsonReader.ReadLanguageJson("LanguagesFile.json");
+
+            SaveSubtitlesWindow1.Title = lang["SaveSubtitlesWindow1"][id];
+            SaveSettingsLabel.Content = lang["SaveSettingsLabel"][id];
+            SingleFileRadioBtn.Content = lang["SingleFileRadioBtn"][id];
+            MultiFileRadioBtn.Content = lang["MultiFileRadioBtn"][id];
+            SaveFileFormatLabel.Content = lang["SaveFileFormatLabel"][id];
+            SelectAllActorsTB.Text = lang["SelectAllActorsTB"][id];
+            SaveTB.Text = lang["SaveTB"][id];
+
             actorNames = [.. ((MainWindow)Application.Current.MainWindow)
                             .ActorEnteries
                             .Select(a => a.Actors)
@@ -86,10 +109,14 @@ namespace Mega_Subtitles_Reborn
                 else
                     filter = "SRT Subtitles|*.srt";
 
+                string title = "Save the subtitles file";
+                if (GeneralSettings.Default.Language == "Русский")
+                    title = "Сохраните файл субтитров";
+
                 SaveFileDialog saveFileDialog1 = new()
                 {
                     Filter = filter,
-                    Title = "Save the subtitles file",
+                    Title = title,
                     InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
 
                 };
@@ -104,9 +131,13 @@ namespace Mega_Subtitles_Reborn
             }
             else if (MultiFileRadioBtn.IsChecked == true)
             {
+                string title = "Select folder for saving subtitles";
+                if (GeneralSettings.Default.Language == "Русский")
+                    title = "Выберите папку для сохранения субтитров";
+
                 var folderDialog = new OpenFolderDialog
                 {
-                    Title = "Select folder for saving subtitles files",
+                    Title = title,
                     InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
                 };
 
