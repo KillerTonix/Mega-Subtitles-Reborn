@@ -130,16 +130,6 @@ namespace Mega_Subtitles_Reborn.Utilities
             mainWindow.SeparateExportCommentsTB.FontSize= fontsize;
             mainWindow.FullExportCommentsTB.FontSize= fontsize;
 
-
-
-
-            /* if (mainWindow.ActorsList.Items.Count <= 0)
-             {
-                 mainWindow.DeleteCommentsTB.Text = lang["DeleteCommentsTB2"][id];
-            mainWindow.ColorizeSelectedActorsCommentsTB.Text = lang["ColorizeSelectedActorsCommentsTB2"][id];
-             }*/
-
-
         }
     }
 }

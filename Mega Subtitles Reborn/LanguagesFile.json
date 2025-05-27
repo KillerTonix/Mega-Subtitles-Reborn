@@ -44,13 +44,11 @@
   "ViewOnlyWithCommentsTB": [ "View only with comments", "Только строки с комментариями" ],
   "RegionsOnlyWithCommentsTB": [ "Regions only with comments", "Только регионы с комментариями" ],
   "DeleteCommentsTB": [ "Delete comments of selected actors", "Удалить комментарии выбранных актёров" ],
-  "DeleteCommentsTB2": [ "Delete all comments", "Удалить все комментарии" ],
 
   "ColorizeSettingsLabel": [ "Colorize Settings", "Настройки раскраски" ],
   "ColorizeSelectedActorsTB": [ "Colorize regions of selected actors", "Раскрасить области выбранных актёров" ],
   "ColorizeSelectedTracksTB": [ "Colorize tracks of selected actors", "Раскрасить дорожки выбранных актёров" ],
   "ColorizeSelectedActorsCommentsTB": [ "Colorize regions with comments of selected actors", "Раскрасить регионы с комментариями выбранных актёров" ],
-  "ColorizeSelectedActorsCommentsTB2": [ "Colorize all regions with comments", "Раскрасить все регионы с комментариями" ],
 
   "CheckLabel": [ "Check", "Проверка" ],
   "CheckForMissingTB": [ "Check for missing", "Проверка на пропуски" ],

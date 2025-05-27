@@ -75,12 +75,14 @@ namespace Mega_Subtitles_Reborn
             ActorsListView.DataContext = this;
 
             SetupHotKeys();
-            
+
             ColorPickerCombobox.ItemsSource = ListSolidColor.SolidColors();
 
             LanguageChanger.UpdateLanguage();
             this.Title = "Mega Subtitles Reborn v" + Assembly.GetExecutingAssembly().GetName().Version?.ToString();
         }
+
+
         private void MainWindow_Loaded(object sender, EventArgs e)
         {
             CheckAppVersion.CheckVersion();
@@ -114,6 +116,9 @@ namespace Mega_Subtitles_Reborn
         {
             try
             {
+                subtitleViewSource.Filter -= Filters.FilterWithComment;
+                subtitleViewSource.Filter -= Filters.ActorsFilter;
+
                 if (ActorsListView.SelectedItems.Count > 0)
                 {
                     var subtitlesData = JsonReader.ReadAssSubtitlesDataJson(GeneralSettings.Default.ProjectCahceJsonPath);
@@ -163,7 +168,7 @@ namespace Mega_Subtitles_Reborn
             string messageText = "Вы точно хотите очистить кэш проекта?\nЭто приведёт к удалению всех ранее добавленных комментариев и актёров.";
             string messageHeader = "Оповещение";
 
-            if (GeneralSettings.Default.Language == "en")
+            if (GeneralSettings.Default.Language == "English")
             {
                 messageText = "Are you sure you want to clear the project cache?\nThis will delete all previously added comments and actors.";
                 messageHeader = "Notification";
@@ -266,7 +271,9 @@ namespace Mega_Subtitles_Reborn
 
         private void FilterActorsBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            subtitleViewSource.Filter -= Filters.FilterWithComment;
+            subtitleViewSource.Filter += Filters.ActorsFilter;
+            subtitleViewSource.View.Refresh();
         }
 
         private void DeleteLineListViewContext_Click(object sender, RoutedEventArgs e)
@@ -351,7 +358,90 @@ namespace Mega_Subtitles_Reborn
             }
         }
 
-        private void CheckForRepeatsBtn_Checked(object sender, RoutedEventArgs e)
+
+        private void OpenFindWindow(object sender, RoutedEventArgs e)
+        {
+            var findWindow = new FindWindow { Owner = this };
+            findWindow.ShowDialog();
+        }
+
+        private void SettingsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var settingsWindow = new SettingsWindow { Owner = this };
+            settingsWindow.ShowDialog();
+        }
+
+        private void ViewOnlyWithCommentsBtn_Checked(object sender, RoutedEventArgs e)
+        {
+            subtitleViewSource.Filter += Filters.FilterWithComment;
+            subtitleViewSource.Filter -= Filters.ActorsFilter;
+            subtitleViewSource.View.Refresh();
+
+        }
+
+        private void ViewOnlyWithCommentsBtn_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+            subtitleViewSource.Filter -= Filters.FilterWithComment;
+            subtitleViewSource.Filter -= Filters.ActorsFilter;
+            subtitleViewSource.View.Refresh();
+        }
+
+        private void RegionsOnlyWithCommentsBtn_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void RegionsOnlyWithCommentsBtn_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DeleteCommentsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedActors = ActorsListView.SelectedItems
+                      .Cast<ActorsEnteries>()
+                      .Select(a => a.Actors)
+                      .Where(name => !string.IsNullOrWhiteSpace(name))
+                      .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var entry in SubtitleEntries)
+            {
+                if (entry.Actor != null && selectedActors.Contains(entry.Actor))
+                {
+                    entry.Comment = string.Empty; // Clear the comment
+                }
+            }
+            subtitleViewSource.View.Refresh();
+            SaveJson();
+        }
+
+        private void ColorizeSelectedActorsBtn_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ColorizeSelectedActorsBtn_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ColorizeSelectedTracksBtn_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ColorizeSelectedTracksBtn_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ColorizeSelectedActorsCommentsBtn_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ColorizeSelectedActorsCommentsBtn_Unchecked(object sender, RoutedEventArgs e)
         {
 
         }
@@ -361,10 +451,20 @@ namespace Mega_Subtitles_Reborn
 
         }
 
-        private void OpenFindWindow(object sender, RoutedEventArgs e)
+        private void CheckForMissingBtn_Unchecked(object sender, RoutedEventArgs e)
         {
-            var findWindow = new FindWindow { Owner = this };
-            findWindow.ShowDialog();
+
+
+        }
+
+        private void CheckForRepeatsBtn_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CheckForRepeatsBtn_Unchecked(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void FindDemoPhrasesBtn_Checked(object sender, RoutedEventArgs e)
@@ -372,10 +472,9 @@ namespace Mega_Subtitles_Reborn
 
         }
 
-        private void SettingsBtn_Click(object sender, RoutedEventArgs e)
+        private void FindDemoPhrasesBtn_Unchecked(object sender, RoutedEventArgs e)
         {
-            var settingsWindow = new SettingsWindow { Owner = this };
-            settingsWindow.ShowDialog();
+
         }
     }
 }
