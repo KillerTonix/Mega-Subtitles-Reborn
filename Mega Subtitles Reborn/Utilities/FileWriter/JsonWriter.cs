@@ -2,11 +2,14 @@
 using System.IO;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Windows;
 
 namespace Mega_Subtitles_Reborn.Utilitis.FileWriter
-{   
+{
     class JsonWriter
     {
+        private static readonly MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
+
         public static void WriteAssSubtitlesDataJson(SubtitlesData data, string outputPath)
         {
             JsonSerializerOptions jsonSerializerOptions = new()
@@ -18,6 +21,22 @@ namespace Mega_Subtitles_Reborn.Utilitis.FileWriter
 
             byte[] jsonBytes = JsonSerializer.SerializeToUtf8Bytes(data, options);
             File.WriteAllBytes(outputPath, jsonBytes);
+
+
+            if (GeneralSettings.Default.SaveDublicateCache)            
+                File.WriteAllBytes(GeneralSettings.Default.DublicatedProjectCahceJsonPath, jsonBytes);
+            
+        }
+
+        public static void WriteCacheJson()
+        {
+            var data = new SubtitlesData
+            {
+                SubtitlesPath = GeneralSettings.Default.SubtitlesPath,
+                Entries = [.. mainWindow.SubtitleEntries]
+            };
+
+            WriteAssSubtitlesDataJson(data, GeneralSettings.Default.ProjectCahceJsonPath);
         }
     }
 

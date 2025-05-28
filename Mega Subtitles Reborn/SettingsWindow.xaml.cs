@@ -1,6 +1,7 @@
 ﻿using Mega_Subtitles_Reborn.Utilities;
 using Mega_Subtitles_Reborn.Utilitis.FileReader;
 using System.Data;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -11,12 +12,8 @@ namespace Mega_Subtitles_Reborn
     /// </summary>
     public partial class SettingsWindow : Window
     {
-        private string? SelectedLanguage = string.Empty;
-        private string? SelectedTheme = string.Empty;
         private bool SaveWindowSize = false;
         private bool SaveDublicateCache = false;
-
-
 
         public SettingsWindow()
         {
@@ -32,7 +29,7 @@ namespace Mega_Subtitles_Reborn
             if (GeneralSettings.Default.Language == "Русский")
             {
                 id = 1;
-                LanguageComboBox.SelectedIndex = 1;               
+                LanguageComboBox.SelectedIndex = 1;
             }
             else
             {
@@ -56,6 +53,8 @@ namespace Mega_Subtitles_Reborn
             DontSaveSizeRadioBtn.Content = lang["DontSaveSizeRadioBtn"][id];
             SaveDublicateCacheRadioBtn.Content = lang["SaveDublicateCacheRadioBtn"][id];
             DontSaveDublicateCacheRadioBtn.Content = lang["DontSaveDublicateCacheRadioBtn"][id];
+            OpenDublicatedCacheFolderLabel.Content = lang["OpenDublicatedCacheFolderLabel"][id];
+            OpenDublicatedCacheFolderTB.Text = lang["OpenDublicatedCacheFolderTB"][id];
             ApplySettingsTB.Text = lang["ApplySettingsTB"][id];
 
 
@@ -69,22 +68,12 @@ namespace Mega_Subtitles_Reborn
                 SaveSizeRadioBtn.IsChecked = true;
             if (GeneralSettings.Default.SaveDublicateCache)
                 SaveDublicateCacheRadioBtn.IsChecked = true;
+            if (GeneralSettings.Default.SaveWindowSize)
+                SaveSizeRadioBtn.IsChecked = true;
+            if (GeneralSettings.Default.SaveDublicateCache)
+                SaveDublicateCacheRadioBtn.IsChecked = true;
         }
 
-        private void LanguageComboBox_DropDownClosed(object sender, EventArgs e)
-        {
-            ComboBoxItem typeItem = (ComboBoxItem)LanguageComboBox.SelectedItem;
-            string? value = typeItem.Content.ToString();
-
-            SelectedLanguage = value;
-        }
-
-        private void ThemeComboBox_DropDownClosed(object sender, EventArgs e)
-        {
-            ComboBoxItem typeItem = (ComboBoxItem)ThemeComboBox.SelectedItem;
-            string? value = typeItem.Content.ToString();
-            SelectedTheme = value;
-        }
 
         private void SaveSizeRadioBtn_Checked(object sender, RoutedEventArgs e)
         {
@@ -99,18 +88,32 @@ namespace Mega_Subtitles_Reborn
         private void SaveDublicateCacheRadioBtn_Checked(object sender, RoutedEventArgs e)
         {
             SaveDublicateCache = true;
+            if (OpenDublicatedCacheFolderBtn != null && OpenDublicatedCacheFolderLabel != null)
+            {
+                OpenDublicatedCacheFolderBtn.Visibility = Visibility.Visible;
+                OpenDublicatedCacheFolderLabel.Visibility = Visibility.Visible;
+            }
         }
 
         private void DontSaveDublicateCacheRadioBtn_Checked(object sender, RoutedEventArgs e)
         {
             SaveDublicateCache = false;
+            if (OpenDublicatedCacheFolderBtn != null && OpenDublicatedCacheFolderLabel != null)
+            {
+                OpenDublicatedCacheFolderBtn.Visibility = Visibility.Hidden;
+                OpenDublicatedCacheFolderLabel.Visibility = Visibility.Hidden;
+            }
         }
 
 
         private void ApplySettingsBtn_Click(object sender, RoutedEventArgs e)
         {
-            GeneralSettings.Default.Language = SelectedLanguage;
-            GeneralSettings.Default.Theme = SelectedTheme;
+            ComboBoxItem LanguageItem = (ComboBoxItem)LanguageComboBox.SelectedItem;
+            GeneralSettings.Default.Language = LanguageItem.Content.ToString();
+
+            ComboBoxItem ThemeItem = (ComboBoxItem)ThemeComboBox.SelectedItem;
+            GeneralSettings.Default.Theme = ThemeItem.Content.ToString();
+
             GeneralSettings.Default.SaveDublicateCache = SaveDublicateCache;
             GeneralSettings.Default.SaveWindowSize = SaveWindowSize;
             GeneralSettings.Default.Save();
@@ -118,6 +121,12 @@ namespace Mega_Subtitles_Reborn
             LanguageChanger.UpdateLanguage();
             this.Close();
         }
+
+        private void OpenDublicatedCacheFolderBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("explorer.exe", "\"" + GeneralSettings.Default.DublicateCachePath + "\"");
+        }
+
 
     }
 }

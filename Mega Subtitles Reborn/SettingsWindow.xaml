@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Mega_Subtitles_Reborn"
         mc:Ignorable="d"
-        Title="Settings" Height="450" Width="550"  Background="#FF1F1F23" 
+        Title="Settings" Height="450" Width="600"  Background="#FF1F1F23" 
         WindowStartupLocation="CenterScreen" Visibility="Visible" ResizeMode="NoResize" WindowStyle="ToolWindow" WindowState="Normal">
 
     <Window.Resources>
@@ -127,24 +127,25 @@
             <Label x:Name="ThemeLabel" Content="Theme:" Margin="10" FontFamily="Nunito SemiBold" FontSize="14" Foreground="White"/>
             <Label x:Name="SaveMainWindowSizeLabel" Content="Save main window size:" Margin="10" FontFamily="Nunito SemiBold" FontSize="14" Foreground="White"/>
             <Label x:Name="KeepDublicateCacheLabel" Content="Keep dublicate cache:" Margin="10" FontFamily="Nunito SemiBold" FontSize="14" Foreground="White"/>
-            
+            <Label x:Name="OpenDublicatedCacheFolderLabel" Visibility="Hidden" Content="Open dublicated cache folder:"  Margin="10" FontFamily="Nunito SemiBold" FontSize="14" Foreground="White"/>
+
         </StackPanel>
 
         
         
         
         <StackPanel Grid.Column="1">
-            <ComboBox Name="LanguageComboBox" Width="100" HorizontalAlignment="Left" Margin="10" FontFamily="Nunito SemiBold" FontSize="14" DropDownClosed="LanguageComboBox_DropDownClosed">
+            <ComboBox Name="LanguageComboBox" Width="115" HorizontalAlignment="Left" Margin="10" FontFamily="Nunito SemiBold" FontSize="14">
                 <ComboBoxItem Content="English"/>
                 <ComboBoxItem Content="Русский"/>
             </ComboBox>
                        
-            <ComboBox Name="ThemeComboBox" Width="100" HorizontalAlignment="Left" Margin="10" FontFamily="Nunito SemiBold" FontSize="14" DropDownClosed="ThemeComboBox_DropDownClosed">
+            <ComboBox Name="ThemeComboBox" Width="115" HorizontalAlignment="Left" Margin="10,15,10,10" FontFamily="Nunito SemiBold" FontSize="14">
                 <ComboBoxItem x:Name="DarkComboBoxItem" Content="Dark"/>
                 <ComboBoxItem x:Name="LightComboBoxItem" Content="Light"/>
             </ComboBox>
 
-            <StackPanel Orientation="Horizontal" Margin="10,25,10,0">
+            <StackPanel Orientation="Horizontal" Margin="10,20,10,0">
                 <RadioButton Content="Save" x:Name="SaveSizeRadioBtn" Margin="0,0,20,0" FontFamily="Nunito SemiBold" FontSize="14" Foreground="White" Checked="SaveSizeRadioBtn_Checked"/>
                 <RadioButton Content="Dont save" IsChecked="True" x:Name="DontSaveSizeRadioBtn" FontFamily="Nunito SemiBold" FontSize="14" Foreground="White" Checked="DontSaveSizeRadioBtn_Checked"/>
             </StackPanel>
@@ -154,7 +155,15 @@
                 <RadioButton Content="Dont save" IsChecked="True" x:Name="DontSaveDublicateCacheRadioBtn" FontFamily="Nunito SemiBold" FontSize="14" Foreground="White" Checked="DontSaveDublicateCacheRadioBtn_Checked"/>
             </StackPanel>
 
-
+            <StackPanel Margin="10,30,10,0">
+                <Button x:Name="OpenDublicatedCacheFolderBtn" Visibility="Hidden" Grid.Column="1"  Width="115" Background="#FFEAC9C1" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="OpenDublicatedCacheFolderBtn_Click" HorizontalAlignment="Left">
+                    <Grid Width="110">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE838;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                        <TextBlock x:Name="OpenDublicatedCacheFolderTB" Text="Open" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
+                    </Grid>
+                </Button>
+            </StackPanel>
+    
         </StackPanel>
         
         <Button x:Name="ApplySettingsBtn" Grid.Column="1" HorizontalAlignment="Right" Margin="10"  VerticalAlignment="Bottom" Width="115" Background="#FF63CBD6" BorderBrush="#FF95E1D4" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="ApplySettingsBtn_Click">

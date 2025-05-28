@@ -84,13 +84,12 @@
   "SaveMainWindowSizeLabel": [ "Save main window size:", "Сохранить размер главного окна:" ],
   "KeepDublicateCacheLabel": [ "Keep dublicate cache:", "Хранить дубликат кэша:" ],
   "DarkComboBoxItem": [ "Dark", "Темный" ],
-  "LightComboBoxItem": ["Light","Светлый"],
-
+  "LightComboBoxItem": [ "Light", "Светлый" ],
   "SaveSizeRadioBtn": [ "Save", "Сохранить" ],
   "DontSaveSizeRadioBtn": [ "Don't save", "Не сохранить" ],
-
   "SaveDublicateCacheRadioBtn": [ "Save", "Сохранить" ],
   "DontSaveDublicateCacheRadioBtn": [ "Don't save", "Не сохранить" ],
-
+  "OpenDublicatedCacheFolderLabel": [ "Open dublicated cache folder:", "Открыть дублированную папку кэша:" ],
+  "OpenDublicatedCacheFolderTB": [ "Open","Открыть" ],
   "ApplySettingsTB": [ "Apply", "Применить" ]
 }

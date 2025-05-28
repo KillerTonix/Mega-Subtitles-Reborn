@@ -10,7 +10,7 @@
         Title="Mega Subtitles Reborn" 
         Height="820" Width="1366" Background="#FF1F1F23" 
         WindowStartupLocation="CenterScreen" Visibility="Visible" WindowState="Normal"
-        ShowInTaskbar="True" ResizeMode="CanResize" SizeToContent="Manual" MinHeight="785" MinWidth="1260">
+        ShowInTaskbar="True" ResizeMode="CanResize" SizeToContent="Manual" MinHeight="785" MinWidth="1260" Closing="GeneralWindow_Closing">
 
     <Window.InputBindings>
         <KeyBinding Modifiers="Control" Key="S" Command="{Binding CtrlS}" />

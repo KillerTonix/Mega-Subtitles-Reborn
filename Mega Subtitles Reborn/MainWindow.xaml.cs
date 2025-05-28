@@ -58,6 +58,7 @@ namespace Mega_Subtitles_Reborn
         public MainWindow()
         {
             InitializeComponent();
+
             Loaded += MainWindow_Loaded;
 
             SubtitleEntries = [];
@@ -85,6 +86,20 @@ namespace Mega_Subtitles_Reborn
 
         private void MainWindow_Loaded(object sender, EventArgs e)
         {
+
+            if (GeneralSettings.Default.SaveWindowSize)
+            {
+                this.Width = GeneralSettings.Default.MainWindowWidth;
+                this.Height = GeneralSettings.Default.MainWindowHeight;
+            }
+            else
+            {
+                this.Width = 1366;
+                this.Height = 820;
+            }
+
+
+
             CheckAppVersion.CheckVersion();
 
 
@@ -188,24 +203,14 @@ namespace Mega_Subtitles_Reborn
 
         private void ActorComboBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            SaveJson();
+            JsonWriter.WriteCacheJson();
         }
 
         private void CommentsTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            SaveJson();
+            JsonWriter.WriteCacheJson();
         }
 
-        private void SaveJson()
-        {
-            var data = new SubtitlesData
-            {
-                SubtitlesPath = GeneralSettings.Default.SubtitlesPath,
-                Entries = [.. SubtitleEntries]
-            };
-
-            JsonWriter.WriteAssSubtitlesDataJson(data, GeneralSettings.Default.ProjectCahceJsonPath);
-        }
 
         private void SetActorColorContext_Click(object sender, RoutedEventArgs e)
         {
@@ -413,7 +418,7 @@ namespace Mega_Subtitles_Reborn
                 }
             }
             subtitleViewSource.View.Refresh();
-            SaveJson();
+            JsonWriter.WriteCacheJson();
         }
 
         private void ColorizeSelectedActorsBtn_Checked(object sender, RoutedEventArgs e)
@@ -475,6 +480,14 @@ namespace Mega_Subtitles_Reborn
         private void FindDemoPhrasesBtn_Unchecked(object sender, RoutedEventArgs e)
         {
 
+        }
+
+
+        private void GeneralWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            GeneralSettings.Default.MainWindowHeight = GeneralWindow.ActualHeight;
+            GeneralSettings.Default.MainWindowWidth = GeneralWindow.ActualWidth;
+            GeneralSettings.Default.Save();
         }
     }
 }

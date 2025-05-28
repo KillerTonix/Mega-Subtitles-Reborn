@@ -84,6 +84,7 @@ namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
             };
 
             JsonWriter.WriteAssSubtitlesDataJson(data, GeneralSettings.Default.ProjectCahceJsonPath);
+            
 
 
 
