@@ -202,5 +202,29 @@ namespace Mega_Subtitles_Reborn {
                 this["DublicateCachePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\")]
+        public string ReaperCommandsFilePath {
+            get {
+                return ((string)(this["ReaperCommandsFilePath"]));
+            }
+            set {
+                this["ReaperCommandsFilePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\")]
+        public string ReaperSyncFilePath {
+            get {
+                return ((string)(this["ReaperSyncFilePath"]));
+            }
+            set {
+                this["ReaperSyncFilePath"] = value;
+            }
+        }
     }
 }

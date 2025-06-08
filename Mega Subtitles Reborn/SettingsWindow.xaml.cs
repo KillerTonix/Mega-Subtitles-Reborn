@@ -2,6 +2,7 @@
 using Mega_Subtitles_Reborn.Utilitis.FileReader;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -37,8 +38,7 @@ namespace Mega_Subtitles_Reborn
                 LanguageComboBox.SelectedIndex = 0;
             }
 
-
-            var lang = JsonReader.ReadLanguageJson("LanguagesFile.json");
+            var lang = JsonReader.ReadLanguageJson(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LanguagesFile.json"));
 
             SettingsWindow1.Title = lang["SettingsWindow1"][id];
             LanguageLabel.Content = lang["LanguageLabel"][id];

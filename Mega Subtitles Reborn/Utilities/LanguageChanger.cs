@@ -1,4 +1,5 @@
 ﻿using Mega_Subtitles_Reborn.Utilitis.FileReader;
+using System.IO;
 using System.Windows;
 
 namespace Mega_Subtitles_Reborn.Utilities
@@ -12,7 +13,7 @@ namespace Mega_Subtitles_Reborn.Utilities
             if (GeneralSettings.Default.Language == "Русский")
                 id = 1;
 
-            var lang = JsonReader.ReadLanguageJson("LanguagesFile.json");
+            var lang = JsonReader.ReadLanguageJson(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"LanguagesFile.json"));
             var mainWindow = (MainWindow)Application.Current.MainWindow;           
           
             mainWindow.DeleteLineListViewContext.Header = lang["DeleteLineListViewContext"][id];
@@ -76,6 +77,10 @@ namespace Mega_Subtitles_Reborn.Utilities
             mainWindow.CheckForMissingTB.Text = lang["CheckForMissingTB"][id];
             mainWindow.CheckForRepeatsTB.Text = lang["CheckForRepeatsTB"][id];
             mainWindow.FindDemoPhrasesTB.Text = lang["FindDemoPhrasesTB"][id];
+
+            mainWindow.ProjectLabel.Content = lang["ProjectLabel"][id];
+            mainWindow.SyncTB.Text = lang["SyncTB"][id];
+            mainWindow.SettingsTB.Text = lang["SettingsTB"][id];
 
             mainWindow.CommentsBlockLabel.Content = lang["CommentsBlockLabel"][id];
             mainWindow.ImportCommentsTB.Text = lang["ImportCommentsTB"][id];

@@ -35,10 +35,9 @@ namespace Mega_Subtitles_Reborn
                 id = 1;
                 SkipTB.FontSize = 12;
                 UpdateTB.FontSize = 12;
-            }   
-                            
+            }
 
-            var lang = JsonReader.ReadLanguageJson("LanguagesFile.json");
+            var lang = JsonReader.ReadLanguageJson(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LanguagesFile.json"));
 
             UpdateDialogue1.Title = lang["UpdateDialogue1"][id];
             NewVersionText.Text = lang["NewVersionText"][id].Replace("XYZ", InternetVersionOfApplication);

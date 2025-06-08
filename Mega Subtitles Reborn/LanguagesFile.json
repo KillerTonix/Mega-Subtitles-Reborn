@@ -55,6 +55,11 @@
   "CheckForRepeatsTB": [ "Check for repeats", "Проверка на повторы" ],
   "FindDemoPhrasesTB": [ "Find Demo Phrases", "Найдите демо фразы" ],
 
+  "SyncTB": [ "Sync", "Синхр." ],
+  "SettingsTB": [ "Settings", "Настройки" ],
+  "ProjectLabel": [ "Project", "Проект" ],
+
+
   "CommentsBlockLabel": [ "Comments", "Комментарии" ],
   "ImportCommentsTB": [ "Import", "Импорт" ],
   "SeparateExportCommentsTB": [ "Separated export", "Раздельный экспорт" ],
@@ -90,6 +95,6 @@
   "SaveDublicateCacheRadioBtn": [ "Save", "Сохранить" ],
   "DontSaveDublicateCacheRadioBtn": [ "Don't save", "Не сохранить" ],
   "OpenDublicatedCacheFolderLabel": [ "Open dublicated cache folder:", "Открыть дублированную папку кэша:" ],
-  "OpenDublicatedCacheFolderTB": [ "Open","Открыть" ],
+  "OpenDublicatedCacheFolderTB": [ "Open", "Открыть" ],
   "ApplySettingsTB": [ "Apply", "Применить" ]
 }

@@ -47,5 +47,11 @@
     <Setting Name="DublicateCachePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\</Value>
     </Setting>
+    <Setting Name="ReaperCommandsFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\</Value>
+    </Setting>
+    <Setting Name="ReaperSyncFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

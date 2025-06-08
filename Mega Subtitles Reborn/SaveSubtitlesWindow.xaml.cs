@@ -2,6 +2,7 @@
 using Mega_Subtitles_Reborn.Utilitis.FileReader;
 using Mega_Subtitles_Reborn.Utilitis.FileWriter;
 using Microsoft.Win32;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -36,8 +37,7 @@ namespace Mega_Subtitles_Reborn
                 id = 0;
                 SelectAllActorsTB.FontSize = 14;
             }
-
-            var lang = JsonReader.ReadLanguageJson("LanguagesFile.json");
+            var lang = JsonReader.ReadLanguageJson(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LanguagesFile.json"));
 
             SaveSubtitlesWindow1.Title = lang["SaveSubtitlesWindow1"][id];
             SaveSettingsLabel.Content = lang["SaveSettingsLabel"][id];

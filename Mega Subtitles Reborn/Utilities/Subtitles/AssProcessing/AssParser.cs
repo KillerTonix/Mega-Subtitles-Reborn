@@ -64,8 +64,8 @@ namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
                             Number = number++,
                             Color = value.ToString(),
                             Layer = match.Groups[1].Value.Trim(),
-                            Start = match.Groups[2].Value.Trim(),
-                            End = match.Groups[3].Value.Trim(),
+                            Start = NormalizeTimeFormat(match.Groups[2].Value.Trim()),
+                            End = NormalizeTimeFormat(match.Groups[3].Value.Trim()),
                             Style = match.Groups[4].Value.Trim(),
                             Actor = actor,
                             Effect = match.Groups[8].Value.Trim(),
@@ -132,6 +132,26 @@ namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
                 return text;
             }
         }
+
+        public static string NormalizeTimeFormat(string time)
+        {
+            int dotIndex = time.LastIndexOf('.');
+            if (dotIndex != -1 && dotIndex < time.Length - 1)
+            {
+                string milliseconds = time[(dotIndex + 1)..];
+
+                return milliseconds.Length switch
+                {
+                    1 => time + "00", // add 00
+                    2 => time + "0", // add 0
+                    3 => time,       // do nothing
+                    _ => time        // leave as-is or handle differently if needed
+                };
+            }
+
+            return time; // no dot found — return unchanged
+        }
+
 
     }
 }

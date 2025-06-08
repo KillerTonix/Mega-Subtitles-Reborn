@@ -1,4 +1,5 @@
 ﻿using Mega_Subtitles_Reborn.Utilitis.FileReader;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -26,7 +27,7 @@ namespace Mega_Subtitles_Reborn
             if (GeneralSettings.Default.Language == "Русский")
                 id = 1;
 
-            var lang = JsonReader.ReadLanguageJson("LanguagesFile.json");
+            var lang = JsonReader.ReadLanguageJson(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LanguagesFile.json"));
 
             FindWindow1.Title = lang["FindWindow1"][id];
             FindBtn.Content = lang["FindTB"][id];

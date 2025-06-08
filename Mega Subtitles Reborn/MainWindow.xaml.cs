@@ -6,6 +6,7 @@ using Mega_Subtitles_Reborn.Utilities.Subtitles;
 using Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing;
 using Mega_Subtitles_Reborn.Utilitis.FileReader;
 using Mega_Subtitles_Reborn.Utilitis.FileWriter;
+using Mega_Subtitles_Reborn.Utilitis.FromReaper;
 using Mega_Subtitles_Reborn.Utilitis.Logger;
 using Mega_Subtitles_Reborn.Utilitis.PreRun;
 using Mega_Subtitles_Reborn.Utilitis.Subtitles;
@@ -14,6 +15,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -155,9 +157,17 @@ namespace Mega_Subtitles_Reborn
                         SubtitleEntries.Add(entry);
                     }
 
-                    RegionManagerListView.Items.Refresh(); // Optional               
-
+                    RegionManagerListView.Items.Refresh(); // Optional                                             
                 }
+                else
+                {
+                    MessageBox.Show("Пожалуйста, выберите актёров для парсинга.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
+
+                ReaperCommandsWriter.Write("CreateRegionsWithOutColor"); // Create regions without color command
+
+
             }
             catch (Exception ex)
             {
@@ -277,7 +287,9 @@ namespace Mega_Subtitles_Reborn
         private void FilterActorsBtn_Click(object sender, RoutedEventArgs e)
         {
             subtitleViewSource.Filter -= Filters.FilterWithComment;
+            subtitleViewSource.Filter -= CheckForMissing.FilterForMissing;
             subtitleViewSource.Filter += Filters.ActorsFilter;
+
             subtitleViewSource.View.Refresh();
         }
 
@@ -380,6 +392,7 @@ namespace Mega_Subtitles_Reborn
         {
             subtitleViewSource.Filter += Filters.FilterWithComment;
             subtitleViewSource.Filter -= Filters.ActorsFilter;
+            subtitleViewSource.Filter -= CheckForMissing.FilterForMissing;
             subtitleViewSource.View.Refresh();
 
         }
@@ -389,21 +402,27 @@ namespace Mega_Subtitles_Reborn
 
             subtitleViewSource.Filter -= Filters.FilterWithComment;
             subtitleViewSource.Filter -= Filters.ActorsFilter;
+            subtitleViewSource.Filter -= CheckForMissing.FilterForMissing;
             subtitleViewSource.View.Refresh();
         }
 
         private void RegionsOnlyWithCommentsBtn_Checked(object sender, RoutedEventArgs e)
         {
-
+            ReaperCommandsWriter.Write("RegionsOnlyWithComments"); // Create regions without color and only with comments command
         }
 
         private void RegionsOnlyWithCommentsBtn_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            ReaperCommandsWriter.Write("CreateRegionsWithOutColor"); // Create regions without color command
         }
 
         private void DeleteCommentsBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (RegionsOnlyWithCommentsBtn.IsChecked == true)
+            {
+                RegionsOnlyWithCommentsBtn.Checked -= RegionsOnlyWithCommentsBtn_Checked;
+            }
+
             var selectedActors = ActorsListView.SelectedItems
                       .Cast<ActorsEnteries>()
                       .Select(a => a.Actors)
@@ -423,43 +442,51 @@ namespace Mega_Subtitles_Reborn
 
         private void ColorizeSelectedActorsBtn_Checked(object sender, RoutedEventArgs e)
         {
-
+            ReaperCommandsWriter.Write("ColorizeSelectedActors"); // Create regions with color command
         }
 
         private void ColorizeSelectedActorsBtn_Unchecked(object sender, RoutedEventArgs e)
         {
+            ReaperCommandsWriter.Write("CreateRegionsWithOutColor"); // Create regions without color command
 
         }
 
         private void ColorizeSelectedTracksBtn_Checked(object sender, RoutedEventArgs e)
         {
-
+            ReaperCommandsWriter.Write("ColorizeSelectedTracks"); // Colorize selected tracks command
         }
 
         private void ColorizeSelectedTracksBtn_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            ReaperCommandsWriter.Write("CreateRegionsWithOutColor"); // Create regions without color command
         }
 
         private void ColorizeSelectedActorsCommentsBtn_Checked(object sender, RoutedEventArgs e)
         {
-
+            ReaperCommandsWriter.Write("ColorizeSelectedActorsComments"); // Create regions without color command
         }
 
         private void ColorizeSelectedActorsCommentsBtn_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            ReaperCommandsWriter.Write("CreateRegionsWithOutColor"); // Create regions without color command
         }
 
         private void CheckForMissingBtn_Checked(object sender, RoutedEventArgs e)
         {
+            ReaperCommandsWriter.Write("CheckForMissing"); // Create only Missing regions command
 
+            CheckForMissing.DelayedMissingsCheck(400); // Delay to allow Reaper to process the command
+            subtitleViewSource.View.Refresh();
         }
 
         private void CheckForMissingBtn_Unchecked(object sender, RoutedEventArgs e)
         {
+            ReaperCommandsWriter.Write("CreateRegionsWithOutColor"); // Create regions without color command
 
-
+            subtitleViewSource.Filter -= Filters.FilterWithComment;
+            subtitleViewSource.Filter -= Filters.ActorsFilter;
+            subtitleViewSource.Filter -= CheckForMissing.FilterForMissing;
+            subtitleViewSource.View.Refresh();
         }
 
         private void CheckForRepeatsBtn_Checked(object sender, RoutedEventArgs e)
@@ -482,12 +509,36 @@ namespace Mega_Subtitles_Reborn
 
         }
 
+        private void RegionManagerListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            DependencyObject obj = (DependencyObject)e.OriginalSource;
+
+            while (obj != null && obj != RegionManagerListView)
+            {
+                if (obj.GetType() == typeof(ListViewItem))
+                {
+                    ReaperCommandsWriter.Write("SyncPositon"); // Create regions without color command
+
+                    break;
+                }
+                obj = VisualTreeHelper.GetParent(obj);
+            }
+        }
 
         private void GeneralWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             GeneralSettings.Default.MainWindowHeight = GeneralWindow.ActualHeight;
             GeneralSettings.Default.MainWindowWidth = GeneralWindow.ActualWidth;
             GeneralSettings.Default.Save();
+
+            ReaperCommandsWriter.Write("ApplicationCloseEvent"); // Create regions without color command
+
+        }
+
+        private void SyncBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ReaperCommandsWriter.Write("SyncCsToReaper"); // Create regions without color command
+            ReadFromReaper.DelayedReadReaperSyncFile(400);
         }
     }
 }

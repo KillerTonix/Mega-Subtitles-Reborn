@@ -41,6 +41,57 @@
     <None Update="LanguagesFile.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Lua Wrapper Files\CheckForMissing.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Lua Wrapper Files\CheckForRepeats.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Lua Wrapper Files\ClearCommandsFile.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Lua Wrapper Files\ColorizeAllTracks.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Lua Wrapper Files\CreateRegions.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Lua Wrapper Files\DeleteAllRegions.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Lua Wrapper Files\GetCurrentProjectName.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Lua Wrapper Files\GetUniqueActorsFromCache.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Lua Wrapper Files\Logger.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Lua Wrapper Files\ParseCacheFile.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Lua Wrapper Files\ParseDeleteCreate.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Lua Wrapper Files\ProcessCommands.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Lua Wrapper Files\ReadCommandFromCSharp.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Lua Wrapper Files\SyncCsToReaper.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Lua Wrapper Files\SyncWithCSharp.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Lua Wrapper Files\WriteRegions.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mega Subtitles Wrapper.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="UpdateProgram.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

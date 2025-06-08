@@ -1,4 +1,5 @@
-﻿using Mega_Subtitles_Reborn.Utilities.Subtitles;
+﻿using Mega_Subtitles_Reborn.Utilities;
+using Mega_Subtitles_Reborn.Utilities.Subtitles;
 using System.IO;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -37,6 +38,20 @@ namespace Mega_Subtitles_Reborn.Utilitis.FileWriter
             };
 
             WriteAssSubtitlesDataJson(data, GeneralSettings.Default.ProjectCahceJsonPath);
+        }
+
+
+        public static void WriteCommandsDataJson(CommandsData data, string outputPath)
+        {
+            JsonSerializerOptions jsonSerializerOptions = new()
+            {
+                WriteIndented = true,
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            };
+            JsonSerializerOptions options = jsonSerializerOptions;
+
+            byte[] jsonBytes = JsonSerializer.SerializeToUtf8Bytes(data, options);
+            File.WriteAllBytes(outputPath, jsonBytes);
         }
     }
 
