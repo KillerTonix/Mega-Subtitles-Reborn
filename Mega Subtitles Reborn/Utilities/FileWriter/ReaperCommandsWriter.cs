@@ -38,15 +38,20 @@ namespace Mega_Subtitles_Reborn.Utilities.FileWriter
                 ExceptionLogger.LogException(ex, "ReaperCommandsWriter", MethodBase.GetCurrentMethod()?.Name);
             }
         }
-        private static string StringToSeccondsString(string seconds)
+        private static string StringToSeccondsString(string time)
         {
-            if (string.IsNullOrWhiteSpace(seconds))
+            if (string.IsNullOrWhiteSpace(time) || time.Length < 1)
             {
                 return "";
             }
-            TimeSpan time = TimeSpan.Parse(seconds, CultureInfo.InvariantCulture);
+            string v = string.Empty;
+            int dotIndex = time.LastIndexOf('.');
+            if (time.Length - dotIndex == 3)
+                time = time[..^1];
 
-            return time.TotalSeconds.ToString();
+            TimeSpan timeTimespan = TimeSpan.Parse(time, CultureInfo.InvariantCulture);
+
+            return timeTimespan.TotalSeconds.ToString();
         }
     }
 }

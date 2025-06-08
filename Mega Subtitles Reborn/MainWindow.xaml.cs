@@ -295,37 +295,37 @@ namespace Mega_Subtitles_Reborn
 
         private void DeleteLineListViewContext_Click(object sender, RoutedEventArgs e)
         {
-            RegionManagerLineUtil.DublicateOrDeleteLine("Delete");
+            RegionManagerLineUtil.DublicateOrDeleteLine("Delete"); // Delete the selected line in the region manager list view
         }
 
         private void DublicateLineListViewContext_Click(object sender, RoutedEventArgs e)
         {
-            RegionManagerLineUtil.DublicateOrDeleteLine("Dublicate");
+            RegionManagerLineUtil.DublicateOrDeleteLine("Dublicate"); // Dublicate the selected line in the region manager list view
         }
 
         private void CopyTimingsListViewContext_Click(object sender, RoutedEventArgs e)
         {
-            CopyToClipboard.CopyText("timings");
+            CopyToClipboard.CopyText("timings"); // Copy timings from the selected entries in the region manager list view
         }
 
         private void CopyTextListViewContext_Click(object sender, RoutedEventArgs e)
         {
-            CopyToClipboard.CopyText("text");
+            CopyToClipboard.CopyText("text"); // Copy text from the selected entries in the region manager list view
         }
 
         private void CopyCommentsListViewContext_Click(object sender, RoutedEventArgs e)
         {
-            CopyToClipboard.CopyText("comments");
+            CopyToClipboard.CopyText("comments"); // Copy comments from the selected entries in the region manager list view
         }
 
         private void ClearCommentsListViewContext_Click(object sender, RoutedEventArgs e)
         {
-            RegionManagerLineUtil.ClearComments();
+            RegionManagerLineUtil.ClearComments(); // Clear comments for selected entries in the region manager list view
         }
 
         private void RegionManagerListView_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            RegionManagerLineUtil.ParseHotKeys(e);
+            RegionManagerLineUtil.ParseHotKeys(e); // Handle key presses for region manager list view
         }
 
 
@@ -371,39 +371,39 @@ namespace Mega_Subtitles_Reborn
             catch (Exception ex)
             {
                 // Handle exceptions
-                MessageBox.Show($"Error setting up hotkeys: {ex.Message}");
+                MessageBox.Show($"Error setting up hotkeys: {ex.Message}"); // Show an error message if hotkey setup fails
             }
         }
 
 
         private void OpenFindWindow(object sender, RoutedEventArgs e)
         {
-            var findWindow = new FindWindow { Owner = this };
-            findWindow.ShowDialog();
+            var findWindow = new FindWindow { Owner = this }; // Create a new instance of FindWindow and set the owner to the current window
+            findWindow.ShowDialog(); // Show the find window as a dialog
         }
 
         private void SettingsBtn_Click(object sender, RoutedEventArgs e)
         {
-            var settingsWindow = new SettingsWindow { Owner = this };
-            settingsWindow.ShowDialog();
+            var settingsWindow = new SettingsWindow { Owner = this }; // Create a new instance of SettingsWindow and set the owner to the current window
+            settingsWindow.ShowDialog(); // Show the settings window as a dialog
         }
 
         private void ViewOnlyWithCommentsBtn_Checked(object sender, RoutedEventArgs e)
         {
-            subtitleViewSource.Filter += Filters.FilterWithComment;
-            subtitleViewSource.Filter -= Filters.ActorsFilter;
-            subtitleViewSource.Filter -= CheckForMissing.FilterForMissing;
-            subtitleViewSource.View.Refresh();
+            subtitleViewSource.Filter += Filters.FilterWithComment; // Add the filter for comments
+            subtitleViewSource.Filter -= Filters.ActorsFilter; // Remove the filter for actors
+            subtitleViewSource.Filter -= CheckForMissing.FilterForMissing; // Remove the filter for missing entries
+            subtitleViewSource.View.Refresh(); // Refresh the view to apply changes
 
         }
 
         private void ViewOnlyWithCommentsBtn_Unchecked(object sender, RoutedEventArgs e)
         {
 
-            subtitleViewSource.Filter -= Filters.FilterWithComment;
-            subtitleViewSource.Filter -= Filters.ActorsFilter;
-            subtitleViewSource.Filter -= CheckForMissing.FilterForMissing;
-            subtitleViewSource.View.Refresh();
+            subtitleViewSource.Filter -= Filters.FilterWithComment; // Remove the filter for comments
+            subtitleViewSource.Filter -= Filters.ActorsFilter; // Remove the filter for actors
+            subtitleViewSource.Filter -= CheckForMissing.FilterForMissing; // Remove the filter for missing entries
+            subtitleViewSource.View.Refresh(); // Refresh the view to apply changes
         }
 
         private void RegionsOnlyWithCommentsBtn_Checked(object sender, RoutedEventArgs e)
@@ -418,20 +418,24 @@ namespace Mega_Subtitles_Reborn
 
         private void DeleteCommentsBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (RegionsOnlyWithCommentsBtn.IsChecked == true)
+            if (RegionsOnlyWithCommentsBtn.IsChecked == true) // Unsubscribe from the Checked event to avoid recursion
             {
-                RegionsOnlyWithCommentsBtn.Checked -= RegionsOnlyWithCommentsBtn_Checked;
+                RegionsOnlyWithCommentsBtn.Checked -= RegionsOnlyWithCommentsBtn_Checked; // Unsubscribe from the Checked event to avoid recursion
             }
 
-            var selectedActors = ActorsListView.SelectedItems
+            var selectedActors = ActorsListView.SelectedItems // Get the selected actors from the ActorsListView
                       .Cast<ActorsEnteries>()
                       .Select(a => a.Actors)
                       .Where(name => !string.IsNullOrWhiteSpace(name))
                       .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
-            foreach (var entry in SubtitleEntries)
+            foreach (var entry in SubtitleEntries) // Iterate through each subtitle entry in the SubtitleEntries collection
             {
-                if (entry.Actor != null && selectedActors.Contains(entry.Actor))
+                if (entry.Actor != null && selectedActors.Contains(entry.Actor)) // Check if the entry's actor is in the selected actors
+                {
+                    entry.Comment = string.Empty; // Clear the comment
+                }
+                else if (entry.Actor == null) // If the actor is null, clear the comment as well
                 {
                     entry.Comment = string.Empty; // Clear the comment
                 }
@@ -476,17 +480,17 @@ namespace Mega_Subtitles_Reborn
             ReaperCommandsWriter.Write("CheckForMissing"); // Create only Missing regions command
 
             CheckForMissing.DelayedMissingsCheck(400); // Delay to allow Reaper to process the command
-            subtitleViewSource.View.Refresh();
+            subtitleViewSource.View.Refresh(); // Refresh the view to apply changes
         }
 
         private void CheckForMissingBtn_Unchecked(object sender, RoutedEventArgs e)
         {
             ReaperCommandsWriter.Write("CreateRegionsWithOutColor"); // Create regions without color command
 
-            subtitleViewSource.Filter -= Filters.FilterWithComment;
-            subtitleViewSource.Filter -= Filters.ActorsFilter;
-            subtitleViewSource.Filter -= CheckForMissing.FilterForMissing;
-            subtitleViewSource.View.Refresh();
+            subtitleViewSource.Filter -= Filters.FilterWithComment; // Remove the filter for comments
+            subtitleViewSource.Filter -= Filters.ActorsFilter; // Remove the filter for actors
+            subtitleViewSource.Filter -= CheckForMissing.FilterForMissing; // Remove the filter for missing entries
+            subtitleViewSource.View.Refresh(); // Refresh the view to apply changes
         }
 
         private void CheckForRepeatsBtn_Checked(object sender, RoutedEventArgs e)
@@ -511,25 +515,24 @@ namespace Mega_Subtitles_Reborn
 
         private void RegionManagerListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            DependencyObject obj = (DependencyObject)e.OriginalSource;
+            DependencyObject obj = (DependencyObject)e.OriginalSource; // Get the original source of the mouse event
 
-            while (obj != null && obj != RegionManagerListView)
+            while (obj != null && obj != RegionManagerListView) // Traverse up the visual tree until we reach the ListView or the root
             {
-                if (obj.GetType() == typeof(ListViewItem))
-                {
+                if (obj.GetType() == typeof(ListViewItem)) // Check if the original source is a ListViewItem
+                { 
                     ReaperCommandsWriter.Write("SyncPositon"); // Create regions without color command
-
                     break;
                 }
-                obj = VisualTreeHelper.GetParent(obj);
+                obj = VisualTreeHelper.GetParent(obj); // Move to the parent in the visual tree
             }
         }
 
         private void GeneralWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            GeneralSettings.Default.MainWindowHeight = GeneralWindow.ActualHeight;
-            GeneralSettings.Default.MainWindowWidth = GeneralWindow.ActualWidth;
-            GeneralSettings.Default.Save();
+            GeneralSettings.Default.MainWindowHeight = GeneralWindow.ActualHeight; // Save the height of the main window
+            GeneralSettings.Default.MainWindowWidth = GeneralWindow.ActualWidth; // Save the width of the main window
+            GeneralSettings.Default.Save(); // Save the settings
 
             ReaperCommandsWriter.Write("ApplicationCloseEvent"); // Create regions without color command
 
@@ -538,7 +541,14 @@ namespace Mega_Subtitles_Reborn
         private void SyncBtn_Click(object sender, RoutedEventArgs e)
         {
             ReaperCommandsWriter.Write("SyncCsToReaper"); // Create regions without color command
-            ReadFromReaper.DelayedReadReaperSyncFile(400);
+            ReadFromReaper.DelayedReadReaperSyncFile(400); // Delay to allow Reaper to process the command
+        }
+
+        private void ActorsListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (ActorsListView.SelectedItems.Count > 0) // Check if any actor is selected
+                ParseSubtitlesBtn.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent)); // Trigger the ParseSubtitlesBtn_Click event
+
         }
     }
 }

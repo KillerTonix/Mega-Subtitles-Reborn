@@ -62,10 +62,7 @@ local COMMAND_HANDLERS = {
         SyncCsToReaper.Sync() -- Sync the position with C# application
     end,
     
-    ApplicationCloseEvent = function()
-        os.execute("TASKKILL /IM 'Mega Subtitles Reborn.exe'") -- Kill the Mega Subtitles Reborn process
-	    os.execute("TASKKILL /IM 'Mega Subtitles Reborn.exe'") -- Kill the Mega Subtitles Reborn process
-	    os.execute("TASKKILL /IM 'Mega Subtitles Reborn.exe'") -- Kill the Mega Subtitles Reborn process
+    ApplicationCloseEvent = function()     
 	    gfx.quit() -- Close the gfx window
     end
 }

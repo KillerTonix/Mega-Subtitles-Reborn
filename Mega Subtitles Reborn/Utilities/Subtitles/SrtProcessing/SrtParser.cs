@@ -58,8 +58,8 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.SrtProcessing
                 {
                     Number = number,
                     Color = colorPalette[0].ToString(),
-                    Start = start,
-                    End = end,
+                    Start = start.Replace(",", "."),
+                    End = end.Replace(",", "."),
                     Actor = "_Unknown_Actor_",
                     Text = string.Join(" ", textLines)
                 });

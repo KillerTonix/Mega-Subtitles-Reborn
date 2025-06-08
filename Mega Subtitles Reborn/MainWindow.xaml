@@ -174,7 +174,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
+        
+        <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+        
     </Window.Resources>
 
 
@@ -205,7 +209,13 @@
                 <ListView.View>
                     <GridView>
                         <!-- # column -->
-                        <GridViewColumn x:Name="NumberHeader" Header="#" DisplayMemberBinding="{Binding Number}"/>
+                        <GridViewColumn x:Name="NumberHeader" Header="#" Width="35">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Number}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontWeight="Bold"  />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
 
                         <!-- Color column -->
                         <GridViewColumn x:Name="ColorColumn" Header="Color">
@@ -266,7 +276,7 @@
             </Grid.RowDefinitions>
             
             <StackPanel Grid.Row="0">
-                <ListView x:Name="ActorsListView" Grid.Column="1"  ItemsSource="{Binding ActorEnteries}" Height="335" HorizontalAlignment="Stretch" VerticalAlignment="Top" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionMode="Extended" HorizontalContentAlignment="Stretch" Background="#FFF8EDEB" FontFamily="Nunito SemiBold">
+                <ListView x:Name="ActorsListView" Grid.Column="1"  ItemsSource="{Binding ActorEnteries}" Height="335" HorizontalAlignment="Stretch" VerticalAlignment="Top" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionMode="Extended" HorizontalContentAlignment="Stretch" Background="#FFF8EDEB" FontFamily="Nunito SemiBold" MouseDoubleClick="ActorsListView_MouseDoubleClick">
                     <ListView.ContextMenu>
                         <ContextMenu>
                             <MenuItem x:Name="SetActorColorContext" Header="Set the color" Click="SetActorColorContext_Click" />
@@ -277,7 +287,13 @@
                     <ListView.View>
                         <GridView>
                             <!-- # column -->
-                            <GridViewColumn x:Name="ActorsNumberHeader" Header="#" DisplayMemberBinding="{Binding ActorsNumber}"/>
+                            <GridViewColumn x:Name="ActorsNumberHeader" Header="#">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ActorsNumber}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontWeight="Bold"  />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
 
                             <!-- Color column -->
                             <GridViewColumn x:Name="ActorsColorColumn" Header="Color">
