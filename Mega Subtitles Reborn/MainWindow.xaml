@@ -478,11 +478,18 @@
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="20,0,0,0">
-                <Label x:Name="ProjectLabel" Content="Project" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
-                <Button x:Name="SyncBtn" Width="80" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FF4CD03A" Click="SyncBtn_Click">
+                <Label x:Name="SyncLabel" Content="Sync" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
+                <Button x:Name="SyncCursorBtn" Width="88" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FF4CD03A" Click="SyncBtn_Click">
                    <Grid Width="75">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE895;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                        <TextBlock x:Name="SyncTB" Text="Sync" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0" TextAlignment="Center"/>
+                        <TextBlock x:Name="SyncCursorTB" Text="Cursor" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0" TextAlignment="Center"/>
+                    </Grid>
+                </Button>
+
+                <Button x:Name="SyncProjectBtn" Width="88" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFD03A63" Click="SyncBtn_Click" Margin="0,10,0,10">
+                    <Grid Width="75">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE895;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                        <TextBlock x:Name="SyncProjectTB" Text="Project" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0" TextAlignment="Center"/>
                     </Grid>
                 </Button>
             </StackPanel>

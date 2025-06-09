@@ -78,9 +78,12 @@ namespace Mega_Subtitles_Reborn.Utilities
             mainWindow.CheckForRepeatsTB.Text = lang["CheckForRepeatsTB"][id];
             mainWindow.FindDemoPhrasesTB.Text = lang["FindDemoPhrasesTB"][id];
 
-            mainWindow.ProjectLabel.Content = lang["ProjectLabel"][id];
-            mainWindow.SyncTB.Text = lang["SyncTB"][id];
             mainWindow.SettingsTB.Text = lang["SettingsTB"][id];
+            mainWindow.SyncLabel.Content = lang["SyncLabel"][id];
+            mainWindow.SyncCursorTB.Text = lang["SyncCursorTB"][id];
+            mainWindow.SyncProjectTB.Text = lang["SyncProjectTB"][id];
+
+
 
             mainWindow.CommentsBlockLabel.Content = lang["CommentsBlockLabel"][id];
             mainWindow.ImportCommentsTB.Text = lang["ImportCommentsTB"][id];
@@ -129,6 +132,12 @@ namespace Mega_Subtitles_Reborn.Utilities
             mainWindow.CheckForMissingTB.FontSize= fontsize;
             mainWindow.CheckForRepeatsTB.FontSize= fontsize;
             mainWindow.FindDemoPhrasesTB.FontSize= fontsize;
+
+            mainWindow.SettingsTB.FontSize = fontsize;
+            mainWindow.SyncLabel.FontSize = fontsize;
+            mainWindow.SyncCursorTB.FontSize = fontsize;
+            mainWindow.SyncProjectTB.FontSize = fontsize;
+
 
             mainWindow.CommentsBlockLabel.FontSize= fontsize;
             mainWindow.ImportCommentsTB.FontSize= fontsize;

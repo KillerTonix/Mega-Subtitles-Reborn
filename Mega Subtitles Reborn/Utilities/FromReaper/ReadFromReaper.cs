@@ -15,12 +15,12 @@ namespace Mega_Subtitles_Reborn.Utilitis.FromReaper
 
         public static void ReadProjectName()
         {
-            string ProjectName = ReadReaperProjectName();
+            string ProjectName = ReadReaperProjectName(); // Read the project name from the specified file
 
-            if (ProjectName != string.Empty)
+            if (ProjectName != string.Empty) 
             {
-                GeneralSettings.Default.CurrentProjectName = ProjectName;
-                GeneralSettings.Default.Save();
+                GeneralSettings.Default.CurrentProjectName = ProjectName; // Update the current project name in the settings
+                GeneralSettings.Default.Save(); // Save the settings
             }
 
         }
@@ -29,8 +29,8 @@ namespace Mega_Subtitles_Reborn.Utilitis.FromReaper
         {
             try
             {
-                if (DirectoryOrFileCheck.CheckFileExistingAndNotEmpty(GeneralSettings.Default.CurrentProjectNameFilePath))
-                    return File.ReadAllText(GeneralSettings.Default.CurrentProjectNameFilePath, Encoding.UTF8);
+                if (DirectoryOrFileCheck.CheckFileExistingAndNotEmpty(GeneralSettings.Default.CurrentProjectNameFilePath)) // Check if the project name file exists and is not empty
+                    return File.ReadAllText(GeneralSettings.Default.CurrentProjectNameFilePath, Encoding.UTF8); // Read the project name from the file and return it
                 else
                     return string.Empty;
             }
@@ -51,17 +51,18 @@ namespace Mega_Subtitles_Reborn.Utilitis.FromReaper
         {
             try
             {
-                double syncValue = double.Parse(File.ReadAllText(GeneralSettings.Default.ReaperSyncFilePath, Encoding.UTF8));
+                double syncValue = double.Parse(File.ReadAllText(GeneralSettings.Default.ReaperSyncFilePath, Encoding.UTF8)); // Read the sync value from the file
 
-                if (mainWindow.subtitleViewSource.View is CollectionView view)
+                if (mainWindow.subtitleViewSource.View is CollectionView view) // Check if the View is a CollectionView
                 {
-                    var entries = view.Cast<SubtitlesEnteries>();
-                    var match = entries.FirstOrDefault(e => FromSecondToMicroseconds(e.Start) == syncValue);
+                    var entries = view.Cast<SubtitlesEnteries>(); // Cast the View to a collection of SubtitlesEnteries
+                    var match = entries.FirstOrDefault(e => FromSecondToMicroseconds(e.Start) == syncValue); // Find the first entry where the Start time matches the sync value
 
-                    if (match != null)
+                    if (match != null) 
                     {
-                        mainWindow.RegionManagerListView.SelectedItem = match;
-                        mainWindow.RegionManagerListView.ScrollIntoView(match);
+                        mainWindow.RegionManagerListView.SelectedItem = match; // Select the matching entry in the ListView
+                        mainWindow.RegionManagerListView.ScrollIntoView(match); // Scroll the ListView to bring the selected item into view
+                        mainWindow.RegionManagerListView.Focus(); // Set focus to the ListView
                     }
                 }
             }
@@ -73,8 +74,8 @@ namespace Mega_Subtitles_Reborn.Utilitis.FromReaper
 
         private static double FromSecondToMicroseconds(string seconds)
         {
-            TimeSpan time = TimeSpan.Parse(seconds, CultureInfo.InvariantCulture);
-            return time.TotalSeconds;
+            TimeSpan time = TimeSpan.Parse(seconds, CultureInfo.InvariantCulture); // Parse the string to a TimeSpan object using invariant culture to ensure correct parsing
+            return time.TotalSeconds; // Return the total seconds as a double
         }
     }
 }

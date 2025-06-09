@@ -55,9 +55,10 @@
   "CheckForRepeatsTB": [ "Check for repeats", "Проверка на повторы" ],
   "FindDemoPhrasesTB": [ "Find Demo Phrases", "Найдите демо фразы" ],
 
-  "SyncTB": [ "Sync", "Синхр." ],
   "SettingsTB": [ "Settings", "Настройки" ],
-  "ProjectLabel": [ "Project", "Проект" ],
+  "SyncLabel": [ "Sync", "Синхр." ],
+  "SyncCursorTB": [ "Cursor", "Курсор" ],
+  "SyncProjectTB": [ "Project", "Проект" ],
 
 
   "CommentsBlockLabel": [ "Comments", "Комментарии" ],
