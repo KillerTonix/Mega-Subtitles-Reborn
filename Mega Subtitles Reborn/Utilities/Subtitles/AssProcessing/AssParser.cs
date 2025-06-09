@@ -85,9 +85,6 @@ namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
 
             JsonWriter.WriteAssSubtitlesDataJson(data, GeneralSettings.Default.ProjectCahceJsonPath);
             
-
-
-
             var subtitlesData = JsonReader.ReadAssSubtitlesDataJson(GeneralSettings.Default.ProjectCahceJsonPath);
             List<SubtitlesEnteries> subtitleseEntries = subtitlesData.Entries;
             foreach (var entry in subtitleseEntries)

@@ -29,6 +29,19 @@ namespace Mega_Subtitles_Reborn.Utilitis.FileWriter
             
         }
 
+        public static void WriteDeletedLinesJson(List<SubtitlesEnteries> entries, string outputPath)
+        {
+            JsonSerializerOptions options = new()
+            {
+                WriteIndented = true,
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            };
+
+            byte[] jsonBytes = JsonSerializer.SerializeToUtf8Bytes(entries, options);
+            File.WriteAllBytes(outputPath, jsonBytes);
+        }
+
+
         public static void WriteCacheJson()
         {
             var data = new SubtitlesData

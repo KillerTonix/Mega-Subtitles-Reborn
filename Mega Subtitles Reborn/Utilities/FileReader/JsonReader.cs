@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Windows;
 
 
 namespace Mega_Subtitles_Reborn.Utilitis.FileReader
@@ -38,6 +37,32 @@ namespace Mega_Subtitles_Reborn.Utilitis.FileReader
                 return new SubtitlesData();
             }
         }
+
+        public static List<SubtitlesEnteries> ReadDeletedLinesJson(string filePath)
+        {
+            try
+            {
+                DirectoryOrFileCheck.CheckFileExistingAndNotEmpty(filePath);
+
+                string json = File.ReadAllText(filePath, Encoding.UTF8);
+
+                JsonSerializerOptions options = new()
+                {
+                    Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                    PropertyNameCaseInsensitive = true
+                };
+
+                var subtitlesData = JsonSerializer.Deserialize<List<SubtitlesEnteries>>(json, options);
+
+                return subtitlesData ?? [];
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogger.LogException(ex, "JsonReader", MethodBase.GetCurrentMethod()?.Name);
+                return new List<SubtitlesEnteries>();
+            }
+        }
+
 
         public static Dictionary<string, string> ReadVersionJson(string filePath)
         {

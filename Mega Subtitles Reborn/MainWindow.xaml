@@ -24,6 +24,7 @@
         <KeyBinding Modifiers="Control" Key="A" Command="{Binding CtrlA}" />
         <KeyBinding Modifiers="Control" Key="P" Command="{Binding CtrlP}" />
         <KeyBinding Modifiers="Control" Key="F" Command="{Binding CtrlF}" />
+        <KeyBinding Modifiers="Control" Key="Z" Command="{Binding CtrlZ}" />
     </Window.InputBindings>
 
     <Window.Resources>

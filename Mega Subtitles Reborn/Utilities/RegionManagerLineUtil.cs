@@ -1,4 +1,5 @@
 ﻿using Mega_Subtitles_Reborn.Utilities.Subtitles;
+using Mega_Subtitles_Reborn.Utilitis.FileWriter;
 using System.Windows;
 using System.Windows.Input;
 
@@ -12,50 +13,54 @@ namespace Mega_Subtitles_Reborn.Utilities
         {
             var selectedItems = mainWindow.RegionManagerListView.SelectedItems.Cast<SubtitlesEnteries>().ToList(); // Get selected items from the ListView
             var listViewItems = mainWindow.RegionManagerListView.Items.Cast<SubtitlesEnteries>().ToList(); // Get all items from the ListView
+            var entries = new List<SubtitlesEnteries>();
 
             foreach (var item in selectedItems) // Iterate through each selected item
             {
                 int index = listViewItems.IndexOf(item); // Get the index of the selected item in the ListView
+                var data = new SubtitlesEnteries //Create a new instance of SubtitlesEnteries
+                {
+                    Number = item.Number,
+                    Start = item.Start,
+                    End = item.End,
+                    Text = item.Text,
+                    Layer = item.Layer,
+                    Style = item.Style,
+                    Effect = item.Effect,
+                    Actor = item.Actor,
+                    Comment = item.Comment,
+                    Color = item.Color
+                };
 
                 switch (type)
                 {
                     case "Dublicate": // If the type is "Dublicate", create a new entry with the same properties
-                        var duplicate = new SubtitlesEnteries //Create a new instance of SubtitlesEnteries
-                        {
-                            Start = item.Start,
-                            End = item.End,
-                            Text = item.Text,
-                            Layer = item.Layer,
-                            Style = item.Style,
-                            Effect = item.Effect,
-                            Actor = item.Actor,
-                            Comment = item.Comment,
-                            Color = item.Color
-                        };
-                        mainWindow.SubtitleEntries.Insert(index, duplicate); // Insert the new entry at the same index as the original item
-                        break;
 
+                        mainWindow.SubtitleEntries.Insert(index, data); // Insert the new entry at the same index as the original item
+                        break;
                     case "Delete":
                         mainWindow.SubtitleEntries.Remove(item); // If the type is "Delete", remove the selected item from the list
+                        entries.Add(data); // Add the deleted item to the entries list for further processing
                         break;
                 }
             }
+            JsonWriter.WriteDeletedLinesJson(entries, GeneralSettings.Default.DeletedLinesJsonPath); // Write the deleted item to a JSON file
 
             // Renumber all entries
             for (int i = 0; i < mainWindow.SubtitleEntries.Count; i++) // Iterate through all entries in the SubtitleEntries list
             {
                 mainWindow.SubtitleEntries[i].Number = i + 1; // Set the Number property of each entry to its index + 1
-            }            
+            }
             mainWindow.RegionManagerListView.Items.Refresh(); // Refresh the ListView to reflect the changes made to the SubtitleEntries list
         }
 
 
-        public static void ClearComments() 
+        public static void ClearComments()
         {
             foreach (var item in mainWindow.RegionManagerListView.SelectedItems.Cast<SubtitlesEnteries>()) // Iterate through each selected item in the ListView
             {
                 item.Comment = string.Empty; // Set the Comment property of the selected item to an empty string
-            }           
+            }
 
             mainWindow.RegionManagerListView.Items.Refresh(); // Refresh the ListView to reflect the changes made to the Comment properties of the selected items
         }

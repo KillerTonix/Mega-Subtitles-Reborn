@@ -41,6 +41,7 @@ namespace Mega_Subtitles_Reborn
         public RoutedCommand CtrlA { get; set; } = new();
         public RoutedCommand CtrlP { get; set; } = new();
         public RoutedCommand CtrlF { get; set; } = new();
+        public RoutedCommand CtrlZ { get; set; } = new();
 
         public ObservableCollection<SubtitlesEnteries> SubtitleEntries { get; set; } = [];
         public ObservableCollection<ActorsEnteries> ActorEnteries { get; set; } = [];
@@ -133,31 +134,37 @@ namespace Mega_Subtitles_Reborn
         {
             try
             {
-                subtitleViewSource.Filter -= Filters.FilterWithComment;
-                subtitleViewSource.Filter -= Filters.ActorsFilter;
+                subtitleViewSource.Filter -= Filters.FilterWithComment; // Remove the filter for comments
+                subtitleViewSource.Filter -= Filters.ActorsFilter; // Remove the filter for actors
+                subtitleViewSource.Filter -= CheckForMissing.FilterForMissing; // Remove the filter for missing entries
 
-                if (ActorsListView.SelectedItems.Count > 0)
+                if (ActorsListView.SelectedItems.Count > 0) // Check if any actors are selected
                 {
-                    var subtitlesData = JsonReader.ReadAssSubtitlesDataJson(GeneralSettings.Default.ProjectCahceJsonPath);
-                    List<SubtitlesEnteries> entries = subtitlesData.Entries;
+                    var subtitlesData = JsonReader.ReadAssSubtitlesDataJson(GeneralSettings.Default.ProjectCahceJsonPath); // Read the subtitles data from the JSON file
+                    List<SubtitlesEnteries> entries = subtitlesData.Entries; // Get the list of subtitle entries from the data
 
-                    var selectedActors = ActorsListView.SelectedItems
+                    var selectedActors = ActorsListView.SelectedItems // Get the selected actors from the ActorsListView
                         .Cast<ActorsEnteries>()
                         .Select(a => a.Actors)
                         .Where(name => !string.IsNullOrWhiteSpace(name))
                         .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
                     var filteredEntries = entries
-                        .Where(entry => selectedActors.Contains(entry.Actor))
+                        .Where(entry => selectedActors.Contains(entry.Actor)) // Filter entries based on selected actors
                         .ToList();
 
-                    SubtitleEntries.Clear();
+                    SubtitleEntries.Clear(); // Clear the existing entries in the SubtitleEntries collection
                     foreach (var entry in filteredEntries)
                     {
-                        SubtitleEntries.Add(entry);
+                        SubtitleEntries.Add(entry); // Add the filtered entries to the SubtitleEntries collection
                     }
 
-                    RegionManagerListView.Items.Refresh(); // Optional                                             
+                    // Renumber all entries
+                    for (int i = 0; i < SubtitleEntries.Count; i++) // Iterate through all entries in the SubtitleEntries list
+                    {
+                        SubtitleEntries[i].Number = i + 1; // Set the Number property of each entry to its index + 1
+                    }
+                    RegionManagerListView.Items.Refresh(); // Refresh the ListView to reflect the changes made to the SubtitleEntries list
                 }
                 else
                 {
@@ -177,15 +184,15 @@ namespace Mega_Subtitles_Reborn
 
         private void SelectAllActorsBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (ActorsListView.SelectedItems.Count == ActorsListView.Items.Count)
-                ActorsListView.UnselectAll();
+            if (ActorsListView.SelectedItems.Count == ActorsListView.Items.Count) // If all actors are selected
+                ActorsListView.UnselectAll(); // Unselect all actors
             else
-                ActorsListView.SelectAll();
+                ActorsListView.SelectAll(); // Select all actors
         }
 
         private void OpenCacheFolderBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start("explorer.exe", "\"" + GeneralSettings.Default.ProjectCacheFolderPath + "\"");
+            Process.Start("explorer.exe", "\"" + GeneralSettings.Default.ProjectCacheFolderPath + "\""); // Open the project cache folder in File Explorer
         }
 
         private void ClearProjectBtn_Click(object sender, RoutedEventArgs e)
@@ -201,34 +208,34 @@ namespace Mega_Subtitles_Reborn
 
             var result = MessageBox.Show(messageText, messageHeader, MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
-                Directory.Delete(GeneralSettings.Default.ProjectCacheFolderPath, true);
+                Directory.Delete(GeneralSettings.Default.ProjectCacheFolderPath, true); // Delete the project cache folder and all its contents
 
         }
 
         private void SaveSubtitlesBtn_Click(object sender, RoutedEventArgs e)
         {
-            var saveSubtitlesWindow = new SaveSubtitlesWindow { Owner = this };
-            saveSubtitlesWindow.ShowDialog();
+            var saveSubtitlesWindow = new SaveSubtitlesWindow { Owner = this }; // Create a new instance of SaveSubtitlesWindow and set the owner to the current window
+            saveSubtitlesWindow.ShowDialog(); // Show the save subtitles window as a dialog
         }
 
         private void ActorComboBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            JsonWriter.WriteCacheJson();
+            JsonWriter.WriteCacheJson(); // Write the current state of the cache to a JSON file when the ActorComboBox loses focus
         }
 
         private void CommentsTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            JsonWriter.WriteCacheJson();
+            JsonWriter.WriteCacheJson(); // Write the current state of the cache to a JSON file when the CommentsTextBox loses focus
         }
 
 
         private void SetActorColorContext_Click(object sender, RoutedEventArgs e)
         {
-            var selectedActors = ActorsListView.SelectedItems.Cast<ActorsEnteries>().Select(a => a.Actors).ToList();
-            ChangeColorActorLabel.Content = selectedActors[0];
+            var selectedActors = ActorsListView.SelectedItems.Cast<ActorsEnteries>().Select(a => a.Actors).ToList(); // Get the selected actors from the ActorsListView
+            ChangeColorActorLabel.Content = selectedActors[0]; // Set the label content to the name of the first selected actor
 
             ColorPickerGrid.Visibility = Visibility.Visible;
-            ActorReanameGrid.Visibility = Visibility.Hidden;
+            ActorReanameGrid.Visibility = Visibility.Collapsed;
         }
 
         private void RenameActorContext_Click(object sender, RoutedEventArgs e)
@@ -238,7 +245,7 @@ namespace Mega_Subtitles_Reborn
             ActorTextBox.Text = selectedActors[0];
 
             ActorReanameGrid.Visibility = Visibility.Visible;
-            ColorPickerGrid.Visibility = Visibility.Hidden;
+            ColorPickerGrid.Visibility = Visibility.Collapsed;
         }
 
         private void DeleteActorContext_Click(object sender, RoutedEventArgs e)
@@ -250,23 +257,23 @@ namespace Mega_Subtitles_Reborn
         private void SetColorBtn_Click(object sender, RoutedEventArgs e)
         {
             ActorsProcessing.SetActorColor();
-            ColorPickerGrid.Visibility = Visibility.Hidden;
+            ColorPickerGrid.Visibility = Visibility.Collapsed;
         }
 
         private void ColorPickerCancelBtn_Click(object sender, RoutedEventArgs e)
         {
-            ColorPickerGrid.Visibility = Visibility.Hidden;
+            ColorPickerGrid.Visibility = Visibility.Collapsed;
         }
 
         private void ActorReanameCancelBtn_Click(object sender, RoutedEventArgs e)
         {
-            ActorReanameGrid.Visibility = Visibility.Hidden;
+            ActorReanameGrid.Visibility = Visibility.Collapsed;
         }
 
         private void RenameBtn_Click(object sender, RoutedEventArgs e)
         {
             ActorsProcessing.RenameActor();
-            ActorReanameGrid.Visibility = Visibility.Hidden;
+            ActorReanameGrid.Visibility = Visibility.Collapsed;
         }
 
         private void SeparateExportCommentsBtn_Click(object sender, RoutedEventArgs e)
@@ -329,7 +336,31 @@ namespace Mega_Subtitles_Reborn
         }
 
 
+        private void UndoDeletedLines(object sender, RoutedEventArgs e)
+        {
+            var deletedEntries = JsonReader.ReadDeletedLinesJson(GeneralSettings.Default.DeletedLinesJsonPath);
 
+            if (deletedEntries != null && deletedEntries.Count > 0)
+            {
+                foreach (var entry in deletedEntries)
+                {
+                    // Clamp the insert index to be within valid range
+                    int insertIndex = Math.Clamp(entry.Number - 1, 0, SubtitleEntries.Count);
+                    SubtitleEntries.Insert(insertIndex, entry);
+                }
+
+                // Renumber all entries
+                for (int i = 0; i < SubtitleEntries.Count; i++)
+                {
+                    SubtitleEntries[i].Number = i + 1;
+                }
+
+                JsonWriter.WriteCacheJson(); // Save updated list
+                subtitleViewSource.View.Refresh(); // Refresh the ListView
+                File.WriteAllText(GeneralSettings.Default.DeletedLinesJsonPath, "[]");
+
+            }
+        }
 
         private void SetupHotKeys()
         {
@@ -367,6 +398,8 @@ namespace Mega_Subtitles_Reborn
 
                 // Find hotkey (CTRL + F)
                 this.CommandBindings.Add(new CommandBinding(CtrlF, OpenFindWindow));
+
+                this.CommandBindings.Add(new CommandBinding(CtrlZ, UndoDeletedLines));
             }
             catch (Exception ex)
             {
@@ -520,7 +553,7 @@ namespace Mega_Subtitles_Reborn
             while (obj != null && obj != RegionManagerListView) // Traverse up the visual tree until we reach the ListView or the root
             {
                 if (obj.GetType() == typeof(ListViewItem)) // Check if the original source is a ListViewItem
-                { 
+                {
                     ReaperCommandsWriter.Write("SyncPositon"); // Create regions without color command
                     break;
                 }

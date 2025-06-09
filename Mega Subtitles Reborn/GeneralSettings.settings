@@ -53,5 +53,8 @@
     <Setting Name="ReaperSyncFilePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\</Value>
     </Setting>
+    <Setting Name="DeletedLinesJsonPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

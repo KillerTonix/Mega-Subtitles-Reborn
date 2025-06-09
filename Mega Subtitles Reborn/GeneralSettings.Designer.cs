@@ -226,5 +226,17 @@ namespace Mega_Subtitles_Reborn {
                 this["ReaperSyncFilePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\")]
+        public string DeletedLinesJsonPath {
+            get {
+                return ((string)(this["DeletedLinesJsonPath"]));
+            }
+            set {
+                this["DeletedLinesJsonPath"] = value;
+            }
+        }
     }
 }

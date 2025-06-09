@@ -24,7 +24,8 @@ namespace Mega_Subtitles_Reborn.Utilitis.PreRun
             GeneralSettings.Default.ProjectCahceJsonPath = Path.Combine(GeneralSettings.Default.ProjectCacheFolderPath, GeneralSettings.Default.CurrentProjectName) + ".json";
             GeneralSettings.Default.DublicateCachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Mega Subtitles Reborn");
             GeneralSettings.Default.DublicatedProjectCahceJsonPath = Path.Combine(GeneralSettings.Default.DublicateCachePath, GeneralSettings.Default.CurrentProjectName) + ".json";
-            
+            GeneralSettings.Default.DeletedLinesJsonPath = Path.Combine(GeneralSettings.Default.ProjectCacheFolderPath, "DeletedLines.json");
+
             GeneralSettings.Default.Save();
         }
 
