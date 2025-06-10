@@ -209,8 +209,13 @@ namespace Mega_Subtitles_Reborn
 
             var result = MessageBox.Show(messageText, messageHeader, MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
+            {
                 Directory.Delete(GeneralSettings.Default.ProjectCacheFolderPath, true); // Delete the project cache folder and all its contents
+                SubtitleEntries.Clear(); // Clear the SubtitleEntries collection
+                ActorEnteries.Clear(); // Clear the ActorEnteries collection
 
+                SelectSubtitlesBtn.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent)); // Trigger the ParseSubtitlesBtn_Click event
+            }
         }
 
         private void SaveSubtitlesBtn_Click(object sender, RoutedEventArgs e)
@@ -581,7 +586,7 @@ namespace Mega_Subtitles_Reborn
         private void SyncBtn_Click(object sender, RoutedEventArgs e)
         {
             ReaperCommandsWriter.Write("SyncCsToReaper"); // Create regions without color command
-            ReadFromReaper.DelayedReadReaperSyncFile(400); // Delay to allow Reaper to process the command
+            ReadFromReaper.DelayedReadReaperSyncFile(100); // Delay to allow Reaper to process the command
         }
 
         private void ActorsListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
