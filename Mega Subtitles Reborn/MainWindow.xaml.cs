@@ -171,6 +171,7 @@ namespace Mega_Subtitles_Reborn
                     MessageBox.Show("Пожалуйста, выберите актёров для парсинга.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
+                ListViewColumnsAutoResize.AutoResizeColumns(); // Auto-resize the columns in the ListView to fit the content
 
                 ReaperCommandsWriter.Write("CreateRegionsWithOutColor"); // Create regions without color command
 
@@ -289,15 +290,6 @@ namespace Mega_Subtitles_Reborn
         private void ImportCommentsBtn_Click(object sender, RoutedEventArgs e)
         {
             CommentsReader.ReadComments();
-        }
-
-        private void FilterActorsBtn_Click(object sender, RoutedEventArgs e)
-        {
-            subtitleViewSource.Filter -= Filters.FilterWithComment;
-            subtitleViewSource.Filter -= CheckForMissing.FilterForMissing;
-            subtitleViewSource.Filter += Filters.ActorsFilter;
-
-            subtitleViewSource.View.Refresh();
         }
 
         private void DeleteLineListViewContext_Click(object sender, RoutedEventArgs e)
@@ -426,6 +418,7 @@ namespace Mega_Subtitles_Reborn
             subtitleViewSource.Filter += Filters.FilterWithComment; // Add the filter for comments
             subtitleViewSource.Filter -= Filters.ActorsFilter; // Remove the filter for actors
             subtitleViewSource.Filter -= CheckForMissing.FilterForMissing; // Remove the filter for missing entries
+            ListViewColumnsAutoResize.AutoResizeColumns(); // Auto-resize the columns in the ListView to fit the content
             subtitleViewSource.View.Refresh(); // Refresh the view to apply changes
 
         }
@@ -436,6 +429,7 @@ namespace Mega_Subtitles_Reborn
             subtitleViewSource.Filter -= Filters.FilterWithComment; // Remove the filter for comments
             subtitleViewSource.Filter -= Filters.ActorsFilter; // Remove the filter for actors
             subtitleViewSource.Filter -= CheckForMissing.FilterForMissing; // Remove the filter for missing entries
+            ListViewColumnsAutoResize.AutoResizeColumns(); // Auto-resize the columns in the ListView to fit the content
             subtitleViewSource.View.Refresh(); // Refresh the view to apply changes
         }
 
@@ -473,6 +467,7 @@ namespace Mega_Subtitles_Reborn
                     entry.Comment = string.Empty; // Clear the comment
                 }
             }
+            ListViewColumnsAutoResize.AutoResizeColumns(); // Auto-resize the columns in the ListView to fit the content
             subtitleViewSource.View.Refresh();
             JsonWriter.WriteCacheJson();
         }
@@ -513,6 +508,7 @@ namespace Mega_Subtitles_Reborn
             ReaperCommandsWriter.Write("CheckForMissing"); // Create only Missing regions command
 
             CheckForMissing.DelayedMissingsCheck(400); // Delay to allow Reaper to process the command
+            ListViewColumnsAutoResize.AutoResizeColumns(); // Auto-resize the columns in the ListView to fit the content
             subtitleViewSource.View.Refresh(); // Refresh the view to apply changes
         }
 
@@ -523,6 +519,7 @@ namespace Mega_Subtitles_Reborn
             subtitleViewSource.Filter -= Filters.FilterWithComment; // Remove the filter for comments
             subtitleViewSource.Filter -= Filters.ActorsFilter; // Remove the filter for actors
             subtitleViewSource.Filter -= CheckForMissing.FilterForMissing; // Remove the filter for missing entries
+            ListViewColumnsAutoResize.AutoResizeColumns(); // Auto-resize the columns in the ListView to fit the content
             subtitleViewSource.View.Refresh(); // Refresh the view to apply changes
         }
 
@@ -582,6 +579,28 @@ namespace Mega_Subtitles_Reborn
             if (ActorsListView.SelectedItems.Count > 0) // Check if any actor is selected
                 ParseSubtitlesBtn.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent)); // Trigger the ParseSubtitlesBtn_Click event
 
+        }
+
+        private void FilterActorsBtn_Checked(object sender, RoutedEventArgs e)
+        {
+            subtitleViewSource.Filter -= Filters.FilterWithComment;
+            subtitleViewSource.Filter -= CheckForMissing.FilterForMissing;
+            subtitleViewSource.Filter += Filters.ActorsFilter;
+            ListViewColumnsAutoResize.AutoResizeColumns(); // Auto-resize the columns in the ListView to fit the content
+            subtitleViewSource.View.Refresh();
+
+            
+
+
+        }
+
+        private void FilterActorsBtn_Unchecked(object sender, RoutedEventArgs e)
+        {
+            subtitleViewSource.Filter -= Filters.FilterWithComment;
+            subtitleViewSource.Filter -= CheckForMissing.FilterForMissing;
+            subtitleViewSource.Filter -= Filters.ActorsFilter;
+            ListViewColumnsAutoResize.AutoResizeColumns(); // Auto-resize the columns in the ListView to fit the content
+            subtitleViewSource.View.Refresh();
         }
     }
 }

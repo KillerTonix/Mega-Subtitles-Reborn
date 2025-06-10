@@ -325,12 +325,12 @@
                         </Grid>
                     </Button>
 
-                    <Button x:Name="FilterActorsBtn" HorizontalAlignment="Center" Height="25" VerticalAlignment="Top" Width="115" Margin="0,30,0,0" FontFamily="Nunito SemiBold" FontSize="14" Background="#FFFFF0C2" BorderBrush="#FFFBD485" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="FilterActorsBtn_Click">
+                    <ToggleButton x:Name="FilterActorsBtn" HorizontalAlignment="Center" Height="25" VerticalAlignment="Top" Width="115" Margin="0,30,0,0" FontFamily="Nunito SemiBold" FontSize="14" Background="#FFFFF0C2" BorderBrush="#FFFBD485" Style="{StaticResource CustomToggleButton}" Checked="FilterActorsBtn_Checked" Unchecked="FilterActorsBtn_Unchecked">
                         <Grid  Width="110">
                             <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE71C;" FontSize="16" VerticalAlignment="Center" />
                             <TextBlock x:Name="FilterActorsTB" Text="Filter" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
                         </Grid>
-                    </Button>
+                    </ToggleButton>
                     <Button x:Name="ParseSRTSubtitlesBtn" Content="Parse" Height="25"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="100" HorizontalContentAlignment="Center" Visibility="Collapsed" FontFamily="Nunito SemiBold" FontSize="14"/>
                 </Grid>
 
