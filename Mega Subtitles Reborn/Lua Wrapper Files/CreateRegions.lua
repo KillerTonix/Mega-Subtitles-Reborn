@@ -24,7 +24,6 @@ function CreateRegions.addMarkers(subtitleEntries, partly)
 				end
 			end
 		end
-
 	else
 		for actor, entries in pairs(subtitleEntries) do -- Iterate through each actor and their entries
 			for i, entry in ipairs(entries) do -- For each entry, add a project marker

@@ -29,9 +29,9 @@ function ColorizeAllTracks.colorize(subtitleEntries, partly)
 	end
 end
 
-function ColorizeAllTracks.UnColorize()	
+function ColorizeAllTracks.UnColorize()
 	local color = reaper.GetTrackColor(reaper.GetTrack(ProjectID, 0)) -- Get the color of the first track in the project
-	
+
 	for i = 1, NumerOfTracks - 1 do	 -- Iterate through each track in the project starting from the second track
 		track = reaper.GetTrack(ProjectID, i) -- Get the track object for the current index
 		reaper.SetMediaTrackInfo_Value(track, 'I_CUSTOMCOLOR', color ) -- Set the track color to the color of the first track

@@ -78,6 +78,21 @@ local function load_json_file()
     return content
 end
 
+function isColored(commandType, color, comment)
+    if commandType == "WithColor" then
+        return colorToNative(color)    
+    elseif commandType == "WithComments" then
+        if #comment > 0 then
+            return ColorToNative(255, 0, 0) | 0x1000000
+        else
+            return 0 -- No color for empty comments
+        end
+    else 
+        return 0 -- No color for other command types
+    end    
+end
+
+
 function ParseCacheFile.parse(commandType)
     local content = load_json_file() -- Load the JSON content from the file
     local data = json.decode(content) -- Decode the JSON content
@@ -88,10 +103,11 @@ function ParseCacheFile.parse(commandType)
     for i, entry in ipairs(data.Entries) do -- Iterate through each entry in the data
         start_time = entry.Start or "" 
         end_time = entry.End or ""
-        text = entry.Text or ""
-        color = entry.Color or ""
+        text = entry.Text or ""        
         actor = entry.Actor or ""
         comment = entry.Comment or ""
+        color = isColored(commandType, entry.Color, comment)
+
         if start_time and end_time and text and color and actor and comment then
             if commandType == "OnlyWithComments" and comment == "" then 
                 goto continue
@@ -101,7 +117,7 @@ function ParseCacheFile.parse(commandType)
                 Start = timeToSeconds(start_time),
                 End = timeToSeconds(end_time),
                 Text = text,
-                Color = handler and handler(commandType == "WithComments" and comment or trim(color)) or "0", -- Use the handler to process color or comment
+                Color = color, -- Use the handler to process color or comment
                 Actor = actor,
                 Comment = comment
             }

@@ -490,7 +490,7 @@ namespace Mega_Subtitles_Reborn
 
         private void ColorizeSelectedTracksBtn_Unchecked(object sender, RoutedEventArgs e)
         {
-            ReaperCommandsWriter.Write("CreateRegionsWithOutColor"); // Create regions without color command
+            ReaperCommandsWriter.Write("UnColorizeAllTracks"); // Create regions without color command
         }
 
         private void ColorizeSelectedActorsCommentsBtn_Checked(object sender, RoutedEventArgs e)

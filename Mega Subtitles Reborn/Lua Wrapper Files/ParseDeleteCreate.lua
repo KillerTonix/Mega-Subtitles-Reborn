@@ -11,16 +11,6 @@ local CreateRegions = require("CreateRegions")
 local preventUI = reaper.PreventUIRefresh
 local updateArrange = reaper.UpdateArrange
 
--- Command handlers table
-local TRACK_HANDLERS = {
-	WithOutColor = function()
-		ColorizeAllTracks.UnColorize()
-	end,
-	
-	WithColor = function(entries, partly)
-		ColorizeAllTracks.colorize(entries, partly)
-	end
-}
 
 function ParseDeleteCreate.regions(commandType, partly)
 	local entries = ParseCacheFile.parse(commandType) -- Parse the cache file for regions based on the command type
@@ -37,9 +27,10 @@ end
 function ParseDeleteCreate.tracks(commandType, partly)
 	local entries = ParseCacheFile.parse(commandType)
 	if entries then
-		local handler = TRACK_HANDLERS[commandType]
-		if handler then
-			handler(entries, partly)
+		if commandType == "WithOutColor" then
+			ColorizeAllTracks.UnColorize()
+		elseif commandType == "WithColor" then
+			ColorizeAllTracks.colorize(entries, partly)
 		end
 	end
 end
