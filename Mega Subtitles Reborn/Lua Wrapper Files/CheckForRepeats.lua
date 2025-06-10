@@ -3,15 +3,11 @@ local CheckForRepeats = {}
 
 local WriteRegions = require("WriteRegions")
 
-function CheckForRepeats.check()
-    local project_ID, _ = reaper.EnumProjects(-1, "")
-    local retval, num_markers, num_regions = reaper.CountProjectMarkers(project_ID)   
+function CheckForRepeats.check() 
     local threshold_percentage = 55
     reaper.PreventUIRefresh(1)
-
-    for i = num_regions - 1, 0, -1 do
-        local retval, is_region, position, region_end, name, idx = reaper.EnumProjectMarkers(i)
-		
+    for i = CountOfProjectMarkers - 1, 0, -1 do
+        local retval, is_region, position, region_end, name, idx = reaper.EnumProjectMarkers(i)	
 
         local region_original_length = region_end - position
         local threshold_length = (threshold_percentage / 100) * region_original_length
@@ -23,11 +19,10 @@ function CheckForRepeats.check()
         if is_region then            
             -- Count the items under the region
             local item_count = 0
-            local num_tracks = reaper.CountTracks(0)
             
             -- Find last region end position (project duration)
             local project_duration = 0
-            for j = 0, num_regions - 1 do
+            for j = 0, CountOfProjectMarkers - 1 do
                 local _, isrgn, _, region_end = reaper.EnumProjectMarkers(j)
                 if isrgn and region_end > project_duration then
                     project_duration = region_end
@@ -37,7 +32,7 @@ function CheckForRepeats.check()
             -- Calculate threshold length (30% of project duration)
             local duration_threshold = project_duration * 0.3
             
-            for track_idx = 0, num_tracks - 1 do 
+            for track_idx = 0, NumerOfTracks - 1 do 
                 local track = reaper.GetTrack(0, track_idx)
                 if track then
                     -- Calculate total length of items in track
@@ -69,7 +64,7 @@ function CheckForRepeats.check()
             
             -- Delete region if 1 or fewer items are found
             if item_count <= 1 then
-                reaper.DeleteProjectMarker(0, idx, is_region)
+                reaper.DeleteProjectMarker(ProjectID, idx, is_region)
             end
         end
     end

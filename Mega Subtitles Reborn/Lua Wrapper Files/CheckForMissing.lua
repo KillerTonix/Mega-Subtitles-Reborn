@@ -33,7 +33,7 @@ function CheckForMissing.checkingAndColoring()
             table.insert(tracks, track) -- If so, add the track to the list of tracks to be processed
         end
     end
-
+    
     local cached_items = cacheTrackItems(tracks) -- Cache the media items of the tracks
 
     local regions = {} -- Initialize an empty table to store regions

@@ -525,12 +525,22 @@ namespace Mega_Subtitles_Reborn
 
         private void CheckForRepeatsBtn_Checked(object sender, RoutedEventArgs e)
         {
+            ReaperCommandsWriter.Write("CheckForRepeats"); // Create only Missing regions command
 
+            CheckForMissing.DelayedMissingsCheck(400); // Delay to allow Reaper to process the command
+            ListViewColumnsAutoResize.AutoResizeColumns(); // Auto-resize the columns in the ListView to fit the content
+            subtitleViewSource.View.Refresh(); // Refresh the view to apply changes
         }
 
         private void CheckForRepeatsBtn_Unchecked(object sender, RoutedEventArgs e)
         {
+            ReaperCommandsWriter.Write("CreateRegionsWithOutColor"); // Create regions without color command
 
+            subtitleViewSource.Filter -= Filters.FilterWithComment; // Remove the filter for comments
+            subtitleViewSource.Filter -= Filters.ActorsFilter; // Remove the filter for actors
+            subtitleViewSource.Filter -= CheckForMissing.FilterForMissing; // Remove the filter for missing entries
+            ListViewColumnsAutoResize.AutoResizeColumns(); // Auto-resize the columns in the ListView to fit the content
+            subtitleViewSource.View.Refresh(); // Refresh the view to apply changes
         }
 
         private void FindDemoPhrasesBtn_Checked(object sender, RoutedEventArgs e)
@@ -589,7 +599,7 @@ namespace Mega_Subtitles_Reborn
             ListViewColumnsAutoResize.AutoResizeColumns(); // Auto-resize the columns in the ListView to fit the content
             subtitleViewSource.View.Refresh();
 
-            
+
 
 
         }
