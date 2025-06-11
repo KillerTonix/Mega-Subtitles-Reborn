@@ -59,6 +59,9 @@
     <None Update="Lua Wrapper Files\DeleteAllRegions.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Lua Wrapper Files\FindDemoPhrases.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Lua Wrapper Files\GetCurrentProjectName.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
