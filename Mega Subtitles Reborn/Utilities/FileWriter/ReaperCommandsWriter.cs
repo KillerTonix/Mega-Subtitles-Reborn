@@ -11,22 +11,23 @@ namespace Mega_Subtitles_Reborn.Utilities.FileWriter
     public class ReaperCommandsWriter
     {
         private static readonly MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
-        public static void Write(string command)
+        public static void Write(string command, bool isDemoPhrases = false)
         {
             try
             {
                 var selectedItems = mainWindow.RegionManagerListView.SelectedItems.Cast<SubtitlesEnteries>().ToList();
                 string startPos = string.Empty;
-
+                string cachePath = isDemoPhrases ? GeneralSettings.Default.DemoPhrasesPath : GeneralSettings.Default.ProjectCahceJsonPath;
                 foreach (var item in selectedItems)
                 {
                     startPos = item.Start;
                 }
 
+
                 var data = new CommandsData
                 {
                     Command = command,
-                    CachePath = GeneralSettings.Default.ProjectCahceJsonPath,
+                    CachePath = cachePath,
                     CurrentPosition = StringToSeccondsString(startPos),
                     DateAndTime = DateTime.Now,
                 };

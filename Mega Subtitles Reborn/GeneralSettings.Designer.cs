@@ -238,5 +238,17 @@ namespace Mega_Subtitles_Reborn {
                 this["DeletedLinesJsonPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\")]
+        public string DemoPhrasesPath {
+            get {
+                return ((string)(this["DemoPhrasesPath"]));
+            }
+            set {
+                this["DemoPhrasesPath"] = value;
+            }
+        }
     }
 }

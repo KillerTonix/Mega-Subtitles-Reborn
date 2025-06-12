@@ -24,9 +24,9 @@ namespace Mega_Subtitles_Reborn.Utilitis.FileWriter
             File.WriteAllBytes(outputPath, jsonBytes);
 
 
-            if (GeneralSettings.Default.SaveDublicateCache)            
+            if (GeneralSettings.Default.SaveDublicateCache)
                 File.WriteAllBytes(GeneralSettings.Default.DublicatedProjectCahceJsonPath, jsonBytes);
-            
+
         }
 
         public static void WriteDeletedLinesJson(List<SubtitlesEnteries> entries, string outputPath)
@@ -42,15 +42,17 @@ namespace Mega_Subtitles_Reborn.Utilitis.FileWriter
         }
 
 
-        public static void WriteCacheJson()
+        public static void WriteCacheJson(bool isDemoPhrases = false)
         {
             var data = new SubtitlesData
             {
                 SubtitlesPath = GeneralSettings.Default.SubtitlesPath,
                 Entries = [.. mainWindow.SubtitleEntries]
             };
-
-            WriteAssSubtitlesDataJson(data, GeneralSettings.Default.ProjectCahceJsonPath);
+            if (isDemoPhrases)
+                WriteAssSubtitlesDataJson(data, GeneralSettings.Default.DemoPhrasesPath);
+            else
+                WriteAssSubtitlesDataJson(data, GeneralSettings.Default.ProjectCahceJsonPath);
         }
 
 

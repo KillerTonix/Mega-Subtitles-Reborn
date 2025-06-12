@@ -550,12 +550,14 @@ namespace Mega_Subtitles_Reborn
 
         private void FindDemoPhrasesBtn_Checked(object sender, RoutedEventArgs e)
         {
+            Calculation.FindLongestActorParts();
+            ReaperCommandsWriter.Write("ColorizeSelectedActors", isDemoPhrases: true); // Create only Missing regions command
 
         }
 
         private void FindDemoPhrasesBtn_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            ParseSubtitlesBtn.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent)); // Trigger the ParseSubtitlesBtn_Click event
         }
 
         private void RegionManagerListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
