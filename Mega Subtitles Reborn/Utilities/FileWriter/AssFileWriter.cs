@@ -10,60 +10,94 @@ namespace Mega_Subtitles_Reborn.Utilitis.FileWriter
     {
         private static readonly MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
-        public static void WriteAssFile(List<string?> SelectedActors, string AssFilePath, bool isSingleFile)
+        public static void WriteAssFile(List<string?> selectedActors, string assFilePath, bool isSingleFile = false, bool zeroLine = false, bool addTenSec = false)
         {
             var subtitlesData = JsonReader.ReadAssSubtitlesDataJson(GeneralSettings.Default.ProjectCahceJsonPath);
+            var allEntries = mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>().ToList();
 
-            if (isSingleFile)
+            void WriteToFile(string path, List<SubtitlesEnteries> entries)
             {
-                var entries = mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>()
-                .Where(e => SelectedActors.Contains(e.Actor)).OrderBy(e => e.Start).ToList();
-
-                using var writer = new StreamWriter(AssFilePath, true, Encoding.UTF8);
+                using var writer = new StreamWriter(path, true, Encoding.UTF8);
                 writer.WriteLine(ChangeAssHeader(GetAssHeader(subtitlesData.SubtitlesPath)));
+
+                if (zeroLine)
+                    writer.WriteLine("Dialogue: 0,00:00:00.00,00:00:00.00,Default,,0,0,0,,\n");
+
+                if (addTenSec && entries.Count > 0)
+                {
+                    var firstStart = TimeSpan.Parse(entries[0].Start);
+
+                    if (firstStart > TimeSpan.FromSeconds(10))
+                    {
+                        // Add 20-second noise at start
+                        writer.WriteLine("Dialogue: 0,00:00:00.00,00:00:10.00,Default,,0,0,0,,10 seconds for recording noise");
+                    }
+                    else
+                    {
+                        // Add 10-second noise entry after any long subtitle
+                        foreach (var item in entries)
+                        {
+                            var duration = TimeSpan.Parse(item.End) - TimeSpan.Parse(item.Start);
+                            var startPlusTenSec = TimeSpan.Parse(item.End) + TimeSpan.FromSeconds(10);
+                            if (duration > TimeSpan.FromSeconds(11))
+                            {
+                                writer.WriteLine($"Dialogue: 0,{item.End},{startPlusTenSec},Default,,0,0,0,,10 seconds for recording noise");
+                                break;
+                            }
+                        }
+                    }
+                }
 
                 foreach (var item in entries)
                 {
-                    writer.WriteLine($"Dialogue: {item.Layer},{item.Start},{item.End},{item.Style},{item.Actor},0,0,0,{item.Effect},{item.Text.Replace(@"\N", Environment.NewLine)}");
+                    var text = item.Text.Replace(@"\N", Environment.NewLine);
+                    writer.WriteLine($"Dialogue: {item.Layer},{item.Start},{item.End},{item.Style},{item.Actor},0,0,0,{item.Effect},{text}");
                 }
+            }
+
+            if (isSingleFile)
+            {
+                var entries = allEntries
+                    .Where(e => selectedActors.Contains(e.Actor))
+                    .OrderBy(e => e.Start)
+                    .ToList();
+
+                WriteToFile(assFilePath, entries);
             }
             else
             {
-                for (int i = 0; i < SelectedActors.Count; i++)
+                foreach (var actor in selectedActors)
                 {
-                    string? actor = SelectedActors[i];
-                    if (actor == null)
-                        return;
+                    if (actor == null) continue;
 
-                    var entries = mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>().Where(e => e.Actor == actor).ToList();
+                    var entries = allEntries
+                        .Where(e => e.Actor == actor)
+                        .OrderBy(e => TimeSpan.Parse(e.Start))
+                        .ToList();
 
-                    string? OutputPath = Path.Combine(AssFilePath, actor) + ".ass";
+                    var outputPath = Path.Combine(assFilePath, actor + ".ass");
 
-                    if (DirectoryOrFileCheck.CheckFileExistingAndNotEmpty(OutputPath))
+                    if (DirectoryOrFileCheck.CheckFileExistingAndNotEmpty(outputPath))
                     {
-                        var result = MessageBox.Show($"{OutputPath} already exists.\nDo you want to replace it?\nIf press No then will be add '_(1)' after file name.", "Save the subtitles file", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
-
+                        var result = MessageBox.Show($"{outputPath} already exists.\nDo you want to replace it?\nIf press No then '_(1)' will be added.", "Save the subtitles file", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
                         if (result == MessageBoxResult.Yes)
                         {
-                            File.Delete(OutputPath);
+                            File.Delete(outputPath);
                         }
-                        else if (result == MessageBoxResult.No)
+                        else
                         {
-                            OutputPath = Path.Combine(AssFilePath, actor) + "_(1).ass";
+                            outputPath = Path.Combine(assFilePath, actor + "_(1).ass");
                         }
                     }
 
-                    using var writer = new StreamWriter(OutputPath, true, Encoding.UTF8);
-                    writer.WriteLine(ChangeAssHeader(GetAssHeader(subtitlesData.SubtitlesPath)));
-
-                    foreach (var item in entries)
-                    {
-                        writer.WriteLine($"Dialogue: {item.Layer},{item.Start},{item.End},{item.Style},{item.Actor},0,0,0,{item.Effect},{item.Text.Replace(@"\N", Environment.NewLine)}");
-                    }
-
+                    WriteToFile(outputPath, entries);
                 }
             }
+
+            MessageBox.Show("Subtitles file saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+
+
 
 
         private static string[] GetAssHeader(string OldSubtitlesFilePath)

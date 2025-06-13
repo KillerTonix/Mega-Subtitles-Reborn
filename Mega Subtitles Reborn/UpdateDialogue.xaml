@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Mega_Subtitles_Reborn"
         mc:Ignorable="d"
-        Title="New Update Found" Height="170" Width="500" BorderBrush="#FF707070" WindowStyle="ToolWindow" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="New Update Found" Height="170" Width="500" BorderBrush="#FF707070" WindowStyle="ToolWindow" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+        BorderThickness="2" Background="#FF3B3254">
     <Window.Resources>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
@@ -112,7 +113,7 @@
         </Style>
     </Window.Resources>
     
-    <Grid Background="#FF1F1F23">
+    <Grid>
         <TextBlock x:Name="NewVersionText" Text="Mega Subtitles Reborn version 0.0.0.0 has been released!" HorizontalAlignment="Center" Margin="10,10,0,0" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
         <TextBlock x:Name="OldVersionText" Text="You have versio 0.0.0.0 installed." HorizontalAlignment="Left" Margin="10,40,0,0" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14"/>
         <TextBlock x:Name="DownloadText" Text="Would you like to download it now?" HorizontalAlignment="Left" Margin="10,60,0,0" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14"/>

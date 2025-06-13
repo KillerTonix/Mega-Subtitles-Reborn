@@ -8,7 +8,7 @@
         Title="Find" Height="120" Width="420"
         ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
         WindowStyle="ToolWindow" FontFamily="Nunito SemiBold" FontSize="14"
-        Background="#FF1F1F23" PreviewKeyDown="Window_PreviewKeyDown">
+        BorderThickness="2" Background="#FF3B3254" PreviewKeyDown="Window_PreviewKeyDown" BorderBrush="Black">
 
     <Window.Resources>
         <Style x:Key="FocusVisual">

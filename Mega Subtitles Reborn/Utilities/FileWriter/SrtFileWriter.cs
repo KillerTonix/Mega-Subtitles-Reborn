@@ -10,67 +10,101 @@ namespace Mega_Subtitles_Reborn.Utilities.FileWriter
     {
         private static readonly MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
-        public static void WriteSrtFile(List<string?> SelectedActors, string SrtFilePath, bool isSingleFile)
+        public static void WriteSrtFile(List<string?> selectedActors, string srtFilePath, bool isSingleFile = false, bool zeroLine = false, bool addTenSec = false)
         {
+            var allEntries = mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>().ToList();
 
-
-            if (isSingleFile)
+            void WriteToFile(string path, List<SubtitlesEnteries> entries)
             {
-                var entries = mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>()
-                .Where(e => SelectedActors.Contains(e.Actor)).OrderBy(e => e.Start).ToList();
-
-                using var writer = new StreamWriter(SrtFilePath, true, Encoding.UTF8);
+                using var writer = new StreamWriter(path, true, Encoding.UTF8);
                 int counter = 1;
+
+                if (zeroLine)
+                {
+                    writer.WriteLine(counter++);
+                    writer.WriteLine("00:00:00,000 --> 00:00:00,000");
+                    writer.WriteLine();
+                }
+
+                if (addTenSec && entries.Count > 0)
+                {
+                    var firstStart = TimeSpan.Parse(entries[0].Start);
+
+                    if (firstStart > TimeSpan.FromSeconds(10))
+                    {
+                        // Add 20 seconds of noise from start
+                        writer.WriteLine(counter++);
+                        writer.WriteLine("00:00:00,000 --> 00:00:10,000");
+                        writer.WriteLine("10 seconds for recording noise");
+                        writer.WriteLine();
+                    }
+                    else
+                    {
+                        foreach (var item in entries)
+                        {
+                            var duration = TimeSpan.Parse(item.End) - TimeSpan.Parse(item.Start);
+                            if (duration > TimeSpan.FromSeconds(11))
+                            {
+                                writer.WriteLine(counter++);
+                                writer.WriteLine($"{item.Start.Replace('.', ',')} --> {item.End.Replace('.', ',')}");
+                                writer.WriteLine("10 seconds for recording noise");
+                                writer.WriteLine();
+                                break;
+                            }
+                        }
+                    }
+                }
 
                 foreach (var item in entries)
                 {
                     writer.WriteLine(counter++);
                     writer.WriteLine($"{item.Start.Replace('.', ',')} --> {item.End.Replace('.', ',')}");
-                    writer.WriteLine($"{item.Text}");
-                    writer.WriteLine("");
+                    writer.WriteLine(item.Text);
+                    writer.WriteLine();
                 }
+            }
+
+            if (isSingleFile)
+            {
+                var entries = allEntries
+                    .Where(e => selectedActors.Contains(e.Actor))
+                    .OrderBy(e => TimeSpan.Parse(e.Start))
+                    .ToList();
+
+                WriteToFile(srtFilePath, entries);
             }
             else
             {
-                for (int i = 0; i < SelectedActors.Count; i++)
+                foreach (var actor in selectedActors)
                 {
-                    string? actor = SelectedActors[i];
-                    if (actor == null)
-                        return;
+                    if (actor == null) continue;
 
-                    var entries = mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>().Where(e => e.Actor == actor).ToList();
+                    var entries = allEntries
+                        .Where(e => e.Actor == actor)
+                        .OrderBy(e => TimeSpan.Parse(e.Start))
+                        .ToList();
 
-                    string? OutputPath = Path.Combine(SrtFilePath, actor) + ".srt";
+                    var outputPath = Path.Combine(srtFilePath, actor + ".srt");
 
-                    if (DirectoryOrFileCheck.CheckFileExistingAndNotEmpty(OutputPath))
+                    if (DirectoryOrFileCheck.CheckFileExistingAndNotEmpty(outputPath))
                     {
-                        var result = MessageBox.Show($"{OutputPath} already exists.\nDo you want to replace it?\nIf press No then will be add '_(1)' after file name.", "Save the subtitles file", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
-
+                        var result = MessageBox.Show($"{outputPath} already exists.\nDo you want to replace it?\nIf press No then '_(1)' will be added.", "Save the subtitles file", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
                         if (result == MessageBoxResult.Yes)
                         {
-                            File.Delete(OutputPath);
+                            File.Delete(outputPath);
                         }
-                        else if (result == MessageBoxResult.No)
+                        else
                         {
-                            OutputPath = Path.Combine(SrtFilePath, actor) + "_(1).srt";
+                            outputPath = Path.Combine(srtFilePath, actor + "_(1).srt");
                         }
                     }
 
-
-                    using var writer = new StreamWriter(OutputPath, true, Encoding.UTF8);
-
-                    int counter = 1;
-
-                    foreach (var item in entries)
-                    {
-                        writer.WriteLine(counter++);
-                        writer.WriteLine($"{item.Start.Replace('.', ',')} --> {item.End.Replace('.', ',')}");
-                        writer.WriteLine($"{item.Text}");
-                        writer.WriteLine("");
-                    }
-
+                    WriteToFile(outputPath, entries);
                 }
             }
+
+            MessageBox.Show("Subtitles saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+
     }
 }

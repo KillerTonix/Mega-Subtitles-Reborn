@@ -45,6 +45,8 @@ namespace Mega_Subtitles_Reborn
             MultiFileRadioBtn.Content = lang["MultiFileRadioBtn"][id];
             SaveFileFormatLabel.Content = lang["SaveFileFormatLabel"][id];
             SelectAllActorsTB.Text = lang["SelectAllActorsTB"][id];
+            AddZeroLineChkBox.Content = lang["AddZeroLineChkBox"][id];
+            AddTenSecForNoiseChkBox.Content = lang["AddTenSecForNoiseChkBox"][id];
             SaveTB.Text = lang["SaveTB"][id];
 
             actorNames = [.. ((MainWindow)Application.Current.MainWindow)
@@ -101,7 +103,8 @@ namespace Mega_Subtitles_Reborn
 
             string FileOrPath = string.Empty;
             string filter = string.Empty;
-
+            bool _zeroline = AddZeroLineChkBox.IsChecked ?? false;
+            bool _addTenSec = AddTenSecForNoiseChkBox.IsChecked ?? false;
             if (SingleFileRadioBtn.IsChecked == true)
             {
                 if (AssRadioBtn.IsChecked == true)
@@ -124,9 +127,9 @@ namespace Mega_Subtitles_Reborn
                 if (result == true)
                 {
                     if (AssRadioBtn.IsChecked == true)
-                        AssFileWriter.WriteAssFile(selectedActors, saveFileDialog1.FileName, isSingleFile: true);
+                        AssFileWriter.WriteAssFile(selectedActors, saveFileDialog1.FileName, isSingleFile: true, zeroLine: _zeroline, addTenSec: _addTenSec);
                     else if (SrtRadioBtn.IsChecked == true)
-                        SrtFileWriter.WriteSrtFile(selectedActors, saveFileDialog1.FileName, isSingleFile: true);
+                        SrtFileWriter.WriteSrtFile(selectedActors, saveFileDialog1.FileName, isSingleFile: true, zeroLine: _zeroline, addTenSec: _addTenSec);
                 }
             }
             else if (MultiFileRadioBtn.IsChecked == true)
@@ -145,11 +148,13 @@ namespace Mega_Subtitles_Reborn
                 {
                     string? folderName = folderDialog.FolderName;
                     if (AssRadioBtn.IsChecked == true)
-                        AssFileWriter.WriteAssFile(selectedActors, folderDialog.FolderName, isSingleFile: false);
+                        AssFileWriter.WriteAssFile(selectedActors, folderDialog.FolderName, zeroLine: _zeroline, addTenSec: _addTenSec);
                     else if (SrtRadioBtn.IsChecked == true)
-                        SrtFileWriter.WriteSrtFile(selectedActors, folderDialog.FolderName, isSingleFile: false);
+                        SrtFileWriter.WriteSrtFile(selectedActors, folderDialog.FolderName, zeroLine: _zeroline, addTenSec: _addTenSec);
                 }
             }
+
+
 
         }
 

@@ -4,10 +4,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Save Subtitles" Height="800" Width="800" Background="#FF1F1F23" 
+        Title="Save Subtitles" Height="800" Width="800" BorderThickness="2" Background="#FF3B3254" 
         MinHeight="600" MinWidth="600"
-        WindowStartupLocation="CenterScreen" Visibility="Visible" WindowState="Normal"
-        ShowInTaskbar="True" ResizeMode="CanResize" SizeToContent="Manual" WindowStyle="ToolWindow" SizeChanged="Window_SizeChanged">
+        WindowStartupLocation="CenterScreen"  Visibility="Visible" WindowState="Normal"
+        ShowInTaskbar="True" ResizeMode="CanResize" SizeToContent="Manual" WindowStyle="ToolWindow" SizeChanged="Window_SizeChanged" BorderBrush="#FF120F19">
 
     <Window.Resources>
         <Style x:Key="FocusVisual">
@@ -135,10 +135,10 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Orientation="Vertical" Grid.Column="0">
-                <Label x:Name="SaveSettingsLabel" Content="Save сettings" HorizontalAlignment="Center" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
+                <Label x:Name="SaveSettingsLabel" Content="Save settings" HorizontalAlignment="Center" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
                 <StackPanel Margin="10,0,0,0" Orientation="Vertical">
-                    <RadioButton x:Name="SingleFileRadioBtn" Content="Single фile" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"  IsChecked="True"/>
-                    <RadioButton x:Name="MultiFileRadioBtn" Content="Multi фile"  Margin="0,10,0,10" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
+                    <RadioButton x:Name="SingleFileRadioBtn" Content="Single File" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"  IsChecked="True"/>
+                    <RadioButton x:Name="MultiFileRadioBtn" Content="Multi File"  Margin="0,10,0,10" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
                     
                     <Button x:Name="SelectAllActorsBtn" HorizontalAlignment="Center" Height="25" VerticalAlignment="Top" Width="115" FontFamily="Nunito SemiBold" FontSize="14" Background="#FFFFF0C2" BorderBrush="#FFFBD485" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="SelectAllActorsBtn_Click">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Width="110">
@@ -155,7 +155,15 @@
                     <RadioButton x:Name="AssRadioBtn" Content="ASS" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
                     <RadioButton x:Name="SrtRadioBtn" Content="SRT" IsChecked="True" Margin="0,10,0,10" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
                 </StackPanel>
-            </StackPanel>            
+            </StackPanel>
+            
+            <StackPanel Orientation="Vertical" Grid.Column="2">
+                <Label x:Name="AdditionalLabel" Content="Additional" HorizontalAlignment="Center" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
+                <StackPanel Margin="10,0,0,0"  HorizontalAlignment="Left" Orientation="Vertical">
+                    <CheckBox x:Name="AddZeroLineChkBox" Content="Add 0 line" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
+                    <CheckBox x:Name="AddTenSecForNoiseChkBox" Content="Add 10sec line for noise"  Margin="0,10,0,10" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
+                </StackPanel>
+            </StackPanel>
         </Grid>
 
         <Button x:Name="SaveBtn" Margin="0,10,0,0" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" Width="150" Background="#FFEFCFE3" BorderBrush="#FFE27396" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="SaveBtn_Click">
