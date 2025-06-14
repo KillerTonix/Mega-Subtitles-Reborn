@@ -12,9 +12,11 @@ function ReadCommandFromCSharp.ReadCommand()
 		local CachePath = DecodedJson["CachePath"] -- Extract the argument from the decoded JSON
 		local CurrentPosition = DecodedJson["CurrentPosition"] -- Extract the date and time from the decoded JSON	
 		local DateAndTime = DecodedJson["DateAndTime"] -- Extract the date and time from the decoded JSON	
+		local Actors = DecodedJson["Actors"] -- Extract the date and time from the decoded JSON	
 
-		if Command and CachePath and DateAndTime and CurrentPosition then -- Check if both command and argument are present
-			return Command, CachePath, CurrentPosition, DateAndTime -- Return the command and argument, removing any newline characters
+
+		if Command and CachePath and DateAndTime and CurrentPosition and Actors then -- Check if both command and argument are present
+			return Command, CachePath, CurrentPosition, Actors, DateAndTime -- Return the command and argument, removing any newline characters
 		end
 	end	
 	

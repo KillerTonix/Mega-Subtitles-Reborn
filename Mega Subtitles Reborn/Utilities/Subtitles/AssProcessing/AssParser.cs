@@ -76,6 +76,7 @@ namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
                 }               
             }
 
+           
 
             var data = new SubtitlesData
             {
@@ -113,6 +114,11 @@ namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
 
             foreach (var entry in actorsEntries)
                 mainWindow.ActorEnteries.Add(entry);
+
+            mainWindow.AvailableActorsColors.Clear();
+            var usedColors = mainWindow.ActorsAndColorsDict.Values.Select(b => b.Color).ToHashSet();
+            foreach (var brush in colorPalette.Where(brush => !usedColors.Contains(brush.Color)))
+                mainWindow.AvailableActorsColors.Add(brush);
         }
 
         public static string RemoveTextTags(string text)

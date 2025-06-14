@@ -5,6 +5,7 @@
         public string Command { get; set; } = string.Empty;
         public string CachePath { get; set; } = string.Empty;
         public string CurrentPosition { get; set; } = string.Empty;
+        public List<string?> Actors { get; set; } = [];
         public DateTime DateAndTime { get; set; } = DateTime.Now;
 
     }

@@ -3,14 +3,8 @@ local ColorizeAllTracks = {}
 
 local GetUniqueActorsFromCache = require("GetUniqueActorsFromCache")
 
-function ColorizeAllTracks.colorize(subtitleEntries, partly)	
-	local uniqueNameList = {} -- Initialize an empty table to store unique actor names
-
-	if partly then -- If the command is for partially coloring tracks
-		uniqueNameList = GetUniqueActorsFromCache.getActors(subtitleEntries) -- Get unique actors from the subtitle entries
-	else
-		uniqueNameList = GetUniqueActorsList(subtitleEntries) -- Get unique actors from the subtitle entries
-	end
+function ColorizeAllTracks.colorize(subtitleEntries)	
+	local uniqueNameList = GetUniqueActorsList(subtitleEntries) -- Get unique actors from the subtitle entries
 
 	for i = 0, NumerOfTracks - 1 do -- Iterate through each track in the project
 		track = reaper.GetTrack(ProjectID, i) -- Get the track object for the current index	

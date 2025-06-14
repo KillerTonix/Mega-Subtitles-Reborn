@@ -26,7 +26,7 @@ namespace Mega_Subtitles.Helper.Subtitles
                 {
                     GeneralSettings.Default.SubtitlesPath = openFileDialog.FileName;
                     GeneralSettings.Default.Save();
-                    return (openFileDialog.FileName, Path.GetExtension(openFileDialog.FileName));
+                    return (openFileDialog.FileName, Path.GetExtension(openFileDialog.FileName).ToLowerInvariant());
                 }
                 else
                     return (null, null);                

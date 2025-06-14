@@ -80,7 +80,10 @@
     <None Update="Lua Wrapper Files\ReadCommandFromCSharp.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Lua Wrapper Files\SyncCsToReaper.lua">
+    <None Update="Lua Wrapper Files\SetGlobalVariables.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Lua Wrapper Files\SyncCursorPosition.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Lua Wrapper Files\SyncWithCSharp.lua">

@@ -1,5 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using Mega_Subtitles_Reborn.Utilitis.Logger;
+using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing
 {
@@ -9,107 +12,159 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing
 
         public static void SetActorColor()
         {
-            var selectedActors = mainWindow.ActorsListView.SelectedItems.Cast<ActorsEnteries>().Select(a => a.Actors).ToList();
-
-            if (selectedActors[0] is string actorName)
+            try
             {
-                var selectedColor = mainWindow.ColorPickerCombobox.SelectedItem?.ToString();
+                var selectedActors = mainWindow.ActorsListView.SelectedItems.Cast<ActorsEnteries>().Select(a => a.Actors).ToList();
+                List<SolidColorBrush> colorPalette = ListSolidColor.SolidColors();
 
-                if (string.IsNullOrEmpty(actorName) || string.IsNullOrEmpty(selectedColor)) return;
+                if (selectedActors[0] is string actorName)
+                {
+                    var selectedColor = mainWindow.ColorPickerCombobox.SelectedItem;
 
-                foreach (var entry in mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>())
-                {
-                    if (entry.Actor == actorName)
+                    if (string.IsNullOrEmpty(actorName) || string.IsNullOrEmpty(selectedColor.ToString())) return;
+
+                    foreach (var entry in mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>())
                     {
-                        entry.Color = selectedColor;
+                        if (entry.Actor == actorName)
+                        {
+                            entry.Color = selectedColor.ToString();
+                        }
                     }
-                }
-                foreach (var entry in mainWindow.ActorEnteries)
-                {
-                    if (entry.Actors == actorName)
+                    foreach (var entry in mainWindow.ActorEnteries)
                     {
-                        entry.ActorsColor = selectedColor;
+                        if (entry.Actors == actorName)
+                        {
+                            entry.ActorsColor = selectedColor.ToString();
+                            mainWindow.ActorsAndColorsDict[actorName] = (SolidColorBrush)selectedColor;
+                        }
                     }
+                    mainWindow.ActorsListView.Items.Refresh();
+                    mainWindow.RegionManagerListView.Items.Refresh();
+
+                    mainWindow.AvailableActorsColors.Clear();
+                    var usedColors = mainWindow.ActorsAndColorsDict.Values.Select(b => b.Color).ToHashSet();
+                    foreach (var brush in colorPalette.Where(brush => !usedColors.Contains(brush.Color)))
+                        mainWindow.AvailableActorsColors.Add(brush);
                 }
-                mainWindow.ActorsListView.Items.Refresh();
-                mainWindow.RegionManagerListView.Items.Refresh();
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogger.LogException(ex, "ActorsProcessing", MethodBase.GetCurrentMethod()?.Name); // Log any exceptions 
             }
         }
 
         public static void RenameActor()
         {
-            var selectedActors = mainWindow.ActorsListView.SelectedItems.Cast<ActorsEnteries>().Select(a => a.Actors).ToList();
-
-            if (selectedActors[0] is not string selectedActor)
+            try
             {
-                MessageBox.Show("Please select an actor to rename.", "No Actor Selected", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
+                var selectedActors = mainWindow.ActorsListView.SelectedItems.Cast<ActorsEnteries>().Select(a => a.Actors).ToList();
 
-            var item = mainWindow.ActorEnteries.Select((actor, index) => new { actor, index }).FirstOrDefault(a => a.actor.Actors == selectedActor);
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            int index = item.index;
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-            string? newName = mainWindow.ActorTextBox.Text?.Trim();
-            if (string.IsNullOrEmpty(newName))
-            {
-                MessageBox.Show("The name cannot be empty.", "Invalid Name", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            bool nameExists = mainWindow.AvailableActors.Contains(newName);
-            if (nameExists)
-            {
-                var result = MessageBox.Show($"The actor '{newName}' already exists. Do you want to combine the actors?",
-                                             "Actors Combine", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-                if (result == MessageBoxResult.Yes)
+                if (selectedActors[0] is not string selectedActor)
                 {
-                    string? targetColor = mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>()
-                        .FirstOrDefault(e => e.Actor == newName && e.Color != null)?.Color;
+                    MessageBox.Show("Please select an actor to rename.", "No Actor Selected", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
 
-                    foreach (var entry in mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>().Where(e => e.Actor == selectedActor))
+                var item = mainWindow.ActorEnteries.Select((actor, index) => new { actor, index }).FirstOrDefault(a => a.actor.Actors == selectedActor);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                int index = item.index;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                string? newName = mainWindow.ActorTextBox.Text?.Trim();
+                if (string.IsNullOrEmpty(newName))
+                {
+                    MessageBox.Show("The name cannot be empty.", "Invalid Name", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                bool nameExists = mainWindow.AvailableActors.Contains(newName);
+                if (nameExists)
+                {
+                    string message = string.Empty;
+                    string header = string.Empty;
+                    if (GeneralSettings.Default.Language == "English")
                     {
-                        entry.Actor = newName;
-                        if (targetColor != null)
-                            entry.Color = targetColor;
+                        message = $"The actor '{newName}' already exists. Do you want to combine the actors?";
+                        header = "Notification";
+                    }
+                    else
+                    {
+                        message = $"Актер '{newName}' уже существует. Вы хотите объединить актеров?";
+                        header = "Уведомление";
                     }
 
-                    RefreshActorsList(newName, index: index);
+                    var result = MessageBox.Show(message, header, MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        string? targetColor = mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>()
+                            .FirstOrDefault(e => e.Actor == newName && e.Color != null)?.Color;
+
+                        foreach (var entry in mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>().Where(e => e.Actor == selectedActor))
+                        {
+                            entry.Actor = newName;
+                            if (targetColor != null)
+                                entry.Color = targetColor;
+                        }
+
+                        RefreshActorsList(newName, index: index);
+                    }
+                    else
+                    {
+                        newName = GetUniqueName(newName, [.. mainWindow.AvailableActors]);
+                        UpdateActorNames(selectedActor, newName);
+                        RefreshActorsList(newName, selectedActor, index);
+                    }
                 }
                 else
                 {
-                    newName = GetUniqueName(newName, [.. mainWindow.AvailableActors]);
                     UpdateActorNames(selectedActor, newName);
                     RefreshActorsList(newName, selectedActor, index);
                 }
-            }
-            else
-            {
-                UpdateActorNames(selectedActor, newName);
-                RefreshActorsList(newName, selectedActor, index);
-            }
 
-            mainWindow.RegionManagerListView.Items.Refresh();
+                mainWindow.RegionManagerListView.Items.Refresh();
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogger.LogException(ex, "ActorsProcessing", MethodBase.GetCurrentMethod()?.Name); // Log any exceptions 
+            }
         }
 
         public static void DeleteActor()
         {
-            var selectedActors = mainWindow.ActorsListView.SelectedItems.Cast<ActorsEnteries>().Select(a => a.Actors).ToList();
-
-            if (selectedActors[0] is string selectedActor)
+            try
             {
-                var result = MessageBox.Show("Are you sure you want to delete the actor?", "Notification", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result != MessageBoxResult.Yes) return;
+                var selectedActors = mainWindow.ActorsListView.SelectedItems.Cast<ActorsEnteries>().Select(a => a.Actors).ToList();
 
-                foreach (var entry in mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>())
+                if (selectedActors[0] is string selectedActor)
                 {
-                    if (entry.Actor == selectedActor)
-                        UpdateActorNames(selectedActor, "_Unknown_Actor_");
-                }
-                RefreshActorsList("_Unknown_Actor_", selectedActor, 0);
+                    string message = string.Empty;
+                    string header = string.Empty;
+                    if (GeneralSettings.Default.Language == "English")
+                    {
+                        message = "Are you sure you want to delete the actor?";
+                        header = "Notification";
+                    }
+                    else
+                    {
+                        message = "Вы уверены, что хотите удалить актера?";
+                        header = "Уведомление";
+                    }
+                    var result = MessageBox.Show(message, header, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result != MessageBoxResult.Yes) return;
 
-                mainWindow.RegionManagerListView.Items.Refresh();
+                    foreach (var entry in mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>())
+                    {
+                        if (entry.Actor == selectedActor)
+                            UpdateActorNames(selectedActor, "_Unknown_Actor_");
+                    }
+                    RefreshActorsList("_Unknown_Actor_", selectedActor, 0);
+
+                    mainWindow.RegionManagerListView.Items.Refresh();
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogger.LogException(ex, "ActorsProcessing", MethodBase.GetCurrentMethod()?.Name); // Log any exceptions 
             }
         }
 
@@ -117,68 +172,81 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing
 
         private static void UpdateActorNames(string oldName, string newName)
         {
-            foreach (var entry in mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>())
+            try
             {
-                if (entry.Actor == oldName)
+                foreach (var entry in mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>())
                 {
-                    entry.Actor = newName;
+                    if (entry.Actor == oldName)
+                    {
+                        entry.Actor = newName;
+                    }
                 }
+                mainWindow.RegionManagerListView.Items.Refresh();
             }
-            mainWindow.RegionManagerListView.Items.Refresh();
-
+            catch (Exception ex)
+            {
+                ExceptionLogger.LogException(ex, "ActorsProcessing", MethodBase.GetCurrentMethod()?.Name); // Log any exceptions 
+            }
         }
 
         private static void RefreshActorsList(string newName, string? removeName = null, int index = -1)
         {
-            if (mainWindow.AvailableActors == null || mainWindow.ActorEnteries == null)
-                return;
-
-            ActorsEnteries? oldEntry = null;
-
-            // Remove old name from AvailableActors
-            if (!string.IsNullOrEmpty(removeName))
+            try
             {
-                mainWindow.AvailableActors.Remove(removeName);
+                if (mainWindow.AvailableActors == null || mainWindow.ActorEnteries == null)
+                    return;
 
-                // Find and remove from ActorEnteries, store reference
-                oldEntry = mainWindow.ActorEnteries.FirstOrDefault(entry => entry.Actors == removeName);
-                if (oldEntry != null)
+                ActorsEnteries? oldEntry = null;
+
+                // Remove old name from AvailableActors
+                if (!string.IsNullOrEmpty(removeName))
                 {
-                    mainWindow.ActorEnteries.Remove(oldEntry);
+                    mainWindow.AvailableActors.Remove(removeName);
+
+                    // Find and remove from ActorEnteries, store reference
+                    oldEntry = mainWindow.ActorEnteries.FirstOrDefault(entry => entry.Actors == removeName);
+                    if (oldEntry != null)
+                    {
+                        mainWindow.ActorEnteries.Remove(oldEntry);
+                    }
+                }
+
+                // Update actor name in ActorsListView.ItemsSource
+                if (!mainWindow.AvailableActors.Contains(newName))
+                {
+                    if (index != -1 && mainWindow.ActorsListView.ItemsSource is ObservableCollection<string> actorsSource)
+                    {
+                        if (index >= 0 && index < actorsSource.Count)
+                            actorsSource[index] = newName;
+                    }
+
+                    mainWindow.AvailableActors.Add(newName);
+                }
+
+                // Check if newName already exists in ActorEnteries
+                if (!mainWindow.ActorEnteries.Any(entry => entry.Actors == newName))
+                {
+                    var newEntry = new ActorsEnteries
+                    {
+                        ActorsNumber = index + 1,
+                        Actors = newName,
+                        ActorsColor = oldEntry?.ActorsColor,          // Preserve color
+                        ActorsLineCount = oldEntry?.ActorsLineCount ?? 0 // Preserve line count
+                    };
+
+                    if (index >= 0 && index <= mainWindow.ActorEnteries.Count)
+                    {
+                        mainWindow.ActorEnteries.Insert(index, newEntry);
+                    }
+                    else
+                    {
+                        mainWindow.ActorEnteries.Add(newEntry);
+                    }
                 }
             }
-
-            // Update actor name in ActorsListView.ItemsSource
-            if (!mainWindow.AvailableActors.Contains(newName))
+            catch (Exception ex)
             {
-                if (index != -1 && mainWindow.ActorsListView.ItemsSource is ObservableCollection<string> actorsSource)
-                {
-                    if (index >= 0 && index < actorsSource.Count)
-                        actorsSource[index] = newName;
-                }
-
-                mainWindow.AvailableActors.Add(newName);
-            }
-
-            // Check if newName already exists in ActorEnteries
-            if (!mainWindow.ActorEnteries.Any(entry => entry.Actors == newName))
-            {
-                var newEntry = new ActorsEnteries
-                {
-                    ActorsNumber = index + 1,
-                    Actors = newName,
-                    ActorsColor = oldEntry?.ActorsColor,          // Preserve color
-                    ActorsLineCount = oldEntry?.ActorsLineCount ?? 0 // Preserve line count
-                };
-
-                if (index >= 0 && index <= mainWindow.ActorEnteries.Count)
-                {
-                    mainWindow.ActorEnteries.Insert(index, newEntry);
-                }
-                else
-                {
-                    mainWindow.ActorEnteries.Add(newEntry);
-                }
+                ExceptionLogger.LogException(ex, "ActorsProcessing", MethodBase.GetCurrentMethod()?.Name); // Log any exceptions 
             }
         }
 
@@ -187,6 +255,7 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing
 
         private static string GetUniqueName(string baseName, List<string> existingNames)
         {
+
             int counter = 1;
             string uniqueName = baseName;
 

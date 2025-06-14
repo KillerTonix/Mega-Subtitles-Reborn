@@ -58,9 +58,8 @@ end
 
 -- <Require List> --
 local ReadCommandFromCSharp = require("ReadCommandFromCSharp") -- Read commands from the C# application
-local ClearCommandsFile = require("ClearCommandsFile") -- Clear the commands file before starting
-local GetCurrentProjectName = require("GetCurrentProjectName") -- Get the current project name
 local ProcessCommands = require("ProcessCommands") -- Process commands received from the C# application
+local SetGlobalVariables = require("SetGlobalVariables") -- Set global variables for the script
 -- </Require List/> --
 
 
@@ -88,11 +87,7 @@ function Main()
 		os.execute("mkdir " .. '"' .. CacheFolderPath.. '"'	)	-- Create ApplicationPath if !Exists
 	end
 
-    CurrentProjectName = GetCurrentProjectName.getName() -- Get the current project name and save it to a file
-	ClearCommandsFile.Clear() -- Clear commands file
-    ProjectID = reaper.EnumProjects(-1, "") -- Get the current project ID
-    NumerOfTracks = reaper.CountTracks(ProjectID) -- Get the number of tracks in the current project
-    _, _, CountOfProjectMarkers = reaper.CountProjectMarkers(ProjectID) -- Get the count of project markers in the current project
+    SetGlobalVariables.set() -- Set global variables for the script
 
 	os.execute("START" .. ' "" ' ..  ExecutableMegaSubtitlesPath) -- Run Main Application
     	
@@ -100,13 +95,13 @@ function Main()
     
     --<Loop Function> --
     local function loop()            
-        local command, cacheFilePath, currentPosition, commandDateAndTime = ReadCommandFromCSharp.ReadCommand() -- Read command from C# application
+        local command, cacheFilePath, currentPosition, actors, commandDateAndTime = ReadCommandFromCSharp.ReadCommand() -- Read command from C# application
         CacheFilePath = cacheFilePath -- Update the cache file path
         CurrentPosition = currentPosition -- Update the current position in the project
         if commandDateAndTime ~= lastDateAndTIme then -- Check if the command date and time is different from the last processed command
             lastDateAndTIme = commandDateAndTime -- Update the last processed command date and time
             if command then -- If a command was read
-                ProcessCommands.Process(command) -- Process the command
+                ProcessCommands.Process(command, actors) -- Process the command
             end
         end
        

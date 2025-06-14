@@ -3,43 +3,46 @@ local ProcessCommands = {}
 -- Cache required modules
 local ParseDeleteCreate = require("ParseDeleteCreate")
 local SyncWithCSharp = require("SyncWithCSharp")
-local SyncCsToReaper = require("SyncCsToReaper")
+local SyncCursorPosition = require("SyncCursorPosition")
 local ParseCacheFile = require("ParseCacheFile")
 local CheckForMissing = require("CheckForMissing")
 local CheckForRepeats = require("CheckForRepeats")
+local SetGlobalVariables = require("SetGlobalVariables")
+
+local actors = ""
 
 -- Command lookup table for better performance and cleaner code
 local COMMAND_HANDLERS = {
     CreateRegionsWithOutColor = function() 
-        ParseDeleteCreate.regions("WithOutColor", false) -- Create regions without color
+        ParseDeleteCreate.regions("WithOutColor", actors) -- Create regions without color
     end,
     
     CreateRegionsWithColor = function() 
-        ParseDeleteCreate.regions("WithColor", false) -- Create regions with color
+        ParseDeleteCreate.regions("WithColor", actors) -- Create regions with color
     end,
     
     UnColorizeAllTracks = function() 
-        ParseDeleteCreate.tracks("WithOutColor", false) -- Uncolorize all tracks
+        ParseDeleteCreate.tracks("WithOutColor", actors) -- Uncolorize all tracks
     end,
     
     ColorizeAllTracks = function() 
-        ParseDeleteCreate.tracks("WithColor", false) -- Colorize all tracks
+        ParseDeleteCreate.tracks("WithColor", actors) -- Colorize all tracks
     end,
     
     ColorizeSelectedTracks = function() 
-        ParseDeleteCreate.tracks("WithColor", true) -- Colorize selected tracks
+        ParseDeleteCreate.tracks("WithColor", actors) -- Colorize selected tracks
     end,
     
     ColorizeSelectedActors = function() 
-        ParseDeleteCreate.regions("WithColor", true) -- Colorize selected actors
+        ParseDeleteCreate.regions("WithColor", actors) -- Colorize selected actors
     end,
     
     ColorizeSelectedActorsComments = function() 
-        ParseDeleteCreate.regions("WithComments", true) -- Colorize selected actors with comments
+        ParseDeleteCreate.regions("WithComments", actors) -- Colorize selected actors with comments
     end,
     
     RegionsOnlyWithComments = function() 
-        ParseDeleteCreate.regions("OnlyWithComments", false) -- Create regions only with comments
+        ParseDeleteCreate.regions("OnlyWithComments", actors) -- Create regions only with comments
     end,
     
     CheckForMissing = function()        
@@ -58,16 +61,21 @@ local COMMAND_HANDLERS = {
         SyncWithCSharp.Sync() -- Sync the position with C# application
     end,
     
-    SyncCsToReaper = function() 
-        SyncCsToReaper.Sync() -- Sync the position with C# application
+    SyncCursorPosition = function() 
+        SyncCursorPosition.Sync() -- Sync the position with C# application
     end,
+
+    SyncProject = function() 
+        SetGlobalVariables.set() -- Set global variables for the project
+    end,    
     
     ApplicationCloseEvent = function()     
 	    gfx.quit() -- Close the gfx window
     end
 }
 
-function ProcessCommands.Process(command) -- Process the command received from C# application
+function ProcessCommands.Process(command, selectedActors) -- Process the command received from C# application
+    actors = selectedActors
     local handler = COMMAND_HANDLERS[command] -- Lookup the command handler in the table
     if handler then -- If a handler exists for the command
         handler() -- Call the handler with the provided CacheFilePath

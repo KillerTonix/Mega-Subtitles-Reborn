@@ -25,6 +25,18 @@ namespace Mega_Subtitles_Reborn.Utilities
                         column.Width = double.NaN;
                     }
                 }
+                ListView? actorsListView = mainWindow.ActorsListView;
+                if (actorsListView.View is GridView actorsGridView)
+                {
+                    foreach (var column in actorsGridView.Columns)
+                    {
+                        if (double.IsNaN(column.Width))
+                        {
+                            column.Width = column.ActualWidth;
+                        }
+                        column.Width = double.NaN;
+                    }
+                }
             }
             catch (Exception ex)
             {

@@ -4,7 +4,6 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace Mega_Subtitles_Reborn.Utilitis.FromReaper
@@ -13,23 +12,11 @@ namespace Mega_Subtitles_Reborn.Utilitis.FromReaper
     {
         private static readonly MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
-        public static void ReadProjectName()
-        {
-            string ProjectName = ReadReaperProjectName(); // Read the project name from the specified file
-
-            if (ProjectName != string.Empty) 
-            {
-                GeneralSettings.Default.CurrentProjectName = ProjectName; // Update the current project name in the settings
-                GeneralSettings.Default.Save(); // Save the settings
-            }
-
-        }
-
-        public static string ReadReaperProjectName()
+        public static string ReadProjectName(string filePath)
         {
             try
             {
-                if (DirectoryOrFileCheck.CheckFileExistingAndNotEmpty(GeneralSettings.Default.CurrentProjectNameFilePath)) // Check if the project name file exists and is not empty
+                if (DirectoryOrFileCheck.CheckFileExistingAndNotEmpty(filePath)) // Check if the project name file exists and is not empty
                     return File.ReadAllText(GeneralSettings.Default.CurrentProjectNameFilePath, Encoding.UTF8); // Read the project name from the file and return it
                 else
                     return string.Empty;
@@ -40,6 +27,8 @@ namespace Mega_Subtitles_Reborn.Utilitis.FromReaper
                 return string.Empty;
             }
         }
+
+      
 
         public static async void DelayedReadReaperSyncFile(int milliseconds)
         {

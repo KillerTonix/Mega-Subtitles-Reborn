@@ -8,7 +8,7 @@
         x:Class="Mega_Subtitles_Reborn.MainWindow"
         mc:Ignorable="d"
         Title="Mega Subtitles Reborn" 
-        Height="820" Width="1366" Background="#FF1F1F23" BorderThickness="2" 
+        Height="830" Width="1376" Background="#FF1F1F23" BorderThickness="2" 
         WindowStartupLocation="CenterScreen" Visibility="Visible" WindowState="Normal"
         ShowInTaskbar="True" ResizeMode="CanResize" SizeToContent="Manual" MinHeight="785" MinWidth="1260" Closing="GeneralWindow_Closing" BorderBrush="Black">
 
@@ -240,7 +240,7 @@
                                     <ComboBox x:Name="ActorComboBox"
                                       ItemsSource="{Binding DataContext.AvailableActors, RelativeSource={RelativeSource AncestorType=Window}}"
                                       SelectedItem="{Binding Actor, UpdateSourceTrigger=PropertyChanged}"
-                                      MinWidth="138" IsEditable="True" LostFocus="ActorComboBox_LostFocus">
+                                      MinWidth="138" IsEditable="False" LostFocus="ActorComboBox_LostFocus">
                                     </ComboBox>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
@@ -280,6 +280,7 @@
                 <ListView x:Name="ActorsListView" Grid.Column="1"  ItemsSource="{Binding ActorEnteries}" Height="335" HorizontalAlignment="Stretch" VerticalAlignment="Top" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionMode="Extended" HorizontalContentAlignment="Stretch" Background="#FFF8EDEB" FontFamily="Nunito SemiBold" MouseDoubleClick="ActorsListView_MouseDoubleClick">
                     <ListView.ContextMenu>
                         <ContextMenu>
+                            <MenuItem x:Name="AddActorContext" Header="Add actor" Click="AddActorContext_Click"/>
                             <MenuItem x:Name="SetActorColorContext" Header="Set the color" Click="SetActorColorContext_Click" />
                             <MenuItem x:Name="RenameActorContext" Header="Rename an actor" Click="RenameActorContext_Click" />
                             <MenuItem x:Name="DeleteActorContext" Header="Delete an actor" Click="DeleteActorContext_Click" />
@@ -361,7 +362,17 @@
 
                     <Button x:Name="ActorReanameBtn" Content="Rename" HorizontalAlignment="Left" Height="25" VerticalAlignment="Bottom" Width="70" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFFFDAB3" Click="RenameBtn_Click" />
                     <Button x:Name="ActorReanameCancelBtn" Content="Cancel" HorizontalAlignment="Right" Height="25" VerticalAlignment="Bottom" Width="70"  FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFEAC9C1" Click="ActorReanameCancelBtn_Click"/>
-                </Grid>  
+                </Grid>
+                
+                <Grid x:Name="AddActorGrid" Height="90" Visibility="Collapsed" Margin="0,20,0,0" >
+                    <StackPanel Orientation="Vertical">
+                        <Label x:Name="AddActorLabel" Content="Add actor" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14" />
+                        <TextBox x:Name="AddActorTextBox" HorizontalAlignment="Stretch" FontFamily="Nunito SemiBold" FontSize="14"/>
+                    </StackPanel>
+
+                    <Button x:Name="AddActorBtn" Content="Add" HorizontalAlignment="Left" Height="25" VerticalAlignment="Bottom" Width="70" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFFFDAB3" Click="AddActorBtn_Click" />
+                    <Button x:Name="AddActorCancelBtn" Content="Cancel" HorizontalAlignment="Right" Height="25" VerticalAlignment="Bottom" Width="70"  FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFEAC9C1" Click="AddActorCancelBtn_Click"/>
+                </Grid>
             </StackPanel>
             
             <StackPanel Grid.Row="2" VerticalAlignment="Bottom" >
@@ -486,7 +497,7 @@
                     </Grid>
                 </Button>
 
-                <Button x:Name="SyncProjectBtn" Width="88" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFD03A63" Click="SyncBtn_Click" Margin="0,10,0,10">
+                <Button x:Name="SyncProjectBtn" Width="88" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFD03A63" Click="SyncProjectBtn_Click" Margin="0,10,0,10">
                     <Grid Width="75">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE895;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
                         <TextBlock x:Name="SyncProjectTB" Text="Project" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0" TextAlignment="Center"/>

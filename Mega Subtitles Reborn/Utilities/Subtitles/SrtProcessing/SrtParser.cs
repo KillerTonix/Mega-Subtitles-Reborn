@@ -1,5 +1,7 @@
 ﻿using Mega_Subtitles_Reborn.Utilitis;
 using Mega_Subtitles_Reborn.Utilitis.FileWriter;
+using Mega_Subtitles_Reborn.Utilitis.Logger;
+using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -14,75 +16,87 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.SrtProcessing
 
         public static void ParseSrtFile(string filePath)
         {
-            DirectoryOrFileCheck.DirectoryCheck(GeneralSettings.Default.ProjectCacheFolderPath);
-            List<SolidColorBrush> colorPalette = ListSolidColor.SolidColors();
-
-            var lines = File.ReadAllLines(filePath);
-            var entries = new List<SubtitlesEnteries>();
-            var actorsEntries = new List<ActorsEnteries>();
-
-            int i = 0;
-
-            while (i < lines.Length)
+            try
             {
-                // Skip empty lines
-                if (string.IsNullOrWhiteSpace(lines[i]))
+                DirectoryOrFileCheck.DirectoryCheck(GeneralSettings.Default.ProjectCacheFolderPath);
+                List<SolidColorBrush> colorPalette = ListSolidColor.SolidColors();
+
+                var lines = File.ReadAllLines(filePath);
+                var entries = new List<SubtitlesEnteries>();
+                var actorsEntries = new List<ActorsEnteries>();
+
+                int i = 0;
+
+                while (i < lines.Length)
                 {
-                    i++;
-                    continue;
+                    // Skip empty lines
+                    if (string.IsNullOrWhiteSpace(lines[i]))
+                    {
+                        i++;
+                        continue;
+                    }
+
+                    // Parse number
+                    if (!int.TryParse(lines[i++], out int number))
+                        continue;
+
+                    // Parse timecode
+                    if (i >= lines.Length || !Regex.IsMatch(lines[i], @"\d{2}:\d{2}:\d{2},\d{3} --> \d{2}:\d{2}:\d{2},\d{3}"))
+                        continue;
+
+                    string[] times = lines[i++].Split(" --> ");
+                    string start = times[0].Trim();
+                    string end = times[1].Trim();
+
+                    // Parse text (possibly multi-line)
+                    var textLines = new List<string>();
+                    while (i < lines.Length && !string.IsNullOrWhiteSpace(lines[i]))
+                    {
+                        if (i < lines.Length && !string.IsNullOrWhiteSpace(lines[i + 1]))
+                            textLines.Add(RemoveTextTags(lines[i++].Trim()) + Environment.NewLine);
+                        else
+                            textLines.Add(RemoveTextTags(lines[i++]));
+                    }
+
+                    entries.Add(new SubtitlesEnteries
+                    {
+                        Number = number,
+                        Color = colorPalette[0].ToString(),
+                        Start = start.Replace(",", "."),
+                        End = end.Replace(",", "."),
+                        Actor = "_Unknown_Actor_",
+                        Text = string.Join(" ", textLines)
+                    });
                 }
 
-                // Parse number
-                if (!int.TryParse(lines[i++], out int number))
-                    continue;
-
-                // Parse timecode
-                if (i >= lines.Length || !Regex.IsMatch(lines[i], @"\d{2}:\d{2}:\d{2},\d{3} --> \d{2}:\d{2}:\d{2},\d{3}"))
-                    continue;
-
-                string[] times = lines[i++].Split(" --> ");
-                string start = times[0].Trim();
-                string end = times[1].Trim();
-
-                // Parse text (possibly multi-line)
-                var textLines = new List<string>();
-                while (i < lines.Length && !string.IsNullOrWhiteSpace(lines[i]))
+                var data = new SubtitlesData
                 {
-                    if (i < lines.Length && !string.IsNullOrWhiteSpace(lines[i + 1]))
-                        textLines.Add(RemoveTextTags(lines[i++].Trim()) + Environment.NewLine);
-                    else
-                        textLines.Add(RemoveTextTags(lines[i++]));
-                }
+                    SubtitlesPath = GeneralSettings.Default.SubtitlesPath,
+                    Entries = entries
+                };
 
-                entries.Add(new SubtitlesEnteries
+                JsonWriter.WriteAssSubtitlesDataJson(data, GeneralSettings.Default.ProjectCahceJsonPath);
+
+                mainWindow.AvailableActors.Clear();
+                mainWindow.AvailableActors.Add("_Unknown_Actor_");
+                actorsEntries.Add(new ActorsEnteries
                 {
-                    Number = number,
-                    Color = colorPalette[0].ToString(),
-                    Start = start.Replace(",", "."),
-                    End = end.Replace(",", "."),
-                    Actor = "_Unknown_Actor_",
-                    Text = string.Join(" ", textLines)
+                    ActorsNumber = 1,
+                    Actors = "_Unknown_Actor_",
+                    ActorsLineCount = i
                 });
+                foreach (var entry in actorsEntries)
+                    mainWindow.ActorEnteries.Add(entry);
+
+                mainWindow.AvailableActorsColors.Clear();
+                var usedColors = mainWindow.ActorsAndColorsDict.Values.Select(b => b.Color).ToHashSet();
+                foreach (var brush in colorPalette.Where(brush => !usedColors.Contains(brush.Color)))
+                    mainWindow.AvailableActorsColors.Add(brush);
             }
-
-            var data = new SubtitlesData
+            catch (Exception ex)
             {
-                SubtitlesPath = GeneralSettings.Default.SubtitlesPath,
-                Entries = entries
-            };
-
-            JsonWriter.WriteAssSubtitlesDataJson(data, GeneralSettings.Default.ProjectCahceJsonPath);
-
-            mainWindow.AvailableActors.Clear();
-            mainWindow.AvailableActors.Add("_Unknown_Actor_");
-            actorsEntries.Add(new ActorsEnteries
-            {
-                ActorsNumber = 1,
-                Actors = "_Unknown_Actor_",
-                ActorsLineCount = i
-            });
-            foreach (var entry in actorsEntries)
-                mainWindow.ActorEnteries.Add(entry);
+                ExceptionLogger.LogException(ex, "SrtParser", MethodBase.GetCurrentMethod()?.Name); // Log any exceptions 
+            }
         }
 
 
@@ -95,7 +109,7 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.SrtProcessing
             }
             catch (Exception ex)
             {
-                Utilitis.Logger.ExceptionLogger.LogException(ex, "SrtParser", MethodBase.GetCurrentMethod()?.Name);
+                ExceptionLogger.LogException(ex, "SrtParser", MethodBase.GetCurrentMethod()?.Name);
                 return text;
             }
         }

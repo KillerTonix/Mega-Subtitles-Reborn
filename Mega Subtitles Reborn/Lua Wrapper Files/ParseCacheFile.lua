@@ -45,28 +45,6 @@ local function colorToNative(hex)
     return ColorToNative(r, g, b) | 0x1000000
 end
 
--- Command type handlers
-local COMMAND_HANDLERS = {
-    WithColor = function(color) 
-        return colorToNative(color)
-    end,
-    
-    WithComments = function(comment)
-        if comment and not find(comment, NO_COMMENT) then
-            return ColorToNative(255, 0, 0) | 0x1000000
-        end
-        return "0"
-    end,
-    
-    OnlyWithComments = function()
-        return "0"
-    end,
-    
-    WithOutColor = function()
-        return "0"
-    end
-}
-
 -- Load the JSON content from a file
 local function load_json_file()
     local file = io.open(CacheFilePath, "r") -- Open the file for reading
@@ -78,37 +56,46 @@ local function load_json_file()
     return content
 end
 
-function isColored(commandType, color, comment)
+function isColored(commandType, color, comment, actors, entryActor)
     if commandType == "WithColor" then
-        return colorToNative(color)    
+        if contains(actors, entryActor) then
+            return colorToNative(color)
+        else
+            return 0
+        end
     elseif commandType == "WithComments" then
         if #comment > 0 then
             return ColorToNative(255, 0, 0) | 0x1000000
         else
-            return 0 -- No color for empty comments
+            return 0
         end
     else 
-        return 0 -- No color for other command types
+        return 0
     end    
 end
 
 
-function ParseCacheFile.parse(commandType)
+function ParseCacheFile.parse(commandType, actors)
     local content = load_json_file() -- Load the JSON content from the file
     local data = json.decode(content) -- Decode the JSON content
-    local handler = COMMAND_HANDLERS[commandType] -- Get the handler for the command type
     local subtitleEntries = {} -- Initialize the table to hold subtitle entries
     local start_time, end_time, text ,color, actor, comment = "", "", "", "", "", "" 
 
-    for i, entry in ipairs(data.Entries) do -- Iterate through each entry in the data
+    for i, entry in ipairs(data.Entries) do
+        actor = entry.Actor or ""
+
+        -- Filter by actor for WithOutColor
+        if commandType == "WithOutColor" and not contains(actors, actor) then
+            goto continue
+        end
+
         start_time = entry.Start or "" 
         end_time = entry.End or ""
         text = entry.Text or ""        
-        actor = entry.Actor or ""
         comment = entry.Comment or ""
-        color = isColored(commandType, entry.Color, comment)
+        color = isColored(commandType, entry.Color, comment, actors, actor)
 
-        if start_time and end_time and text and color and actor and comment then
+        if start_time and end_time and text and color ~= nil and actor and comment then
             if commandType == "OnlyWithComments" and comment == "" then 
                 goto continue
             end
@@ -117,21 +104,32 @@ function ParseCacheFile.parse(commandType)
                 Start = timeToSeconds(start_time),
                 End = timeToSeconds(end_time),
                 Text = text,
-                Color = color, -- Use the handler to process color or comment
+                Color = color,
                 Actor = actor,
                 Comment = comment
             }
 
-            if not subtitleEntries[entry.Actor] then -- Check if the actor already exists in the table
-                subtitleEntries[entry.Actor] = {} -- If not, create a new table for the actor
+            if not subtitleEntries[actor] then
+                subtitleEntries[actor] = {}
             end
 
-            table.insert(subtitleEntries[entry.Actor], entry) -- Insert the entry into the actor's table
+            table.insert(subtitleEntries[actor], entry)
         end
-        ::continue:: -- Continue to the next iteration if the entry is not valid
+        ::continue::
     end
+
     
     return subtitleEntries
 end
+
+local function contains(tbl, val)
+    for _, v in ipairs(tbl) do
+        if v == val then
+            return true
+        end
+    end
+    return false
+end
+
 
 return ParseCacheFile
