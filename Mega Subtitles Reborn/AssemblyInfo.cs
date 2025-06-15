@@ -10,5 +10,14 @@ using System.Windows;
                                                 // app, or any theme specific resource dictionaries)
 )]
 
-[assembly: AssemblyVersion("0.0.0.2")]
+[assembly: AssemblyTitle("Mega Subtitles by Artur Tonoyan")]
+[assembly: AssemblyConfiguration("")] // Often good to add this too
+[assembly: AssemblyCompany("Artur Tonoyan")]
+[assembly: AssemblyProduct("Mega Subtitles")]
+[assembly: AssemblyCopyright("Artur Tonoyan")]
+[assembly: AssemblyTrademark("Artur Tonoyan")] // Optional
+[assembly: AssemblyCulture("")] // Optional
+
+[assembly: AssemblyFileVersion("0.1.0")]
+[assembly: AssemblyVersion("0.1.0")]
 
