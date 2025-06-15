@@ -33,7 +33,7 @@ namespace Mega_Subtitles_Reborn.Utilities.FileWriter
                 {
                     Command = command,
                     CachePath = cachePath,
-                    CurrentPosition = StringToSeccondsString(startPos),
+                    CurrentPosition = StringToSeccondsString(startPos).Replace(",","."),
                     Actors = selectedActors,
                     DateAndTime = DateTime.Now,
                 };

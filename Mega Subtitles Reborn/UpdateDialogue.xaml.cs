@@ -1,9 +1,13 @@
-﻿using Mega_Subtitles_Reborn.Utilitis.FileReader;
+﻿using GithubReleaseDownloader;
+using GithubReleaseDownloader.Entities;
+using Mega_Subtitles_Reborn.Utilities;
+using Mega_Subtitles_Reborn.Utilitis.FileReader;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Windows;
+
 
 namespace Mega_Subtitles_Reborn
 {
@@ -16,7 +20,8 @@ namespace Mega_Subtitles_Reborn
 
         public string? LocalVersionOfApplication = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
         public string InternetVersionOfApplication = mainWindow.InternetVersionOfApplication.ToString();
-        public string DownloadedContentPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp\\Mega Subtitles Reborn\\Application.zip");
+        public static string DownloadedContentPath = string.Empty;
+        public static string DownloadedContentDirectoryPath = string.Empty;
         private static readonly string ApplicationPath = AppDomain.CurrentDomain.BaseDirectory;
 
 
@@ -24,9 +29,8 @@ namespace Mega_Subtitles_Reborn
         {
             InitializeComponent();
             Loaded += UpdateDialogue_Loaded;
-            
-
         }
+
         private void UpdateDialogue_Loaded(object sender, EventArgs e)
         {
             int id = 0;
@@ -46,7 +50,6 @@ namespace Mega_Subtitles_Reborn
 
             SkipTB.Text = lang["SkipTB"][id];
             UpdateTB.Text = lang["UpdateTB"][id];
-
         }
 
         private void SkipBtn_Click(object sender, RoutedEventArgs e)
@@ -56,45 +59,76 @@ namespace Mega_Subtitles_Reborn
 
         private void UpdateBtn_Click(object sender, RoutedEventArgs e)
         {
-            DownloadProgressBar.Visibility = Visibility.Visible;
-            DownloadProgressBar.Value = 0;
+            try
+            {
+                OldVersionText.Visibility = Visibility.Hidden;
+                DownloadText.Visibility = Visibility.Hidden;
+                NewVersionText.Text = GeneralSettings.Default.Language == "Русский" ? "Загрузка обновления..." : "Downloading update...";
+                // The owner and repo to download from, and target path
+                var owner = "KillerTonix";
+                var repo = "Mega-Subtitles-Reborn";
+                // Get last release using .GetLatest(), can substitute with other available methods
+                var release = ReleaseManager.Instance.GetLatest(owner, repo);
+                if (release is null) return;
+                
+                var downloadPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "temp");
+                
+                DownloadedContentDirectoryPath = Path.Combine(downloadPath, $"Mega.Subtitles.Reborn.{release.TagName}");
+                if (!Directory.Exists(DownloadedContentDirectoryPath))
+                    Directory.CreateDirectory(DownloadedContentDirectoryPath);
 
-#pragma warning disable SYSLIB0014 // Type or member is obsolete
-            using WebClient client = new();
-#pragma warning restore SYSLIB0014 // Type or member is obsolete
-            Uri uri = new(mainWindow.DownloadURL ?? "");
-            client.DownloadFileAsync(uri, DownloadedContentPath);
-            client.DownloadProgressChanged += Downloadprogress;
+                DownloadedContentPath = $"{DownloadedContentDirectoryPath}.zip";
+
+                // In this case, we download all assets
+                AssetDownloader.Instance.DownloadAllAssets(release, downloadPath);
+
+                Delay(400); // Delay to allow Reaper to process the command and check for missing entries
+                static async void Delay(int milliseconds)
+                {
+                    await Task.Delay(milliseconds); // Wait asynchronously for the specified delay
+                    CreateUpdateProgramBatFile();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while trying to download the update: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Close();
+            }
         }
 
-        private void Downloadprogress(object sender, DownloadProgressChangedEventArgs e)
+        private static void CreateUpdateProgramBatFile()
         {
-            DownloadProgressBar.Value = e.ProgressPercentage;
-
-            if (e.ProgressPercentage == 100)
+            try
             {
-
-                File.WriteAllText("UpdateProgram.bat", $""""
-                    tar -xf "{DownloadedContentPath}" -C "{ApplicationPath[..^1]}"
+                File.WriteAllText($"{ApplicationPath}UpdateProgram.bat", $""""
+                    tar -xf "{DownloadedContentPath}" -C "{DownloadedContentDirectoryPath}"
                     timeout 1 >nul
-                    start "" "{ApplicationPath}\\Mega Subtitles Reborn.exe"
+                    move -y "{DownloadedContentDirectoryPath}*" "{ApplicationPath}"
+                    del /q "{DownloadedContentPath}"
+                    rmdir "{DownloadedContentDirectoryPath}" /q /s
+                    timeout 1 >nul
+                    start "" "{ApplicationPath}Mega Subtitles Reborn.exe"
                     timeout 0 >nul
                     exit 
                     """");
 
-
-                if (GeneralSettings.Default.Language == "Русский")                
+                if (GeneralSettings.Default.Language == "Русский")
                     MessageBox.Show("Приложение будет закрыто для обновления", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
-                
-                MessageBox.Show("Application will be closed for update", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
+                else
+                    MessageBox.Show("Application will be closed for update", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                Process.Start("cmd", "/k UpdateProgram.bat");
+                string str = $"""
+                            "{ApplicationPath}UpdateProgram.bat"
+                            """;
+                Process.Start("cmd", $"/k {str}");
                 Application.Current.Shutdown();
+
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while creating the update script: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
-            //tar -xf Application.zip -C ApplicationPath to unzip specifig folder
-
+            }
         }
-
     }
 }

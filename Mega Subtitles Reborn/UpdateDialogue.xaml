@@ -118,8 +118,6 @@
         <TextBlock x:Name="OldVersionText" Text="You have versio 0.0.0.0 installed." HorizontalAlignment="Left" Margin="10,40,0,0" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14"/>
         <TextBlock x:Name="DownloadText" Text="Would you like to download it now?" HorizontalAlignment="Left" Margin="10,60,0,0" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14"/>
 
-        <ProgressBar x:Name="DownloadProgressBar" Height="5" VerticalAlignment="Bottom" Visibility="Hidden"/>
-
         <Button x:Name="SkipBtn" Margin="10" HorizontalAlignment="Right" Height="25" VerticalAlignment="Bottom" Width="100" FontFamily="Nunito SemiBold" FontSize="14" Background="#FFFFF0C2" BorderBrush="#FFFBD485" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="SkipBtn_Click">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                 <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE8D8;" FontSize="16" VerticalAlignment="Center" Margin="0,0,5,0"/>
