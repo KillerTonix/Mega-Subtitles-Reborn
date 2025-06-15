@@ -18,6 +18,7 @@ Mega Subtitles Reborn is a WPF application for advanced subtitle management, edi
 - **.NET 9.0 (Windows)**
 - **Windows OS**
 - **REAPER** (for full integration and Lua script usage)
+- **Lua libraries** (Copy all files contains from 'Required lua librarys' to **Reaper** application directory)
 
 ## Getting Started
 
@@ -29,8 +30,7 @@ Mega Subtitles Reborn is a WPF application for advanced subtitle management, edi
 ### Lua Integration
 
 - Lua scripts are located in the `Lua Wrapper Files` directory.
-- For REAPER integration, copy the relevant `.lua` files to your REAPER scripts directory.
-- Ensure a Lua JSON library (e.g., `json.lua` or `dkjson.lua`) is available if your scripts require JSON parsing.
+- For REAPER integration, add 'New Action' -> 'New ReaScript' and choose `Mega Subtitles Wrapper.lua`.
 
 ### Fonts
 
@@ -64,13 +64,14 @@ Custom fonts are included in the `Fonts` directory and are embedded as resources
 
 - `Mega Subtitles Reborn/` - Main application source code
 - `Lua Wrapper Files/` - Lua scripts for REAPER integration
+- `Required lua librarys/` - Lua libraries for Reaper
 - `Fonts/` - Custom font resources
 - `Utilities/` - Helper classes for file IO, parsing, and more
 
 ## Troubleshooting
 
-- **Lua JSON Errors**: If you see errors like `attempt to index a nil value (global 'json' or 'colorise' or 'utf8_filenames')` , ensure a Lua librarys are available and required at the top of your Lua scripts:
-Place `json.lua` and `colorise.lua` and `utf8_filenames.lua` in the same directory as your Reaper application(by default is 'C:\Program Files\REAPER (x64)').
+- **Lua Errors**: If you see errors like `attempt to index a nil value (global 'json' or 'colorise' or 'utf8_filenames')` , ensure a Lua librarys are available and required at the top of your Lua scripts:
+Place `json.lua` and `colorise.lua` and `utf8_filenames.lua` in the same directory as your Reaper application(by default is `'C:\Program Files\REAPER (x64)')`.
 
 - **.NET Version Issues**: Make sure you have .NET 9.0 SDK installed.
 
