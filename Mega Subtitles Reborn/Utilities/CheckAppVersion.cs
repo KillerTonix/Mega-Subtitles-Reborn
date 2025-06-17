@@ -17,7 +17,7 @@ namespace Mega_Subtitles_Reborn.Utilities
                 using HttpResponseMessage response = await client.GetAsync(@"https://raw.githubusercontent.com/KillerTonix/Mega-Subtitles-Reborn/refs/heads/master/Mega%20Subtitles%20Reborn/version.txt");
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
-
+                MessageBox.Show(responseBody, "Version Check", MessageBoxButton.OK, MessageBoxImage.Information);
                 var LocalVersionOfApplication = Assembly.GetExecutingAssembly().GetName().Version;
                 mainWindow.InternetVersionOfApplication = Version.Parse(responseBody);
 
