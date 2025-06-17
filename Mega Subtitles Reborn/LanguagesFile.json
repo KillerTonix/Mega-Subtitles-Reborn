@@ -72,7 +72,7 @@
   "SaveSubtitlesWindow1": [ "Save subtitles", "Сохранение субтитров" ],
   "SaveSettingsLabel": [ "Save subtitles", "Сохранение субтитров" ],
   "SingleFileRadioBtn": [ "Single file", "Один файл" ],
-  "MultiFileRadioBtn": [ "Multi file", " Несколько файлов" ],
+  "MultiFileRadioBtn": [ "Multi file", "Несколько файлов" ],
   "SaveFileFormatLabel": [ "File format", "Формат файла" ],
   "AddZeroLineChkBox": [ "Add zero line", "Добавить нулевую строку" ],
   "AddTenSecForNoiseChkBox": [ "Add 10 seconds for noise", "Добавить 10 секунд для шума" ],

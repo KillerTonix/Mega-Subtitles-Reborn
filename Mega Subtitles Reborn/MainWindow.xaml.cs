@@ -50,7 +50,6 @@ namespace Mega_Subtitles_Reborn
         public Dictionary<string, SolidColorBrush> ActorsAndColorsDict = [];
 
         public Version InternetVersionOfApplication = new();
-        public string? DownloadURL = "NAN";
 
         public List<int> _matchedIndices = [];
         public int _currentMatchIndex = -1;
@@ -111,19 +110,6 @@ namespace Mega_Subtitles_Reborn
             {
                 ExceptionLogger.LogException(ex, "MainWindow", MethodBase.GetCurrentMethod()?.Name); // Log any exceptions 
             }
-
-
-            /*  var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(200) };
-              timer.Start();
-              timer.Tick += (sender, args) =>
-              {
-                  timer.Stop();
-
-                  if (DownloadURL != null && DownloadURL == "NAN")
-                  {
-
-                  }
-              };*/
         }
 
 
@@ -388,6 +374,10 @@ namespace Mega_Subtitles_Reborn
         {
             try
             {
+                if (!File.Exists(GeneralSettings.Default.DeletedLinesJsonPath))
+                    return; // If the deleted lines JSON file does not exist, exit the method
+
+                // Read the deleted entries from the JSON file
                 var deletedEntries = JsonReader.ReadDeletedLinesJson(GeneralSettings.Default.DeletedLinesJsonPath);
 
                 if (deletedEntries != null && deletedEntries.Count > 0)
@@ -792,6 +782,7 @@ namespace Mega_Subtitles_Reborn
                     ListViewColumnsAutoResize.AutoResizeColumns(); // Auto-resize the columns in the ListView to fit the content
                     subtitleViewSource.View.Refresh(); // Refresh the view to apply changes
                 }
+                JsonWriter.WriteCacheJson(); // Write the current state of the cache to a JSON file when the AddActorBtn is clicked
             }
             catch (Exception ex)
             {

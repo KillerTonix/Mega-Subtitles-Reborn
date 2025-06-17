@@ -1,10 +1,8 @@
 ﻿using GithubReleaseDownloader;
-using GithubReleaseDownloader.Entities;
-using Mega_Subtitles_Reborn.Utilities;
 using Mega_Subtitles_Reborn.Utilitis.FileReader;
+using Mega_Subtitles_Reborn.Utilitis.Logger;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Reflection;
 using System.Windows;
 
@@ -19,9 +17,9 @@ namespace Mega_Subtitles_Reborn
         private static readonly MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
         public string? LocalVersionOfApplication = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
-        public string InternetVersionOfApplication = mainWindow.InternetVersionOfApplication.ToString();
-        public static string DownloadedContentPath = string.Empty;
-        public static string DownloadedContentDirectoryPath = string.Empty;
+        public string? InternetVersionOfApplication = mainWindow.InternetVersionOfApplication.ToString();
+        public static string? DownloadedContentPath = string.Empty;
+        public static string? DownloadedContentDirectoryPath = string.Empty;
         private static readonly string ApplicationPath = AppDomain.CurrentDomain.BaseDirectory;
 
 
@@ -91,8 +89,8 @@ namespace Mega_Subtitles_Reborn
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred while trying to download the update: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                this.Close();
+                ExceptionLogger.LogException(ex, "UpdateDialogue", MethodBase.GetCurrentMethod()?.Name); // Log any exceptions 
+                this.Close(); // Close the update dialogue if an error occurs
             }
         }
 
@@ -101,6 +99,7 @@ namespace Mega_Subtitles_Reborn
             try
             {
                 File.WriteAllText($"{ApplicationPath}UpdateProgram.bat", $""""
+                    chcp 65001 >nul
                     tar -xf "{DownloadedContentPath}" -C "{DownloadedContentDirectoryPath}"
                     timeout 1 >nul
                     move -y "{DownloadedContentDirectoryPath}*" "{ApplicationPath}"
@@ -126,8 +125,7 @@ namespace Mega_Subtitles_Reborn
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred while creating the update script: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
+                ExceptionLogger.LogException(ex, "UpdateDialogue", MethodBase.GetCurrentMethod()?.Name); // Log any exceptions 
             }
         }
     }

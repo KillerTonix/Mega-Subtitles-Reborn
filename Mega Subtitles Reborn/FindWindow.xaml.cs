@@ -1,5 +1,7 @@
 ﻿using Mega_Subtitles_Reborn.Utilitis.FileReader;
+using Mega_Subtitles_Reborn.Utilitis.Logger;
 using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -36,43 +38,48 @@ namespace Mega_Subtitles_Reborn
 
         private void Find_Click(object sender, RoutedEventArgs e)
         {
-            string keyword = SearchTextBox.Text.Trim();
-            if (string.IsNullOrEmpty(keyword)) return;
-
-            if (mainWindow._matchedIndices.Count == 0 || mainWindow._currentMatchIndex == -1 || mainWindow._lastKeyword != keyword)
+            try
             {
-                // New search
-                mainWindow._lastKeyword = keyword;
-                mainWindow._matchedIndices = [.. mainWindow.SubtitleEntries
+                string keyword = SearchTextBox.Text.Trim();
+                if (string.IsNullOrEmpty(keyword)) return;
+
+                if (mainWindow._matchedIndices.Count == 0 || mainWindow._currentMatchIndex == -1 || mainWindow._lastKeyword != keyword)
+                {
+                    // New search
+                    mainWindow._lastKeyword = keyword;
+                    mainWindow._matchedIndices = [.. mainWindow.SubtitleEntries
                     .Select((entry, index) => new { entry, index })
                     .Where(x =>
                         (!string.IsNullOrEmpty(x.entry.Text) && x.entry.Text.Contains(keyword, StringComparison.OrdinalIgnoreCase)) ||
                         (!string.IsNullOrEmpty(x.entry.Comment) && x.entry.Comment.Contains(keyword, StringComparison.OrdinalIgnoreCase)))
                     .Select(x => x.index)];
 
-                mainWindow._currentMatchIndex = 0;
-            }
-            else
-                mainWindow._currentMatchIndex = (mainWindow._currentMatchIndex + 1) % mainWindow._matchedIndices.Count;
-
-
-            if (mainWindow._matchedIndices.Count > 0)
-            {
-                int matchIndex = mainWindow._matchedIndices[mainWindow._currentMatchIndex];
-
-                mainWindow.RegionManagerListView.SelectedItems.Clear();
-                mainWindow.RegionManagerListView.SelectedItems.Add(mainWindow.SubtitleEntries[matchIndex]);
-                mainWindow.RegionManagerListView.ScrollIntoView(mainWindow.SubtitleEntries[matchIndex]);
-
-            }
-            else
-            {
-                if (GeneralSettings.Default.Language == "Русский")
-                {
-                    MessageBox.Show("Совпадений не найдено.", "Поиск", MessageBoxButton.OK, MessageBoxImage.Information);
+                    mainWindow._currentMatchIndex = 0;
                 }
+                else
+                    mainWindow._currentMatchIndex = (mainWindow._currentMatchIndex + 1) % mainWindow._matchedIndices.Count;
 
-                MessageBox.Show("No matches found.", "Search", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                if (mainWindow._matchedIndices.Count > 0)
+                {
+                    int matchIndex = mainWindow._matchedIndices[mainWindow._currentMatchIndex];
+
+                    mainWindow.RegionManagerListView.SelectedItems.Clear();
+                    mainWindow.RegionManagerListView.SelectedItems.Add(mainWindow.SubtitleEntries[matchIndex]);
+                    mainWindow.RegionManagerListView.ScrollIntoView(mainWindow.SubtitleEntries[matchIndex]);
+
+                }
+                else
+                {
+                    if (GeneralSettings.Default.Language == "Русский")                    
+                        MessageBox.Show("Совпадений не найдено.", "Поиск", MessageBoxButton.OK, MessageBoxImage.Information);
+                    else                    
+                        MessageBox.Show("No matches found.", "Search", MessageBoxButton.OK, MessageBoxImage.Information);      
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogger.LogException(ex, "FindWindow", MethodBase.GetCurrentMethod()?.Name); // Log any exceptions 
             }
         }
 

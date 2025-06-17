@@ -40,7 +40,7 @@ namespace Mega_Subtitles_Reborn.Utilitis.FromReaper
         {
             try
             {
-                double syncValue = double.Parse(File.ReadAllText(GeneralSettings.Default.ReaperSyncFilePath, Encoding.UTF8)); // Read the sync value from the file
+                double syncValue = double.Parse(File.ReadAllText(GeneralSettings.Default.ReaperSyncFilePath, Encoding.UTF8), CultureInfo.InvariantCulture); // Read the sync value from the file
 
                 if (mainWindow.subtitleViewSource.View is CollectionView view) // Check if the View is a CollectionView
                 {

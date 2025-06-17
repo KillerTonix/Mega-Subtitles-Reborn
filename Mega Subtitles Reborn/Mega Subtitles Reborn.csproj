@@ -113,10 +113,14 @@
     <None Update="UpdateProgram.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="version.json">
+    <None Update="version.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="powershell -Command &quot;Get-Item '$(TargetPath)' | Select-Object -ExpandProperty VersionInfo | ForEach-Object { $_.ProductVersion } &gt; '$(TargetDir)version.txt'&quot;&#xD;&#xA;" />
+  </Target>
 
 
 </Project>

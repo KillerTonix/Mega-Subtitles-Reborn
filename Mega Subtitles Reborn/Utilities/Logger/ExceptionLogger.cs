@@ -16,7 +16,7 @@ namespace Mega_Subtitles_Reborn.Utilitis.Logger
             try
             {
                 DirectoryOrFileCheck.DirectoryCheck(LogDirectoryPath); //Check if directory wasnt exist then create.
-                
+
                 using StreamWriter writer = new(LogFilePath, true);
                 writer.WriteLine("DateTime: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 writer.WriteLine("Class Name: " + className);
@@ -25,7 +25,12 @@ namespace Mega_Subtitles_Reborn.Utilitis.Logger
                 writer.WriteLine("Stack Trace: " + ex.StackTrace);
                 writer.WriteLine("----------------------------------------");
                 writer.WriteLine();
-                MessageBox.Show($"Вовремя работы программы возникла ошибка.\nПодробнее об ошибке можно прочитать в файле{LogFilePath}", "Оповещение", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                if (GeneralSettings.Default.Language == "English")
+                    MessageBox.Show($"An error occurred during the program's operation.\nMore details about the error can be found in the file {LogFilePath}", "Notification", MessageBoxButton.OK, MessageBoxImage.Error);
+                else
+                    MessageBox.Show($"Во время работы программы возникла ошибка.\nПодробнее об ошибке можно прочитать в файле {LogFilePath}", "Оповещение", MessageBoxButton.OK, MessageBoxImage.Error);
+
                 Process.Start("explorer.exe", "\"" + LogFilePath + "\"");
             }
             catch (Exception loggingEx)

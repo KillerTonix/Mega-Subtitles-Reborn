@@ -1,6 +1,8 @@
 ﻿using Mega_Subtitles_Reborn.Utilities.Subtitles;
 using Mega_Subtitles_Reborn.Utilitis.FileWriter;
-using System.IO;
+using Mega_Subtitles_Reborn.Utilitis.Logger;
+using System.Globalization;
+using System.Reflection;
 using System.Windows;
 
 namespace Mega_Subtitles_Reborn.Utilities
@@ -23,61 +25,67 @@ namespace Mega_Subtitles_Reborn.Utilities
 
         public static void FindLongestActorParts()
         {
-            var result = new Dictionary<string, ActorRange>();
-            var entries = new List<SubtitlesEnteries>();
-            string currentActor = string.Empty;
-            TimeSpan groupStart = TimeSpan.Zero;
-            TimeSpan groupEnd = TimeSpan.Zero;
-
-            for (int i = 0; i < mainWindow.SubtitleEntries.Count; i++)
+            try
             {
-                var entry = mainWindow.SubtitleEntries[i];
-                var entryStart = TimeSpan.Parse(entry.Start);
-                var entryEnd = TimeSpan.Parse(entry.End);
+                var result = new Dictionary<string, ActorRange>();
+                var entries = new List<SubtitlesEnteries>();
+                string currentActor = string.Empty;
+                TimeSpan groupStart = TimeSpan.Zero;
+                TimeSpan groupEnd = TimeSpan.Zero;
 
-                if (entry.Actor != currentActor)
+                for (int i = 0; i < mainWindow.SubtitleEntries.Count; i++)
                 {
-                    // Start new group
-                    currentActor = entry.Actor ?? string.Empty;
-                    groupStart = entryStart;
-                    groupEnd = entryEnd;
+                    var entry = mainWindow.SubtitleEntries[i];
+                    var entryStart = TimeSpan.Parse(entry.Start, CultureInfo.InvariantCulture);
+                    var entryEnd = TimeSpan.Parse(entry.End, CultureInfo.InvariantCulture);
 
-                    // End the previous group
-                    if (currentActor != null)
-                        UpdateLongest(result, currentActor, groupStart, groupEnd);
+                    if (entry.Actor != currentActor)
+                    {
+                        // Start new group
+                        currentActor = entry.Actor ?? string.Empty;
+                        groupStart = entryStart;
+                        groupEnd = entryEnd;
+
+                        // End the previous group
+                        if (currentActor != null)
+                            UpdateLongest(result, currentActor, groupStart, groupEnd);
+                    }
+                    else
+                    {
+                        // Continue same group
+                        groupEnd = entryEnd;
+                    }
                 }
-                else
+
+                // Final group
+                if (currentActor != null)
+                    UpdateLongest(result, currentActor, groupStart, groupEnd);
+
+                int number = 1;
+                foreach (var range in result.Values.OrderBy(r => r.Start))
                 {
-                    // Continue same group
-                    groupEnd = entryEnd;
+                    entries.Add(new SubtitlesEnteries
+                    {
+                        Number = number++,
+                        Start = range.Start.ToString(@"hh\:mm\:ss\.fff"),
+                        End = range.End.ToString(@"hh\:mm\:ss\.fff"),
+                        Actor = range.Actor,
+                        Text = range.Actor
+                    });
+
                 }
-            }
 
-            // Final group
-            if (currentActor != null)
-                UpdateLongest(result, currentActor, groupStart, groupEnd);
-
-            int number = 1;
-            foreach (var range in result.Values.OrderBy(r => r.Start))
-            {
-                entries.Add(new SubtitlesEnteries
+                mainWindow.SubtitleEntries.Clear(); // Clear the existing entries in the SubtitleEntries collection
+                foreach (var entry in entries)
                 {
-                    Number = number++,
-                    Start = range.Start.ToString(@"hh\:mm\:ss\.fff"),
-                    End = range.End.ToString(@"hh\:mm\:ss\.fff"),
-                    Actor = range.Actor,
-                    Text = range.Actor
-                });
-
+                    mainWindow.SubtitleEntries.Add(entry); // Add the filtered entries to the SubtitleEntries collection
+                }
+                JsonWriter.WriteCacheJson(isDemoPhrases: true); // Write the current state of the cache to a JSON file when the ActorComboBox loses focus
             }
-
-            mainWindow.SubtitleEntries.Clear(); // Clear the existing entries in the SubtitleEntries collection
-            foreach (var entry in entries)
+            catch (Exception ex)
             {
-                mainWindow.SubtitleEntries.Add(entry); // Add the filtered entries to the SubtitleEntries collection
+                ExceptionLogger.LogException(ex, "Calculation", MethodBase.GetCurrentMethod()?.Name); // Log any exceptions 
             }
-            JsonWriter.WriteCacheJson(isDemoPhrases: true); // Write the current state of the cache to a JSON file when the ActorComboBox loses focus
-
         }
 
         private static void UpdateLongest(Dictionary<string, ActorRange> result, string actor, TimeSpan start, TimeSpan end)

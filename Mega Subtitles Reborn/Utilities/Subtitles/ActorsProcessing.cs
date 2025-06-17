@@ -1,4 +1,5 @@
-﻿using Mega_Subtitles_Reborn.Utilitis.Logger;
+﻿using Mega_Subtitles_Reborn.Utilitis.FileWriter;
+using Mega_Subtitles_Reborn.Utilitis.Logger;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Windows;
@@ -155,9 +156,10 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing
                     foreach (var entry in mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>())
                     {
                         if (entry.Actor == selectedActor)
-                            UpdateActorNames(selectedActor, "_Unknown_Actor_");
+                            UpdateActorNames(selectedActor, "𓈖Unknown_Actor𓈖");
                     }
-                    RefreshActorsList("_Unknown_Actor_", selectedActor, 0);
+                    RefreshActorsList("𓈖Unknown_Actor𓈖", selectedActor, 0);
+                    JsonWriter.WriteCacheJson(); // Write the current state of the cache to a JSON file when the SetColorBtn is clicked
 
                     mainWindow.RegionManagerListView.Items.Refresh();
                 }

@@ -1,5 +1,7 @@
 ﻿using Mega_Subtitles_Reborn.Utilities.Subtitles;
 using Mega_Subtitles_Reborn.Utilitis;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -28,7 +30,7 @@ namespace Mega_Subtitles_Reborn.Utilities.FileWriter
 
                 if (addTenSec && entries.Count > 0)
                 {
-                    var firstStart = TimeSpan.Parse(entries[0].Start);
+                    var firstStart = TimeSpan.Parse(entries[0].Start, CultureInfo.InvariantCulture);
 
                     if (firstStart > TimeSpan.FromSeconds(10))
                     {
@@ -42,7 +44,7 @@ namespace Mega_Subtitles_Reborn.Utilities.FileWriter
                     {
                         foreach (var item in entries)
                         {
-                            var duration = TimeSpan.Parse(item.End) - TimeSpan.Parse(item.Start);
+                            var duration = TimeSpan.Parse(item.End, CultureInfo.InvariantCulture) - TimeSpan.Parse(item.Start, CultureInfo.InvariantCulture);
                             if (duration > TimeSpan.FromSeconds(11))
                             {
                                 writer.WriteLine(counter++);
@@ -68,10 +70,12 @@ namespace Mega_Subtitles_Reborn.Utilities.FileWriter
             {
                 var entries = allEntries
                     .Where(e => selectedActors.Contains(e.Actor))
-                    .OrderBy(e => TimeSpan.Parse(e.Start))
+                    .OrderBy(e => TimeSpan.Parse(e.Start, CultureInfo.InvariantCulture))
                     .ToList();
 
                 WriteToFile(srtFilePath, entries);
+                Succses(srtFilePath, true);
+
             }
             else
             {
@@ -81,30 +85,45 @@ namespace Mega_Subtitles_Reborn.Utilities.FileWriter
 
                     var entries = allEntries
                         .Where(e => e.Actor == actor)
-                        .OrderBy(e => TimeSpan.Parse(e.Start))
+                        .OrderBy(e => TimeSpan.Parse(e.Start, CultureInfo.InvariantCulture))
                         .ToList();
 
                     var outputPath = Path.Combine(srtFilePath, actor + ".srt");
 
                     if (DirectoryOrFileCheck.CheckFileExistingAndNotEmpty(outputPath))
                     {
+                        string message = $"Файл {outputPath} уже существует.\nВы хотите заменить его?\nЕсли нажать Нет, то будет добавлено '_(1)'.";
+                        if (GeneralSettings.Default.Language == "English")
+                            message = $"{outputPath} already exists.\nDo you want to replace it?\nIf press No then '_(1)' will be added.";
                         var result = MessageBox.Show($"{outputPath} already exists.\nDo you want to replace it?\nIf press No then '_(1)' will be added.", "Save the subtitles file", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
-                        if (result == MessageBoxResult.Yes)
-                        {
-                            File.Delete(outputPath);
-                        }
-                        else
-                        {
-                            outputPath = Path.Combine(srtFilePath, actor + "_(1).srt");
-                        }
+                        if (result == MessageBoxResult.Yes)                        
+                            File.Delete(outputPath);                        
+                        else                        
+                            outputPath = Path.Combine(srtFilePath, actor + "_(1).srt");                        
                     }
 
-                    WriteToFile(outputPath, entries);
+                    WriteToFile(outputPath, entries);    
                 }
+                Succses(srtFilePath, false);
             }
-
-            MessageBox.Show("Subtitles saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+
+        private static void Succses(string OutputPath, bool isSingleFile)
+        {
+            string text = "Файлы были успешно записаны.\nОткрыть выходную папку?";
+            if (GeneralSettings.Default.Language == "English")
+                text = "The files were successfully writed.\nOpen the output folder?";
+
+            var openFolder = MessageBox.Show(text, "Information", MessageBoxButton.YesNo, MessageBoxImage.None);
+            if (openFolder == MessageBoxResult.Yes)
+            {
+                if (isSingleFile)
+                    Process.Start("explorer.exe", "/select, \"" + OutputPath + "\"");
+                else
+                    Process.Start("explorer.exe", "\"" + OutputPath + "\"");
+            }
+        }
+
 
     }
 }

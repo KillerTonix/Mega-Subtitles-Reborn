@@ -1,6 +1,7 @@
 ﻿using Mega_Subtitles_Reborn.Utilities.Subtitles;
 using Mega_Subtitles_Reborn.Utilitis.FileReader;
 using Mega_Subtitles_Reborn.Utilitis.FileWriter;
+using Mega_Subtitles_Reborn.Utilitis.Logger;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -15,110 +16,117 @@ namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
 
         public static void ParseAssFile(string filePath)
         {
-            DirectoryOrFileCheck.DirectoryCheck(GeneralSettings.Default.ProjectCacheFolderPath);
-            List<SolidColorBrush> colorPalette = ListSolidColor.SolidColors();
-            HashSet<string> uniqueActors = [];
-
-            var lines = File.ReadAllLines(filePath);
-            var entries = new List<SubtitlesEnteries>();
-            var actorsEntries = new List<ActorsEnteries>();
-
-            int number = 1;
-            int colorIndex = 0;
-
-            string DialoguePattern = @"Dialogue:\s+(\d+),([0-9:.,]+),([0-9:.,]+),\s*(.*?),\s*(.*?),\s*(\d+),\s*(\d+),\s*(\d+),\s*(.*?)(?:,{(.*)})?$";
-            string BracerPattern = @"\{.*?\}";
-
-
-            foreach (var rawLine in lines)
+            try
             {
-                if (rawLine.StartsWith("Dialogue:"))
-                {
-                    var match = Regex.Match(rawLine, DialoguePattern);
+                DirectoryOrFileCheck.DirectoryCheck(GeneralSettings.Default.ProjectCacheFolderPath);
+                List<SolidColorBrush> colorPalette = ListSolidColor.SolidColors();
+                HashSet<string> uniqueActors = [];
 
-                    if (match.Success)
+                var lines = File.ReadAllLines(filePath);
+                var entries = new List<SubtitlesEnteries>();
+                var actorsEntries = new List<ActorsEnteries>();
+
+                int number = 1;
+                int colorIndex = 0;
+
+                string DialoguePattern = @"Dialogue:\s+(\d+),([0-9:.,]+),([0-9:.,]+),\s*(.*?),\s*(.*?),\s*(\d+),\s*(\d+),\s*(\d+),\s*(.*?)(?:,{(.*)})?$";
+                string BracerPattern = @"\{.*?\}";
+
+
+                foreach (var rawLine in lines)
+                {
+                    if (rawLine.StartsWith("Dialogue:"))
                     {
-                        string actor = string.Empty;
-                        string checkingText = match.Groups[9].Value.Trim().TrimStart(',');
-                        if (match.Groups[5].Value.Trim().Length > 0)
-                            actor = match.Groups[5].Value.Trim();
-                        else
-                        {
-                            var BracerMatch = Regex.Match(checkingText, BracerPattern);
+                        var match = Regex.Match(rawLine, DialoguePattern);
 
-                            actor = "_Unknown_Actor_";
-                            if (BracerMatch.Success)
-                                continue;
+                        if (match.Success)
+                        {
+                            string actor = string.Empty;
+                            string checkingText = match.Groups[9].Value.Trim().TrimStart(',');
+                            if (match.Groups[5].Value.Trim().Length > 0)
+                                actor = match.Groups[5].Value.Trim();
+                            else
+                            {
+                                var BracerMatch = Regex.Match(checkingText, BracerPattern);
+
+                                actor = "𓈖Unknown_Actor𓈖";
+                                if (BracerMatch.Success)
+                                    continue;
+                            }
+
+                            if (!mainWindow.ActorsAndColorsDict.TryGetValue(actor, out SolidColorBrush? value))
+                            {
+                                value = colorPalette[colorIndex % colorPalette.Count];
+                                mainWindow.ActorsAndColorsDict[actor] = value;
+                                colorIndex++;
+                            }
+
+
+                            entries.Add(new SubtitlesEnteries
+                            {
+                                Number = number++,
+                                Color = value.ToString(),
+                                Layer = match.Groups[1].Value.Trim(),
+                                Start = NormalizeTimeFormat(match.Groups[2].Value.Trim().Replace(",", ".")),
+                                End = NormalizeTimeFormat(match.Groups[3].Value.Trim().Replace(",", ".")),
+                                Style = match.Groups[4].Value.Trim(),
+                                Actor = actor,
+                                Effect = match.Groups[8].Value.Trim(),
+                                Text = RemoveTextTags(match.Groups[9].Value.Trim().TrimStart(',')),
+                                Comment = ""
+                            });
                         }
-
-                        if (!mainWindow.ActorsAndColorsDict.TryGetValue(actor, out SolidColorBrush? value))
-                        {
-                            value = colorPalette[colorIndex % colorPalette.Count];
-                            mainWindow.ActorsAndColorsDict[actor] = value;
-                            colorIndex++;
-                        }
-                                               
-
-                        entries.Add(new SubtitlesEnteries
-                        {
-                            Number = number++,
-                            Color = value.ToString(),
-                            Layer = match.Groups[1].Value.Trim(),
-                            Start = NormalizeTimeFormat(match.Groups[2].Value.Trim().Replace(",",".")),
-                            End = NormalizeTimeFormat(match.Groups[3].Value.Trim().Replace(",", ".")),
-                            Style = match.Groups[4].Value.Trim(),
-                            Actor = actor,
-                            Effect = match.Groups[8].Value.Trim(),
-                            Text = RemoveTextTags(match.Groups[9].Value.Trim().TrimStart(',')),
-                            Comment = ""
-                        });                      
                     }
-                }               
-            }
+                }
 
-           
 
-            var data = new SubtitlesData
-            {
-                SubtitlesPath = GeneralSettings.Default.SubtitlesPath,
-                Entries = entries
-            };
 
-            JsonWriter.WriteAssSubtitlesDataJson(data, GeneralSettings.Default.ProjectCahceJsonPath);
-            
-            var subtitlesData = JsonReader.ReadAssSubtitlesDataJson(GeneralSettings.Default.ProjectCahceJsonPath);
-            List<SubtitlesEnteries> subtitleseEntries = subtitlesData.Entries;
-            foreach (var entry in subtitleseEntries)
-            {
-                if (entry.Actor != null)
-                    uniqueActors.Add(entry.Actor);
-            }
-
-            List<string> UniqueActorsList = [.. uniqueActors.OrderBy(actor => actor)];
-            mainWindow.AvailableActors.Clear();
-
-            int actorIndex = 1;
-
-            foreach (var actor in UniqueActorsList)
-            {
-                int lineCount = subtitleseEntries.Count(e => e.Actor == actor);
-                mainWindow.AvailableActors.Add(actor);
-                actorsEntries.Add(new ActorsEnteries
+                var data = new SubtitlesData
                 {
-                    ActorsNumber = actorIndex++,
-                    Actors = actor,
-                    ActorsLineCount = lineCount
-                    // ActorsColor is auto-set by UpdateColor() in the setter
-                });
+                    SubtitlesPath = GeneralSettings.Default.SubtitlesPath,
+                    Entries = entries
+                };
+
+                JsonWriter.WriteAssSubtitlesDataJson(data, GeneralSettings.Default.ProjectCahceJsonPath);
+
+                var subtitlesData = JsonReader.ReadAssSubtitlesDataJson(GeneralSettings.Default.ProjectCahceJsonPath);
+                List<SubtitlesEnteries> subtitleseEntries = subtitlesData.Entries;
+                foreach (var entry in subtitleseEntries)
+                {
+                    if (entry.Actor != null)
+                        uniqueActors.Add(entry.Actor);
+                }
+
+                List<string> UniqueActorsList = [.. uniqueActors.OrderBy(actor => actor)];
+                mainWindow.AvailableActors.Clear();
+
+                int actorIndex = 1;
+
+                foreach (var actor in UniqueActorsList)
+                {
+                    int lineCount = subtitleseEntries.Count(e => e.Actor == actor);
+                    mainWindow.AvailableActors.Add(actor);
+                    actorsEntries.Add(new ActorsEnteries
+                    {
+                        ActorsNumber = actorIndex++,
+                        Actors = actor,
+                        ActorsLineCount = lineCount
+                        // ActorsColor is auto-set by UpdateColor() in the setter
+                    });
+                }
+
+                foreach (var entry in actorsEntries)
+                    mainWindow.ActorEnteries.Add(entry);
+
+                mainWindow.AvailableActorsColors.Clear();
+                var usedColors = mainWindow.ActorsAndColorsDict.Values.Select(b => b.Color).ToHashSet();
+                foreach (var brush in colorPalette.Where(brush => !usedColors.Contains(brush.Color)))
+                    mainWindow.AvailableActorsColors.Add(brush);
             }
-
-            foreach (var entry in actorsEntries)
-                mainWindow.ActorEnteries.Add(entry);
-
-            mainWindow.AvailableActorsColors.Clear();
-            var usedColors = mainWindow.ActorsAndColorsDict.Values.Select(b => b.Color).ToHashSet();
-            foreach (var brush in colorPalette.Where(brush => !usedColors.Contains(brush.Color)))
-                mainWindow.AvailableActorsColors.Add(brush);
+            catch (Exception ex)
+            {
+                ExceptionLogger.LogException(ex, "AssParser", MethodBase.GetCurrentMethod()?.Name); // Log any exceptions 
+            }
         }
 
         public static string RemoveTextTags(string text)
@@ -131,13 +139,14 @@ namespace Mega_Subtitles_Reborn.Utilitis.Subtitles.AssProcessing
             }
             catch (Exception ex)
             {
-                Logger.ExceptionLogger.LogException(ex, "AssParser", MethodBase.GetCurrentMethod()?.Name);
+                ExceptionLogger.LogException(ex, "AssParser", MethodBase.GetCurrentMethod()?.Name);
                 return text;
             }
         }
 
         public static string NormalizeTimeFormat(string time)
         {
+
             int dotIndex = time.LastIndexOf('.');
             if (dotIndex != -1 && dotIndex < time.Length - 1)
             {

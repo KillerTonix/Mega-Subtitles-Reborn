@@ -39,7 +39,7 @@ namespace Mega_Subtitles_Reborn.Utilities.FileWriter
                 // Only create a file if there's at least one comment for the actor
                 if (actorGroup.Any(entry => !string.IsNullOrWhiteSpace(entry.Comment)))
                 {
-                    string actor = actorGroup.Key ?? "_Unknown_Actor_";
+                    string actor = actorGroup.Key ?? "𓈖Unknown_Actor𓈖";
                     string filePath = Path.Combine(OutputPath, $"[{actor}] ({GetProjectName()}).txt");
 
                     using StreamWriter writer = new(filePath, false, Encoding.UTF8);
@@ -85,7 +85,7 @@ namespace Mega_Subtitles_Reborn.Utilities.FileWriter
         {
 
             string text = "Файлы комментариев были успешно записаны.\nОткрыть выходную папку?";
-            if (GeneralSettings.Default.Language == "en")
+            if (GeneralSettings.Default.Language == "English")
                 text = "The comments files were successfully writed.\nOpen the output folder?";
 
             var openFolder = MessageBox.Show(text, "Information", MessageBoxButton.YesNo, MessageBoxImage.None);

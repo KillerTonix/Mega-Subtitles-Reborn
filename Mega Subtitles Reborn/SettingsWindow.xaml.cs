@@ -1,6 +1,5 @@
 ﻿using Mega_Subtitles_Reborn.Utilities;
 using Mega_Subtitles_Reborn.Utilitis.FileReader;
-using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;

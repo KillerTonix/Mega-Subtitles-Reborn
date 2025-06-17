@@ -1,9 +1,7 @@
-﻿using Mega_Subtitles_Reborn.Utilitis.FileReader;
+﻿using Mega_Subtitles_Reborn.Utilitis.Logger;
 using System.Net.Http;
 using System.Reflection;
 using System.Windows;
-
-
 
 namespace Mega_Subtitles_Reborn.Utilities
 {
@@ -14,22 +12,24 @@ namespace Mega_Subtitles_Reborn.Utilities
 
         public async static void CheckVersion()
         {
-
-            using HttpResponseMessage response = await client.GetAsync(@"https://raw.githubusercontent.com/KillerTonix/Mega-Subtitles-Reborn/refs/heads/master/Mega%20Subtitles%20Reborn/version.json");
-            response.EnsureSuccessStatusCode();
-            
-            string responseBody = await response.Content.ReadAsStringAsync();
-           
-            Dictionary<string, string> result = JsonReader.ReadVersionJson(responseBody);
-
-            var LocalVersionOfApplication = Assembly.GetExecutingAssembly().GetName().Version;
-            mainWindow.InternetVersionOfApplication = Version.Parse(result["version"]);            
-
-            if (mainWindow.InternetVersionOfApplication > LocalVersionOfApplication)
+            try
             {
-                mainWindow.DownloadURL = result["url"];
-                var updateWindow = new UpdateDialogue { Owner = mainWindow };
-                updateWindow.ShowDialog();
+                using HttpResponseMessage response = await client.GetAsync(@"https://raw.githubusercontent.com/KillerTonix/Mega-Subtitles-Reborn/refs/heads/master/Mega%20Subtitles%20Reborn/version.txt");
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                var LocalVersionOfApplication = Assembly.GetExecutingAssembly().GetName().Version;
+                mainWindow.InternetVersionOfApplication = Version.Parse(responseBody);
+
+                if (mainWindow.InternetVersionOfApplication > LocalVersionOfApplication)
+                {
+                    var updateWindow = new UpdateDialogue { Owner = mainWindow };
+                    updateWindow.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogger.LogException(ex, "CheckAppVersion", MethodBase.GetCurrentMethod()?.Name); // Log any exceptions 
             }
         }
     }

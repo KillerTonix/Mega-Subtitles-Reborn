@@ -1,7 +1,6 @@
 ﻿using Mega_Subtitles_Reborn.Utilitis;
 using Mega_Subtitles_Reborn.Utilitis.FileWriter;
 using Mega_Subtitles_Reborn.Utilitis.Logger;
-using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -64,7 +63,7 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.SrtProcessing
                         Color = colorPalette[0].ToString(),
                         Start = start.Replace(",", "."),
                         End = end.Replace(",", "."),
-                        Actor = "_Unknown_Actor_",
+                        Actor = "𓈖Unknown_Actor𓈖",
                         Text = string.Join(" ", textLines)
                     });
                 }
@@ -78,11 +77,11 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.SrtProcessing
                 JsonWriter.WriteAssSubtitlesDataJson(data, GeneralSettings.Default.ProjectCahceJsonPath);
 
                 mainWindow.AvailableActors.Clear();
-                mainWindow.AvailableActors.Add("_Unknown_Actor_");
+                mainWindow.AvailableActors.Add("𓈖Unknown_Actor𓈖");
                 actorsEntries.Add(new ActorsEnteries
                 {
                     ActorsNumber = 1,
-                    Actors = "_Unknown_Actor_",
+                    Actors = "𓈖Unknown_Actor𓈖",
                     ActorsLineCount = i
                 });
                 foreach (var entry in actorsEntries)

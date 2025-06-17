@@ -1,4 +1,6 @@
 ﻿using Mega_Subtitles_Reborn.Utilities.Subtitles;
+using Mega_Subtitles_Reborn.Utilitis.Logger;
+using System.Reflection;
 using System.Windows;
 
 namespace Mega_Subtitles_Reborn.Utilities
@@ -9,32 +11,38 @@ namespace Mega_Subtitles_Reborn.Utilities
 
         public static void CopyText(string type)
         {
-            var selectedItems = mainWindow.RegionManagerListView.SelectedItems.Cast<SubtitlesEnteries>().ToList();
-
-            string timings = string.Empty;
-            string text = string.Empty;
-            string comments = string.Empty;
-
-            foreach (var item in selectedItems)
+            try
             {
-                timings += $"{item.Start} --> {item.End}\n";
-                text += $"{item.Text}\n";
-                comments += $"{item.Comment}\n";
-            }
+                var selectedItems = mainWindow.RegionManagerListView.SelectedItems.Cast<SubtitlesEnteries>().ToList();
 
-            switch (type)
+                string timings = string.Empty;
+                string text = string.Empty;
+                string comments = string.Empty;
+
+                foreach (var item in selectedItems)
+                {
+                    timings += $"{item.Start} --> {item.End}";
+                    text += $"{item.Text}";
+                    comments += $"{item.Comment}";
+                }
+
+                switch (type)
+                {
+                    case "timings":
+                        Clipboard.SetText(timings);
+                        break;
+                    case "text":
+                        Clipboard.SetText(text);
+                        break;
+                    case "comments":
+                        Clipboard.SetText(comments);
+                        break;
+                }
+            }
+            catch (Exception ex)
             {
-                case "timings":
-                    Clipboard.SetText(timings);
-                    break;
-                case "text":
-                    Clipboard.SetText(text);
-                    break;
-                case "comments":
-                    Clipboard.SetText(comments);
-                    break;
+                ExceptionLogger.LogException(ex, "CopyToClipboard", MethodBase.GetCurrentMethod()?.Name); // Log any exceptions 
             }
-
         }
     }
 }
