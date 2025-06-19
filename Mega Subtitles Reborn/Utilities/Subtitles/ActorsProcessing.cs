@@ -135,6 +135,14 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing
             try
             {
                 var selectedActors = mainWindow.ActorsListView.SelectedItems.Cast<ActorsEnteries>().Select(a => a.Actors).ToList();
+                if (selectedActors.Count == 0)
+                {
+                    if (GeneralSettings.Default.Language == "English")
+                        MessageBox.Show("Please select an actor to delete.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    else
+                        MessageBox.Show("Пожалуйста, выберите актера для удаления.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return; // Exit the method if no actors are selected
+                }
 
                 if (selectedActors[0] is string selectedActor)
                 {
@@ -162,6 +170,11 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles.AssProcessing
                     JsonWriter.WriteCacheJson(); // Write the current state of the cache to a JSON file when the SetColorBtn is clicked
 
                     mainWindow.RegionManagerListView.Items.Refresh();
+
+                    // Renumber all entries
+                    for (int i = 0; i < mainWindow.ActorEnteries.Count; i++) // Iterate through all entries in the ActorEnteries list                
+                        mainWindow.ActorEnteries[i].ActorsNumber = i + 1; // Set the ActorsNumber property of each entry to its index + 1                
+                    mainWindow.ActorsListView.Items.Refresh(); // Refresh the ListView to reflect the changes made to the ActorsListView list
                 }
             }
             catch (Exception ex)

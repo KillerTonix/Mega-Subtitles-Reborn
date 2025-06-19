@@ -99,5 +99,19 @@
   "DontSaveDublicateCacheRadioBtn": [ "Don't save", "Не сохранить" ],
   "OpenDublicatedCacheFolderLabel": [ "Open dublicated cache folder:", "Открыть дублированную папку кэша:" ],
   "OpenDublicatedCacheFolderTB": [ "Open", "Открыть" ],
-  "ApplySettingsTB": [ "Apply", "Применить" ]
+  "ApplySettingsTB": [ "Apply", "Применить" ],
+
+
+  "FindTextBox": [ "Find...", "Найти..." ],
+  "ReplaceTextBox": [ "Replace...", "Заменить..." ],
+  "OptionsExpander": [ "Options", "Параметры" ],
+  "ReplaceWhereLabel": [ "Replace where:", "Заменить где:" ],
+  "InTextColumnRadioBtn": [ "In text", "В тексте" ],
+  "InCommentsColumnRadioBtn": [ "In comments", "В комментариях" ],
+  "BatchReplaceLabel": [ "Batch replace:", "Пакетная замена:" ],
+  "BatchReplaceOpenBtn": [ "Open", "Открыть" ],
+  "BatchReplaceReplaceBtn": [ "Replace", "Заменить" ],
+  "FindNextButton": [ "Find next", "Найти след." ],
+  "ReplaceButton": [ "Replace", "Заменить" ],
+  "ReplaceAllButton": [ "Replace all", "Заменить все" ]
 }

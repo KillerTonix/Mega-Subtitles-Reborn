@@ -1,7 +1,9 @@
 ﻿using Mega_Subtitles_Reborn.Utilities.Subtitles;
+using Mega_Subtitles_Reborn.Utilitis.Logger;
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 
@@ -13,48 +15,61 @@ namespace Mega_Subtitles_Reborn.Utilities.FileWriter
 
         public static void WriteFullComments()
         {
-            string OutputPath = Path.Combine(SelectOutputFolder(GetProjectName(), isFullExport: true), $"[{GetProjectName()}] (Full_Comments).txt");
-
-            using StreamWriter writer = new(OutputPath, false, Encoding.UTF8);
-            foreach (var item in mainWindow.SubtitleEntries.OrderBy(e => e.Start))
+            try
             {
-                if (!string.IsNullOrWhiteSpace(item.Comment))
-                {                 
-                    writer.WriteLine($"{item.Start}\t{item.End}\t{item.Actor}\t{item.Comment}");
-                    writer.WriteLine();
-                }
-            }
-            Succses(OutputPath, isFullExport: true);
+                string OutputPath = Path.Combine(SelectOutputFolder(GetProjectName(), isFullExport: true), $"[{GetProjectName()}] (Full_Comments).txt");
 
+                using StreamWriter writer = new(OutputPath, false, Encoding.UTF8);
+                foreach (var item in mainWindow.SubtitleEntries.OrderBy(e => e.Start))
+                {
+                    if (!string.IsNullOrWhiteSpace(item.Comment))
+                    {
+                        writer.WriteLine($"{item.Start}\t{item.End}\t{item.Actor}\t{item.Comment}");
+                        writer.WriteLine();
+                    }
+                }
+                Succses(OutputPath, isFullExport: true);
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogger.LogException(ex, "WriteFullComments", MethodBase.GetCurrentMethod()?.Name); // Log any exceptions 
+            }
         }
 
         public static void WriteSeparatedComments()
         {
-            string OutputPath = SelectOutputFolder(GetProjectName(), isFullExport: false);
-
-            var groupedByActor = mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>().GroupBy(entry => entry.Actor);
-
-            foreach (var actorGroup in groupedByActor)
+            try
             {
-                // Only create a file if there's at least one comment for the actor
-                if (actorGroup.Any(entry => !string.IsNullOrWhiteSpace(entry.Comment)))
+                string OutputPath = SelectOutputFolder(GetProjectName(), isFullExport: false);
+
+                var groupedByActor = mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>().GroupBy(entry => entry.Actor);
+
+                foreach (var actorGroup in groupedByActor)
                 {
-                    string actor = actorGroup.Key ?? "𓈖Unknown_Actor𓈖";
-                    string filePath = Path.Combine(OutputPath, $"[{actor}] ({GetProjectName()}).txt");
-
-                    using StreamWriter writer = new(filePath, false, Encoding.UTF8);
-
-                    foreach (var item in actorGroup)
+                    // Only create a file if there's at least one comment for the actor
+                    if (actorGroup.Any(entry => !string.IsNullOrWhiteSpace(entry.Comment)))
                     {
-                        if (!string.IsNullOrWhiteSpace(item.Comment))
+                        string actor = actorGroup.Key ?? "𓈖Unknown_Actor𓈖";
+                        string filePath = Path.Combine(OutputPath, $"[{actor}] ({GetProjectName()}).txt");
+
+                        using StreamWriter writer = new(filePath, false, Encoding.UTF8);
+
+                        foreach (var item in actorGroup)
                         {
-                            writer.WriteLine($"{item.Start}\t{item.End}\t{item.Actor}\t{item.Comment}");
-                            writer.WriteLine();
+                            if (!string.IsNullOrWhiteSpace(item.Comment))
+                            {
+                                writer.WriteLine($"{item.Start}\t{item.End}\t{item.Comment}");
+                                writer.WriteLine();
+                            }
                         }
                     }
                 }
+                Succses(OutputPath, isFullExport: false);
             }
-            Succses(OutputPath, isFullExport: false);
+            catch (Exception ex)
+            {
+                ExceptionLogger.LogException(ex, "WriteFullComments", MethodBase.GetCurrentMethod()?.Name); // Log any exceptions 
+            }
         }
 
         private static string GetProjectName()

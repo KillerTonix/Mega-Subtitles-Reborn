@@ -1,0 +1,56 @@
+﻿<Window x:Class="Mega_Subtitles_Reborn.FindAndReplaceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Mega_Subtitles_Reborn"
+        mc:Ignorable="d"
+        Title="ReplaceWindow" Height="350" Width="500" WindowStartupLocation="CenterOwner"
+        WindowStyle="ToolWindow" FontFamily="Nunito SemiBold" FontSize="14"
+        BorderThickness="2" Background="#FF3B3254" PreviewKeyDown="Window_PreviewKeyDown" BorderBrush="Black">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <TabControl Grid.Column="0"  Background="#FF3B3254" BorderThickness="0" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14">
+            <TabItem x:Name="FindHeader" Header="Find" PreviewMouseLeftButtonDown="FindHeader_PreviewMouseLeftButtonDown">
+                <StackPanel Margin="0,3,0,0">
+                    <TextBox x:Name="FindFindTextBox" Text="Find..." Margin="10" VerticalAlignment="Center" FontFamily="Nunito SemiBold" FontSize="14" TextChanged="FindFindTextBox_TextChanged" PreviewMouseLeftButtonDown="FindFindTextBox_PreviewMouseLeftButtonDown" />
+                </StackPanel>
+            </TabItem>
+
+            <TabItem x:Name="ReplaceHeader" Header="Replace" PreviewMouseLeftButtonDown="ReplaceHeader_PreviewMouseLeftButtonDown">
+                <StackPanel Margin="0,3,0,0">
+                    <StackPanel Orientation="Vertical" Grid.Row="0">
+                        <TextBox x:Name="FindTextBox" Text="Find..." Margin="10" VerticalAlignment="Center" FontFamily="Nunito SemiBold" FontSize="14" TextChanged="FindTextBox_TextChanged" PreviewMouseLeftButtonDown="FindTextBox_PreviewMouseLeftButtonDown" />
+                        <TextBox x:Name="ReplaceTextBox" Text="Replace..." Margin="10" VerticalAlignment="Center" FontFamily="Nunito SemiBold" FontSize="14" PreviewMouseLeftButtonDown="ReplaceTextBox_PreviewMouseLeftButtonDown" />
+                        <Expander x:Name="OptionsExpander" Margin="10" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14" Header="Options" Height="180">
+                            <StackPanel>
+                                <Label x:Name="ReplaceWhereLabel" Content="Replace where:" Foreground="White" />
+                                <StackPanel Orientation="Horizontal" Margin="10">
+                                    <RadioButton x:Name="InTextColumnRadioBtn"  Content="In text column" Margin="10,0,10,0" Foreground="White"  IsChecked="True" />
+                                    <RadioButton x:Name="InCommentsColumnRadioBtn" Content="In comments column"  Foreground="White"  />
+                                </StackPanel>
+
+                                <Label x:Name="BatchReplaceLabel" Content="Batch replace:" Margin="0,10,0,0" Foreground="White" />
+                                <StackPanel Orientation="Horizontal" Margin="10">
+                                    <Button x:Name="BatchReplaceOpenBtn" Content="Open" Width="100" Margin="0,0,40,0" Foreground="Black" Click="BatchReplaceOpenBtn_Click" />
+                                    <Button x:Name="BatchReplaceReplaceBtn" Content="Replace"  Width="100" Foreground="Black" Click="BatchReplaceReplaceBtn_Click"  />
+                                </StackPanel>
+                            </StackPanel>
+                        </Expander>
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+
+        <StackPanel Orientation="Vertical" Grid.Column="1" Margin="0,30,0,0">
+            <Button x:Name="FindNextButton" Content="Find Next" Margin="10" Click="FindNextButton_Click" FontFamily="Nunito SemiBold" FontSize="14"/>
+            <Button x:Name="ReplaceButton" Content="Replace" Margin="10" Click="ReplaceButton_Click" FontFamily="Nunito SemiBold" FontSize="14"/>
+            <Button x:Name="ReplaceAllButton" Content="Replace All" Margin="10" Click="ReplaceAllButton_Click" FontFamily="Nunito SemiBold" FontSize="14"/>
+        </StackPanel>
+
+    </Grid>
+</Window>

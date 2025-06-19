@@ -5,6 +5,8 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles
 {
     public class ActorsEnteries : INotifyPropertyChanged
     {
+        private static readonly MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
+
         public int ActorsNumber { get; set; } = 1;
 
         private string? _color;
@@ -30,7 +32,19 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles
             }
         }
 
-        public int ActorsLineCount { get; set; } = 0;
+
+        private int _actorsLineCount;
+        public int ActorsLineCount
+        {
+            get => _actorsLineCount;
+            set
+            {
+                _actorsLineCount = value;
+                OnPropertyChanged(nameof(ActorsLineCount));
+            }
+        }
+
+
 
 
 
@@ -46,12 +60,8 @@ namespace Mega_Subtitles_Reborn.Utilities.Subtitles
 
         private void UpdateColor()
         {
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-
             if (mainWindow.ActorsAndColorsDict != null && _actor != null && mainWindow.ActorsAndColorsDict.TryGetValue(key: _actor, value: out var newColor))
-            {
                 ActorsColor = newColor.ToString();
-            }
         }
 
     }

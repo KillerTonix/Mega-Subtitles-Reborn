@@ -41,6 +41,7 @@ namespace Mega_Subtitles_Reborn
         public RoutedCommand CtrlP { get; set; } = new();
         public RoutedCommand CtrlF { get; set; } = new();
         public RoutedCommand CtrlZ { get; set; } = new();
+        public RoutedCommand CtrlH { get; set; } = new();
 
         public ObservableCollection<SubtitlesEnteries> SubtitleEntries { get; set; } = [];
         public ObservableCollection<ActorsEnteries> ActorEnteries { get; set; } = [];
@@ -162,7 +163,11 @@ namespace Mega_Subtitles_Reborn
                     {
                         SubtitleEntries[i].Number = i + 1; // Set the Number property of each entry to its index + 1
                     }
+
+                    UpdateActorLineCounts.Recalculate(); // Recalculate the line counts for each actor based on the current SubtitleEntries
                     RegionManagerListView.Items.Refresh(); // Refresh the ListView to reflect the changes made to the SubtitleEntries list
+                    ActorsListView.Items.Refresh(); // Refresh the ActorsListView to reflect the changes made to the ActorEnteries collection
+
                     ListViewColumnsAutoResize.AutoResizeColumns(); // Auto-resize the columns in the ListView to fit the content
                     ReaperCommandsWriter.Write("CreateRegionsWithOutColor"); // Create regions without color command
                 }
@@ -244,6 +249,15 @@ namespace Mega_Subtitles_Reborn
             try
             {
                 var selectedActors = ActorsListView.SelectedItems.Cast<ActorsEnteries>().Select(a => a.Actors).ToList(); // Get the selected actors from the ActorsListView
+                if (selectedActors.Count == 0)
+                {
+                    if (GeneralSettings.Default.Language == "English")
+                        MessageBox.Show("Please select an actor to change color.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    else
+                        MessageBox.Show("Пожалуйста, выберите актёра для изменения цвета.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return; // Exit the method if no actors are selected
+                }
+
                 ChangeColorActorLabel.Content = selectedActors[0]; // Set the label content to the name of the first selected actor
 
                 ColorPickerGrid.Visibility = Visibility.Visible;
@@ -261,6 +275,14 @@ namespace Mega_Subtitles_Reborn
             try
             {
                 var selectedActors = ActorsListView.SelectedItems.Cast<ActorsEnteries>().Select(a => a.Actors).ToList();
+                if (selectedActors.Count == 0)
+                {
+                    if (GeneralSettings.Default.Language == "English")
+                        MessageBox.Show("Please select an actor to rename.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    else
+                        MessageBox.Show("Пожалуйста, выберите актера для переименования.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return; // Exit the method if no actors are selected
+                }
                 ActorLabel.Content = selectedActors[0];
                 ActorTextBox.Focus(); // Set focus to the ActorTextBox for renaming
                 ActorTextBox.Text = selectedActors[0];
@@ -445,6 +467,9 @@ namespace Mega_Subtitles_Reborn
 
                 // Undo deleted lines hotkey (CTRL + Z)
                 this.CommandBindings.Add(new CommandBinding(CtrlZ, UndoDeletedLines));
+
+                // Hotkey for opening settings window (CTRL + H)
+                this.CommandBindings.Add(new CommandBinding(CtrlH, ReplaceLineText));
             }
             catch (Exception ex)
             {
@@ -452,11 +477,30 @@ namespace Mega_Subtitles_Reborn
             }
         }
 
+        private void ReplaceLineText(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var replaceWindow = new FindAndReplaceWindow(IsFindTabOpen: false) { Owner = this }; // Create a new instance of ReplaceWindow and set the owner to the current window
+                replaceWindow.Show(); // Show the replace line text window as a dialog
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogger.LogException(ex, "MainWindow", MethodBase.GetCurrentMethod()?.Name); // Log any exceptions that occur during the opening of the replace line text window
+            }
+        }
 
         private void OpenFindWindow(object sender, RoutedEventArgs e)
         {
-            var findWindow = new FindWindow { Owner = this }; // Create a new instance of FindWindow and set the owner to the current window
-            findWindow.ShowDialog(); // Show the find window as a dialog
+            try
+            {
+                var findWindow = new FindAndReplaceWindow(IsFindTabOpen: true) { Owner = this }; // Create a new instance of FindAndReplaceWindow and set the owner to the current window
+                findWindow.ShowDialog(); // Show the find window as a dialog
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogger.LogException(ex, "MainWindow", MethodBase.GetCurrentMethod()?.Name); // Log any exceptions that occur during the opening of the replace line text window
+            }          
         }
 
         private void SettingsBtn_Click(object sender, RoutedEventArgs e)
@@ -783,6 +827,11 @@ namespace Mega_Subtitles_Reborn
                     subtitleViewSource.View.Refresh(); // Refresh the view to apply changes
                 }
                 JsonWriter.WriteCacheJson(); // Write the current state of the cache to a JSON file when the AddActorBtn is clicked
+
+                // Renumber all entries
+                for (int i = 0; i < ActorEnteries.Count; i++) // Iterate through all entries in the ActorEnteries list                
+                    ActorEnteries[i].ActorsNumber = i + 1; // Set the ActorsNumber property of each entry to its index + 1                
+                ActorsListView.Items.Refresh(); // Refresh the ListView to reflect the changes made to the ActorsListView list
             }
             catch (Exception ex)
             {
@@ -793,6 +842,40 @@ namespace Mega_Subtitles_Reborn
         private void AddActorCancelBtn_Click(object sender, RoutedEventArgs e)
         {
             AddActorGrid.Visibility = Visibility.Collapsed; // Hide the AddActorGrid when the cancel button is clicked
+        }
+
+
+
+        private void ActorsListView_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var item = FindAncestor<ListViewItem>((DependencyObject)e.OriginalSource);
+            if (item != null)
+            {
+                var listView = (ListView)sender;
+                var clickedDataItem = listView.ItemContainerGenerator.ItemFromContainer(item);
+
+                if (clickedDataItem != null)
+                {
+                    // Force single selection
+                    listView.SelectedItems.Clear();
+                    listView.SelectedItem = clickedDataItem;
+                }
+            }
+        }
+        private static T? FindAncestor<T>(DependencyObject current) where T : DependencyObject
+        {
+            while (current != null)
+            {
+                if (current is T match)
+                    return match;
+                current = VisualTreeHelper.GetParent(current);
+            }
+            return null;
+        }
+
+        private void CopyLineInfoListViewContext_Click(object sender, RoutedEventArgs e)
+        {
+            CopyToClipboard.CopyText("lineInfo"); // Copy line information from the selected entries in the region manager list view
         }
     }
 }

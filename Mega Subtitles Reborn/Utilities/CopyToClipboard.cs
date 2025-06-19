@@ -18,12 +18,14 @@ namespace Mega_Subtitles_Reborn.Utilities
                 string timings = string.Empty;
                 string text = string.Empty;
                 string comments = string.Empty;
+                string lineInfo = string.Empty;
 
                 foreach (var item in selectedItems)
                 {
                     timings += $"{item.Start} --> {item.End}";
                     text += $"{item.Text}";
                     comments += $"{item.Comment}";
+                    lineInfo += $"{item.Start} --> {item.End}\t{item.Text}\t{item.Comment}\n";
                 }
 
                 switch (type)
@@ -36,6 +38,9 @@ namespace Mega_Subtitles_Reborn.Utilities
                         break;
                     case "comments":
                         Clipboard.SetText(comments);
+                        break;
+                    case "lineInfo":
+                        Clipboard.SetText(lineInfo);
                         break;
                 }
             }

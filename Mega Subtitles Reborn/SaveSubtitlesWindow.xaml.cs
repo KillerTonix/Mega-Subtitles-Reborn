@@ -57,6 +57,18 @@ namespace Mega_Subtitles_Reborn
                             .Distinct()
                             .OrderBy(name => name)];
 
+
+            if (actorNames.Count < 10)
+            {
+                this.Height = 300;
+                this.MinHeight = 300;
+            }
+            else if (actorNames.Count < 20)
+            {
+                this.Height = 400;
+                this.MinHeight = 400;
+            }           
+
             UpdateCheckboxGrid();
         }
 
@@ -126,8 +138,10 @@ namespace Mega_Subtitles_Reborn
                 {
                     if (AssRadioBtn.IsChecked == true)
                         filter = "ASS Subtitles|*.ass";
-                    else
+                    else if (SrtRadioBtn.IsChecked == true)
                         filter = "SRT Subtitles|*.srt";
+                    else
+                        filter = "Text Subtitles|*.txt";
 
                     string title = "Save the subtitles file";
                     if (GeneralSettings.Default.Language == "Русский")
@@ -147,6 +161,8 @@ namespace Mega_Subtitles_Reborn
                             AssFileWriter.WriteAssFile(selectedActors, saveFileDialog1.FileName, isSingleFile: true, zeroLine: _zeroline, addTenSec: _addTenSec);
                         else if (SrtRadioBtn.IsChecked == true)
                             SrtFileWriter.WriteSrtFile(selectedActors, saveFileDialog1.FileName, isSingleFile: true, zeroLine: _zeroline, addTenSec: _addTenSec);
+                        else
+                            TxtFileWriter.WriteSrtFile(selectedActors, saveFileDialog1.FileName, isSingleFile: true, zeroLine: _zeroline, addTenSec: _addTenSec);
                     }
                 }
                 else if (MultiFileRadioBtn.IsChecked == true)
@@ -168,6 +184,8 @@ namespace Mega_Subtitles_Reborn
                             AssFileWriter.WriteAssFile(selectedActors, folderDialog.FolderName, zeroLine: _zeroline, addTenSec: _addTenSec);
                         else if (SrtRadioBtn.IsChecked == true)
                             SrtFileWriter.WriteSrtFile(selectedActors, folderDialog.FolderName, zeroLine: _zeroline, addTenSec: _addTenSec);
+                        else
+                            TxtFileWriter.WriteSrtFile(selectedActors, folderDialog.FolderName, zeroLine: _zeroline, addTenSec: _addTenSec);
                     }
                 }
 

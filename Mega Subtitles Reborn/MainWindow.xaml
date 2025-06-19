@@ -25,6 +25,7 @@
         <KeyBinding Modifiers="Control" Key="P" Command="{Binding CtrlP}" />
         <KeyBinding Modifiers="Control" Key="F" Command="{Binding CtrlF}" />
         <KeyBinding Modifiers="Control" Key="Z" Command="{Binding CtrlZ}" />
+        <KeyBinding Modifiers="Control" Key="H" Command="{Binding CtrlH}" />
     </Window.InputBindings>
 
     <Window.Resources>
@@ -175,11 +176,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         </Style>
-        
+
     </Window.Resources>
 
 
@@ -196,7 +197,6 @@
 
         <Grid>
             <ListView x:Name="RegionManagerListView" ItemsSource="{Binding SubtitleEntries}"  Background="#FFF8EDEB" FontFamily="Nunito SemiBold" PreviewKeyDown="RegionManagerListView_PreviewKeyDown" MouseDoubleClick="RegionManagerListView_MouseDoubleClick">
-          
                 <ListView.ContextMenu>
                     <ContextMenu>
                         <MenuItem x:Name="DeleteLineListViewContext" Header="Delete line" Click="DeleteLineListViewContext_Click" />
@@ -204,6 +204,7 @@
                         <MenuItem x:Name="CopyTimingsListViewContext" Header="Copy Timings" Click="CopyTimingsListViewContext_Click" />
                         <MenuItem x:Name="CopyTextListViewContext" Header="Copy Text" Click="CopyTextListViewContext_Click" />
                         <MenuItem x:Name="CopyCommentsListViewContext" Header="Copy Comments" Click="CopyCommentsListViewContext_Click" />
+                        <MenuItem x:Name="CopyLineInfoListViewContext" Header="Copy Line Info" Click="CopyLineInfoListViewContext_Click" />
                         <MenuItem x:Name="ClearCommentsListViewContext" Header="Clear Comment" Click="ClearCommentsListViewContext_Click" />
                     </ContextMenu>
                 </ListView.ContextMenu>
@@ -264,7 +265,6 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-
                     </GridView>
                 </ListView.View>
             </ListView>
@@ -275,9 +275,9 @@
                 <RowDefinition Height="10*"/>
                 <RowDefinition Height="0.5*"/>
             </Grid.RowDefinitions>
-            
+
             <StackPanel Grid.Row="0">
-                <ListView x:Name="ActorsListView" Grid.Column="1"  ItemsSource="{Binding ActorEnteries}" Height="335" HorizontalAlignment="Stretch" VerticalAlignment="Top" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionMode="Extended" HorizontalContentAlignment="Stretch" Background="#FFF8EDEB" FontFamily="Nunito SemiBold" MouseDoubleClick="ActorsListView_MouseDoubleClick">
+                <ListView x:Name="ActorsListView" Grid.Column="1"  ItemsSource="{Binding ActorEnteries}" Height="335" HorizontalAlignment="Stretch" VerticalAlignment="Top" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionMode="Extended" HorizontalContentAlignment="Stretch" Background="#FFF8EDEB" FontFamily="Nunito SemiBold" MouseDoubleClick="ActorsListView_MouseDoubleClick" PreviewMouseRightButtonDown="ActorsListView_PreviewMouseRightButtonDown">
                     <ListView.ContextMenu>
                         <ContextMenu>
                             <MenuItem x:Name="AddActorContext" Header="Add actor" Click="AddActorContext_Click"/>
@@ -363,7 +363,7 @@
                     <Button x:Name="ActorReanameBtn" Content="Rename" HorizontalAlignment="Left" Height="25" VerticalAlignment="Bottom" Width="70" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFFFDAB3" Click="RenameBtn_Click" />
                     <Button x:Name="ActorReanameCancelBtn" Content="Cancel" HorizontalAlignment="Right" Height="25" VerticalAlignment="Bottom" Width="70"  FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFEAC9C1" Click="ActorReanameCancelBtn_Click"/>
                 </Grid>
-                
+
                 <Grid x:Name="AddActorGrid" Height="90" Visibility="Collapsed" Margin="0,20,0,0" >
                     <StackPanel Orientation="Vertical">
                         <Label x:Name="AddActorLabel" Content="Add actor" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="14" />
@@ -374,14 +374,14 @@
                     <Button x:Name="AddActorCancelBtn" Content="Cancel" HorizontalAlignment="Right" Height="25" VerticalAlignment="Bottom" Width="70"  FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FFEAC9C1" Click="AddActorCancelBtn_Click"/>
                 </Grid>
             </StackPanel>
-            
+
             <StackPanel Grid.Row="2" VerticalAlignment="Bottom" >
                 <Button x:Name="SettingsBtn" HorizontalAlignment="Center" Height="25" VerticalAlignment="Top" Width="150" FontFamily="Nunito SemiBold" FontSize="14" Background="#FFFF8F64" BorderBrush="#FFFBD485" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="SettingsBtn_Click">
                     <Grid Width="145">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE713;" FontSize="16" VerticalAlignment="Center" />
                         <TextBlock x:Name="SettingsTB" Text="Settings" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
                     </Grid>
-                </Button>               
+                </Button>
             </StackPanel>
         </Grid>
 
@@ -491,7 +491,7 @@
             <StackPanel Orientation="Vertical" Margin="20,0,0,0">
                 <Label x:Name="SyncLabel" Content="Sync" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Nunito SemiBold" FontSize="16"/>
                 <Button x:Name="SyncCursorBtn" Width="88" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithRedOwer}" BorderThickness="0" Background="#FF4CD03A" Click="SyncBtn_Click">
-                   <Grid Width="75">
+                    <Grid Width="75">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE895;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
                         <TextBlock x:Name="SyncCursorTB" Text="Cursor" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0" TextAlignment="Center"/>
                     </Grid>

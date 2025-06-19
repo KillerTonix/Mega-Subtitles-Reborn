@@ -32,18 +32,16 @@ namespace Mega_Subtitles_Reborn.Utilities.FileReader
                         for (int i = 0; i < lines.Length - 1; i += 2) // Skip blank line after each comment
                         {
                             string[] parts = lines[i].Split('\t');
-                            if (parts.Length < 4) continue;
+                            if (parts.Length < 3) continue;
 
                             string start = parts[0];
                             string end = parts[1];
-                            string actor = parts[2];
-                            string comment = parts[3];
+                            string comment = parts[2];
 
                             // Try to find matching entry by Start, End and Actor
                             var match = mainWindow.SubtitleEntries.FirstOrDefault(entry =>
                                 entry.Start == start &&
-                                entry.End == end &&
-                                entry.Actor == actor);
+                                entry.End == end);
 
                             if (match != null)
                             {
