@@ -32,7 +32,7 @@ namespace Mega_Subtitles_Reborn
         public RoutedCommand CtrlS { get; set; } = new();
         public RoutedCommand CtrlI { get; set; } = new();
         public RoutedCommand CtrlE { get; set; } = new();
-        public RoutedCommand ShiftE { get; set; } = new();
+        public RoutedCommand CtrlW { get; set; } = new();
         public RoutedCommand CtrlO { get; set; } = new();
         public RoutedCommand CtrlD { get; set; } = new();
         public RoutedCommand CtrlM { get; set; } = new();
@@ -442,7 +442,7 @@ namespace Mega_Subtitles_Reborn
                 this.CommandBindings.Add(new CommandBinding(CtrlE, FullExportCommentsBtn_Click));
 
                 // Export Separated Comments hotkey (SHIFT + E)                
-                this.CommandBindings.Add(new CommandBinding(ShiftE, SeparateExportCommentsBtn_Click));
+                this.CommandBindings.Add(new CommandBinding(CtrlW, SeparateExportCommentsBtn_Click));
 
                 // Open cache folder hotkey (CTRL + O)
                 this.CommandBindings.Add(new CommandBinding(CtrlO, OpenCacheFolderBtn_Click));

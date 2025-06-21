@@ -16,7 +16,7 @@
         <KeyBinding Modifiers="Control" Key="S" Command="{Binding CtrlS}" />
         <KeyBinding Modifiers="Control" Key="I" Command="{Binding CtrlI}" />
         <KeyBinding Modifiers="Control" Key="E" Command="{Binding CtrlE}" />
-        <KeyBinding Modifiers="Shift" Key="E" Command="{Binding ShiftE}" />
+        <KeyBinding Modifiers="Control" Key="W" Command="{Binding CtrlW}" />
         <KeyBinding Modifiers="Control" Key="O" Command="{Binding CtrlO}" />
         <KeyBinding Modifiers="Control" Key="D" Command="{Binding CtrlD}" />
         <KeyBinding Modifiers="Control" Key="M" Command="{Binding CtrlM}" />

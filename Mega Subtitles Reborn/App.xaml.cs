@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -53,7 +54,7 @@ namespace Mega_Subtitles_Reborn
         {
             string logMessage = $"[{DateTime.Now}] {exceptionType}: {ex.Message}\n{ex.StackTrace}\n";
 
-            File.AppendAllText(LogFilePath, logMessage);
+            File.AppendAllText(LogFilePath, logMessage, Encoding.UTF8);
         }
 
 
@@ -63,7 +64,7 @@ namespace Mega_Subtitles_Reborn
             {
                 string logMessage = $"[{DateTime.Now}] Application exited with code {e.ApplicationExitCode}.\n";
 
-                File.AppendAllText(LogFilePath, logMessage);
+                File.AppendAllText(LogFilePath, logMessage, Encoding.UTF8);
             }
         }
     }

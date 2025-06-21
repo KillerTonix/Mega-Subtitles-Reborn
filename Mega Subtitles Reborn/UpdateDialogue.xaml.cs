@@ -4,6 +4,7 @@ using Mega_Subtitles_Reborn.Utilitis.Logger;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Windows;
 
 
@@ -109,7 +110,7 @@ namespace Mega_Subtitles_Reborn
                     start "" "{ApplicationPath}Mega Subtitles Reborn.exe"
                     timeout 0 >nul
                     exit 
-                    """");
+                    """", Encoding.UTF8);
 
                 if (GeneralSettings.Default.Language == "Русский")
                     MessageBox.Show("Приложение будет закрыто для обновления", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
