@@ -68,6 +68,34 @@ namespace Mega_Subtitles_Reborn.Utilitis.FileWriter
             byte[] jsonBytes = JsonSerializer.SerializeToUtf8Bytes(data, options);
             File.WriteAllBytes(outputPath, jsonBytes);
         }
+
+        public static void WriteButtonsStateDataJson(string outputPath)
+        {
+
+            var data = new ButtonsStateData
+            {
+                FilterActorsBtnIsChecked = mainWindow.FilterActorsBtn.IsChecked ?? false,
+                ViewOnlyWithCommentsBtnIsChecked = mainWindow.ViewOnlyWithCommentsBtn.IsChecked ?? false,
+                RegionsOnlyWithCommentsBtnIsChecked = mainWindow.RegionsOnlyWithCommentsBtn.IsChecked ?? false,
+                ColorizeSelectedActorsBtnIsChecked = mainWindow.ColorizeSelectedActorsBtn.IsChecked ?? false,
+                ColorizeSelectedTracksBtnIsChecked = mainWindow.ColorizeSelectedTracksBtn.IsChecked ?? false,
+                ColorizeSelectedActorsCommentsBtnIsChecked = mainWindow.ColorizeSelectedActorsCommentsBtn.IsChecked ?? false,
+                CheckForMissingBtnIsChecked = mainWindow.CheckForMissingBtn.IsChecked ?? false,
+                CheckForRepeatsBtnIsChecked = mainWindow.CheckForRepeatsBtn.IsChecked ?? false,
+                FindDemoPhrasesBtnIsChecked = mainWindow.FindDemoPhrasesBtn.IsChecked ?? false,
+                SelectedActors = [.. mainWindow.ActorsListView.SelectedItems.Cast<ActorsEnteries>().Select(a => a.Actors)]
+            };
+
+            JsonSerializerOptions jsonSerializerOptions = new()
+            {
+                WriteIndented = true,
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            };
+            JsonSerializerOptions options = jsonSerializerOptions;
+
+            byte[] jsonBytes = JsonSerializer.SerializeToUtf8Bytes(data, options);
+            File.WriteAllBytes(outputPath, jsonBytes);
+        }
     }
 
 }

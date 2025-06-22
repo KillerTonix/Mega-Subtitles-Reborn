@@ -441,7 +441,7 @@ namespace Mega_Subtitles_Reborn
                 // Export Full Comments hotkey (CTRL + E)
                 this.CommandBindings.Add(new CommandBinding(CtrlE, FullExportCommentsBtn_Click));
 
-                // Export Separated Comments hotkey (SHIFT + E)                
+                // Export Separated Comments hotkey (CTRL + W)                
                 this.CommandBindings.Add(new CommandBinding(CtrlW, SeparateExportCommentsBtn_Click));
 
                 // Open cache folder hotkey (CTRL + O)
@@ -500,7 +500,7 @@ namespace Mega_Subtitles_Reborn
             catch (Exception ex)
             {
                 ExceptionLogger.LogException(ex, "MainWindow", MethodBase.GetCurrentMethod()?.Name); // Log any exceptions that occur during the opening of the replace line text window
-            }          
+            }
         }
 
         private void SettingsBtn_Click(object sender, RoutedEventArgs e)
@@ -519,7 +519,7 @@ namespace Mega_Subtitles_Reborn
 
         }
 
-        private void ViewOnlyWithCommentsBtn_Unchecked(object sender, RoutedEventArgs e)
+        public void ViewOnlyWithCommentsBtn_Unchecked(object sender, RoutedEventArgs e)
         {
 
             subtitleViewSource.Filter -= Filters.FilterWithComment; // Remove the filter for comments
@@ -531,10 +531,17 @@ namespace Mega_Subtitles_Reborn
 
         private void RegionsOnlyWithCommentsBtn_Checked(object sender, RoutedEventArgs e)
         {
-            ReaperCommandsWriter.Write("RegionsOnlyWithComments"); // Create regions without color and only with comments command
+            UncheckOtherButtons.Uncheck((ToggleButton)sender); // Uncheck other buttons except this one
+
+            DelayedMissingsCheck(100); // Delay to allow Reaper to process the command and check for missing entries
+            static async void DelayedMissingsCheck(int milliseconds)
+            {
+                await Task.Delay(milliseconds); // Wait asynchronously for the specified delay
+                ReaperCommandsWriter.Write("RegionsOnlyWithComments"); // Create regions without color and only with comments command
+            }
         }
 
-        private void RegionsOnlyWithCommentsBtn_Unchecked(object sender, RoutedEventArgs e)
+        public void RegionsOnlyWithCommentsBtn_Unchecked(object sender, RoutedEventArgs e)
         {
             ReaperCommandsWriter.Write("CreateRegionsWithOutColor"); // Create regions without color command
         }
@@ -578,10 +585,17 @@ namespace Mega_Subtitles_Reborn
 
         private void ColorizeSelectedActorsBtn_Checked(object sender, RoutedEventArgs e)
         {
-            ReaperCommandsWriter.Write("ColorizeSelectedActors"); // Create regions with color command
+            UncheckOtherButtons.Uncheck((ToggleButton)sender); // Uncheck other buttons except this one
+
+            DelayedMissingsCheck(100); // Delay to allow Reaper to process the command and check for missing entries
+            static async void DelayedMissingsCheck(int milliseconds)
+            {
+                await Task.Delay(milliseconds); // Wait asynchronously for the specified delay
+                ReaperCommandsWriter.Write("ColorizeSelectedActors"); // Create regions with color command
+            }
         }
 
-        private void ColorizeSelectedActorsBtn_Unchecked(object sender, RoutedEventArgs e)
+        public void ColorizeSelectedActorsBtn_Unchecked(object sender, RoutedEventArgs e)
         {
             ReaperCommandsWriter.Write("CreateRegionsWithOutColor"); // Create regions without color command
 
@@ -592,17 +606,24 @@ namespace Mega_Subtitles_Reborn
             ReaperCommandsWriter.Write("ColorizeSelectedTracks"); // Colorize selected tracks command
         }
 
-        private void ColorizeSelectedTracksBtn_Unchecked(object sender, RoutedEventArgs e)
+        public void ColorizeSelectedTracksBtn_Unchecked(object sender, RoutedEventArgs e)
         {
             ReaperCommandsWriter.Write("UnColorizeAllTracks"); // Create regions without color command
         }
 
         private void ColorizeSelectedActorsCommentsBtn_Checked(object sender, RoutedEventArgs e)
         {
-            ReaperCommandsWriter.Write("ColorizeSelectedActorsComments"); // Create regions without color command
+            UncheckOtherButtons.Uncheck((ToggleButton)sender); // Uncheck other buttons except this one
+
+            DelayedMissingsCheck(100); // Delay to allow Reaper to process the command and check for missing entries
+            static async void DelayedMissingsCheck(int milliseconds)
+            {
+                await Task.Delay(milliseconds); // Wait asynchronously for the specified delay
+                ReaperCommandsWriter.Write("ColorizeSelectedActorsComments"); // Create regions without color command
+            }
         }
 
-        private void ColorizeSelectedActorsCommentsBtn_Unchecked(object sender, RoutedEventArgs e)
+        public void ColorizeSelectedActorsCommentsBtn_Unchecked(object sender, RoutedEventArgs e)
         {
             ReaperCommandsWriter.Write("CreateRegionsWithOutColor"); // Create regions without color command
         }
@@ -611,7 +632,15 @@ namespace Mega_Subtitles_Reborn
         {
             try
             {
-                ReaperCommandsWriter.Write("CheckForMissing"); // Create only Missing regions command
+                UncheckOtherButtons.Uncheck((ToggleButton)sender); // Uncheck other buttons except this one
+
+
+                DelayedMissingsCheck(100); // Delay to allow Reaper to process the command and check for missing entries
+                static async void DelayedMissingsCheck(int milliseconds)
+                {
+                    await Task.Delay(milliseconds); // Wait asynchronously for the specified delay
+                    ReaperCommandsWriter.Write("CheckForMissing"); // Create only Missing regions command
+                }
 
                 CheckForMissing.DelayedMissingsCheck(400); // Delay to allow Reaper to process the command
                 ListViewColumnsAutoResize.AutoResizeColumns(); // Auto-resize the columns in the ListView to fit the content
@@ -623,7 +652,7 @@ namespace Mega_Subtitles_Reborn
             }
         }
 
-        private void CheckForMissingBtn_Unchecked(object sender, RoutedEventArgs e)
+        public void CheckForMissingBtn_Unchecked(object sender, RoutedEventArgs e)
         {
             ReaperCommandsWriter.Write("CreateRegionsWithOutColor"); // Create regions without color command
 
@@ -638,7 +667,14 @@ namespace Mega_Subtitles_Reborn
         {
             try
             {
-                ReaperCommandsWriter.Write("CheckForRepeats"); // Create only Missing regions command
+                UncheckOtherButtons.Uncheck((ToggleButton)sender); // Uncheck other buttons except this one
+
+                DelayedMissingsCheck(100); // Delay to allow Reaper to process the command and check for missing entries
+                static async void DelayedMissingsCheck(int milliseconds)
+                {
+                    await Task.Delay(milliseconds); // Wait asynchronously for the specified delay
+                    ReaperCommandsWriter.Write("CheckForRepeats"); // Create only Missing regions command
+                }
 
                 CheckForMissing.DelayedMissingsCheck(400); // Delay to allow Reaper to process the command
                 ListViewColumnsAutoResize.AutoResizeColumns(); // Auto-resize the columns in the ListView to fit the content
@@ -650,7 +686,7 @@ namespace Mega_Subtitles_Reborn
             }
         }
 
-        private void CheckForRepeatsBtn_Unchecked(object sender, RoutedEventArgs e)
+        public void CheckForRepeatsBtn_Unchecked(object sender, RoutedEventArgs e)
         {
             ReaperCommandsWriter.Write("CreateRegionsWithOutColor"); // Create regions without color command
 
@@ -665,7 +701,15 @@ namespace Mega_Subtitles_Reborn
         {
             try
             {
-                Calculation.FindLongestActorParts();
+                UncheckOtherButtons.Uncheck((ToggleButton)sender); // Uncheck other buttons except this one
+
+                DelayedMissingsCheck(100); // Delay to allow Reaper to process the command and check for missing entries
+                static async void DelayedMissingsCheck(int milliseconds)
+                {
+                    await Task.Delay(milliseconds); // Wait asynchronously for the specified delay
+                    Calculation.FindLongestActorParts();
+                }
+
                 ReaperCommandsWriter.Write("ColorizeSelectedActors", isDemoPhrases: true); // Create only Missing regions command
             }
             catch (Exception ex)
@@ -674,7 +718,7 @@ namespace Mega_Subtitles_Reborn
             }
         }
 
-        private void FindDemoPhrasesBtn_Unchecked(object sender, RoutedEventArgs e)
+        public void FindDemoPhrasesBtn_Unchecked(object sender, RoutedEventArgs e)
         {
             ParseSubtitlesBtn.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent)); // Trigger the ParseSubtitlesBtn_Click event
         }
@@ -738,7 +782,7 @@ namespace Mega_Subtitles_Reborn
             subtitleViewSource.View.Refresh();
         }
 
-        private void FilterActorsBtn_Unchecked(object sender, RoutedEventArgs e)
+        public void FilterActorsBtn_Unchecked(object sender, RoutedEventArgs e)
         {
             subtitleViewSource.Filter -= Filters.FilterWithComment;
             subtitleViewSource.Filter -= CheckForMissing.FilterForMissing;
@@ -753,9 +797,11 @@ namespace Mega_Subtitles_Reborn
             {
                 ReaperCommandsWriter.Write("SyncProject"); // Create regions without color command
                 JsonWriter.WriteCacheJson(); // Write the current state of the cache to a JSON file when the SyncProjectBtn is clicked
+
+                JsonWriter.WriteButtonsStateDataJson(GeneralSettings.Default.ButtonsStatePath); // Write the current state of buttons to a JSON file
+
                 SubtitleEntries.Clear(); // Clear the SubtitleEntries collection
                 ActorEnteries.Clear(); // Clear the ActorEnteries collection
-
 
                 DelayedMissingsCheck(400); // Delay to allow Reaper to process the command and check for missing entries
                 static async void DelayedMissingsCheck(int milliseconds)
@@ -763,6 +809,9 @@ namespace Mega_Subtitles_Reborn
                     await Task.Delay(milliseconds); // Wait asynchronously for the specified delay
                     PreRunCheckAndRealize.CheckAndRealize(); // Check and realize the pre-run state of the application
                     PostRunCheckAndRealize.CheckAndRealize(); // Check and realize the post-run state of the application
+
+                    var data = JsonReader.ReadButtonsStateDataJson(GeneralSettings.Default.ButtonsStatePath); // Read the current state of buttons from a JSON file
+                    RecoverButtonsState.RecoverState(data); // Recover the state of buttons based on the data read from the JSON file
                 }
             }
             catch (Exception ex)

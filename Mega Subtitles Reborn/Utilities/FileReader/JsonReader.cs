@@ -136,6 +136,29 @@ namespace Mega_Subtitles_Reborn.Utilitis.FileReader
         }
 
 
+        public static ButtonsStateData ReadButtonsStateDataJson(string filePath)
+        {
+            try
+            {
+                string json = File.ReadAllText(filePath);
+
+                JsonSerializerOptions options = new()
+                {
+                    Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                    PropertyNameCaseInsensitive = true
+                };
+
+                var dataList = JsonSerializer.Deserialize<ButtonsStateData>(json, options);
+
+                return dataList ?? throw new Exception("Failed to deserialize list of ButtonsStateData.");
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogger.LogException(ex, "JsonReader", MethodBase.GetCurrentMethod()?.Name);
+                return new ButtonsStateData();
+            }
+        }
+
     }
 
 }

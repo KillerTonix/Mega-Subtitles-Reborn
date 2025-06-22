@@ -24,6 +24,7 @@ namespace Mega_Subtitles_Reborn.Utilitis.PreRun
             GeneralSettings.Default.DublicatedProjectCahceJsonPath = Path.Combine(GeneralSettings.Default.DublicateCachePath, GeneralSettings.Default.CurrentProjectName) + ".json"; // Set the path for the duplicated project cache JSON file
             GeneralSettings.Default.DeletedLinesJsonPath = Path.Combine(GeneralSettings.Default.ProjectCacheFolderPath, "DeletedLines.json"); // Set the path for the deleted lines JSON file
             GeneralSettings.Default.DemoPhrasesPath = Path.Combine(GeneralSettings.Default.ProjectCacheFolderPath, "DemoPhrases.json"); // Set the path for the demo phrases JSON file
+            GeneralSettings.Default.ButtonsStatePath = Path.Combine(GeneralSettings.Default.ProjectCacheFolderPath, "ButtonsState.json"); // Set the path for the buttons state JSON file
 
             GeneralSettings.Default.Save();
 

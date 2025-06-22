@@ -17,17 +17,16 @@ namespace Mega_Subtitles_Reborn.Utilities.FileWriter
             {
                 var selectedItems = mainWindow.RegionManagerListView.SelectedItems.Cast<SubtitlesEnteries>().ToList();
                 string startPos = string.Empty;
-                List<string?> selectedActors = mainWindow.ActorsListView.SelectedItems // Get the selected actors from the ActorsListView
+                List<string?> selectedActors = [.. mainWindow.ActorsListView.SelectedItems // Get the selected actors from the ActorsListView
                           .Cast<ActorsEnteries>()
                           .Select(a => a.Actors)
-                          .Where(name => !string.IsNullOrWhiteSpace(name)).ToList();
+                          .Where(name => !string.IsNullOrWhiteSpace(name))];
 
                 string cachePath = isDemoPhrases ? GeneralSettings.Default.DemoPhrasesPath : GeneralSettings.Default.ProjectCahceJsonPath;
                 foreach (var item in selectedItems)
                 {
                     startPos = item.Start;
                 }
-
 
                 var data = new CommandsData
                 {

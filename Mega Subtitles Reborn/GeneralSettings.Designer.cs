@@ -250,5 +250,17 @@ namespace Mega_Subtitles_Reborn {
                 this["DemoPhrasesPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\")]
+        public string ButtonsStatePath {
+            get {
+                return ((string)(this["ButtonsStatePath"]));
+            }
+            set {
+                this["ButtonsStatePath"] = value;
+            }
+        }
     }
 }
