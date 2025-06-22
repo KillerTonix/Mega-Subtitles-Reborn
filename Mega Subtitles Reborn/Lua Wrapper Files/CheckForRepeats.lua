@@ -4,7 +4,7 @@ local WriteRegions = require("WriteRegions")
 
 function CheckForRepeats.check()
     local threshold_percentage = 55 -- Percentage threshold for item length relative to region length
-    local duration_threshold_ratio = 0.3 -- Ratio of total track length to consider for deletion
+    local duration_threshold_ratio = 0.15 -- Ratio of total track length to consider for deletion
     reaper.PreventUIRefresh(1) -- Prevent UI refresh to speed up processing
 
     -- 1. Cache all project regions
@@ -15,8 +15,8 @@ function CheckForRepeats.check()
         local retval, is_region, pos, region_end, name, idx = reaper.EnumProjectMarkers(i) -- Enumerate project markers
         if is_region then -- Check if the marker is a region
             table.insert(regions, {
-                position = pos + 0.5,
-                region_end = region_end - 0.5,
+                position = pos + 0.25,
+                region_end = region_end - 0.25,
                 name = name,
                 idx = idx
             })
