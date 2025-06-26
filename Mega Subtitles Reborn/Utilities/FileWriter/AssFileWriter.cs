@@ -31,27 +31,41 @@ namespace Mega_Subtitles_Reborn.Utilitis.FileWriter
 
                     if (addTenSec && entries.Count > 0)
                     {
-                        var firstStart = TimeSpan.Parse(entries[0].Start, CultureInfo.InvariantCulture);
+                        // Sort by start time to ensure correct order
+                        entries = [.. entries.OrderBy(e => TimeSpan.Parse(e.Start, CultureInfo.InvariantCulture))];
 
-                        if (firstStart > TimeSpan.FromSeconds(10))
+                        var inserted = false;
+                        var previousEnd = TimeSpan.Zero;
+
+                        foreach (var item in entries)
                         {
-                            writer.WriteLine("Dialogue: 0,00:00:00.00,00:00:10.00,Default,,0,0,0,,10 seconds for recording noise");
-                        }
-                        else
-                        {
-                            // Add 10-second noise entry after any long subtitle
-                            foreach (var item in entries)
+                            var start = TimeSpan.Parse(item.Start, CultureInfo.InvariantCulture);
+
+                            // Check gap between previousEnd and this start
+                            if ((start - previousEnd) >= TimeSpan.FromSeconds(10))
                             {
-                                var duration = TimeSpan.Parse(item.End, CultureInfo.InvariantCulture) - TimeSpan.Parse(item.Start, CultureInfo.InvariantCulture);
-                                var startPlusTenSec = TimeSpan.Parse(item.End, CultureInfo.InvariantCulture) + TimeSpan.FromSeconds(10);
-                                if (duration > TimeSpan.FromSeconds(11))
-                                {
-                                    writer.WriteLine($"Dialogue: 0,{item.End},{startPlusTenSec},Default,,0,0,0,,10 seconds for recording noise");
-                                    break;
-                                }
+                                var noiseStart = previousEnd;
+                                var noiseEnd = previousEnd + TimeSpan.FromSeconds(10);
+
+                                writer.WriteLine($"Dialogue: 0,{noiseStart:hh\\:mm\\:ss\\.ff},{noiseEnd:hh\\:mm\\:ss\\.ff},Default,,0,0,0,,10 seconds for recording noise");
+                                inserted = true;
+                                break;
                             }
+
+                            previousEnd = TimeSpan.Parse(item.End, CultureInfo.InvariantCulture);
+                        }
+
+                        if (!inserted)
+                        {
+                            // Add noise entry after the last subtitle
+                            var lastEnd = TimeSpan.Parse(entries.Last().End, CultureInfo.InvariantCulture);
+                            var noiseStart = lastEnd;
+                            var noiseEnd = lastEnd + TimeSpan.FromSeconds(10);
+
+                            writer.WriteLine($"Dialogue: 0,{noiseStart:hh\\:mm\\:ss\\.ff},{noiseEnd:hh\\:mm\\:ss\\.ff},Default,,0,0,0,,10 seconds for recording noise");
                         }
                     }
+
 
                     foreach (var item in entries)
                     {

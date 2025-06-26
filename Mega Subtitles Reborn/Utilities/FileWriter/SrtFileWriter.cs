@@ -30,32 +30,47 @@ namespace Mega_Subtitles_Reborn.Utilities.FileWriter
 
                 if (addTenSec && entries.Count > 0)
                 {
-                    var firstStart = TimeSpan.Parse(entries[0].Start, CultureInfo.InvariantCulture);
+                    // Sort by start time to ensure correct order
+                    entries = entries.OrderBy(e => TimeSpan.Parse(e.Start, CultureInfo.InvariantCulture)).ToList();
 
-                    if (firstStart > TimeSpan.FromSeconds(10))
+                    var inserted = false;
+                    var previousEnd = TimeSpan.Zero;
+
+                    foreach (var item in entries)
                     {
-                        // Add 20 seconds of noise from start
+                        var start = TimeSpan.Parse(item.Start, CultureInfo.InvariantCulture);
+
+                        // Check gap between previousEnd and this start
+                        if ((start - previousEnd) >= TimeSpan.FromSeconds(10))
+                        {
+                            var noiseStart = previousEnd;
+                            var noiseEnd = previousEnd + TimeSpan.FromSeconds(10);
+
+                            writer.WriteLine(counter++);
+                            writer.WriteLine($"{noiseStart:hh\\:mm\\:ss\\,ff} --> {noiseEnd:hh\\:mm\\:ss\\,ff}");
+                            writer.WriteLine("10 seconds for recording noise");
+                            writer.WriteLine();
+                            inserted = true;
+                            break;
+                        }
+
+                        previousEnd = TimeSpan.Parse(item.End, CultureInfo.InvariantCulture);
+                    }
+
+                    if (!inserted)
+                    {
+                        // Add noise entry after the last subtitle
+                        var lastEnd = TimeSpan.Parse(entries.Last().End, CultureInfo.InvariantCulture);
+                        var noiseStart = lastEnd;
+                        var noiseEnd = lastEnd + TimeSpan.FromSeconds(10);
+
                         writer.WriteLine(counter++);
-                        writer.WriteLine("00:00:00,000 --> 00:00:10,000");
+                        writer.WriteLine($"{noiseStart:hh\\:mm\\:ss\\,ff} --> {noiseEnd:hh\\:mm\\:ss\\,ff}");
                         writer.WriteLine("10 seconds for recording noise");
                         writer.WriteLine();
                     }
-                    else
-                    {
-                        foreach (var item in entries)
-                        {
-                            var duration = TimeSpan.Parse(item.End, CultureInfo.InvariantCulture) - TimeSpan.Parse(item.Start, CultureInfo.InvariantCulture);
-                            if (duration > TimeSpan.FromSeconds(11))
-                            {
-                                writer.WriteLine(counter++);
-                                writer.WriteLine($"{item.Start.Replace('.', ',')} --> {item.End.Replace('.', ',')}");
-                                writer.WriteLine("10 seconds for recording noise");
-                                writer.WriteLine();
-                                break;
-                            }
-                        }
-                    }
                 }
+
 
                 foreach (var item in entries)
                 {
