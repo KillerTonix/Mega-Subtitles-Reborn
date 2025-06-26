@@ -50,7 +50,7 @@ Custom fonts are included in the `Fonts` directory and are embedded as resources
 | Save Subtitles                | Ctrl + S         |
 | Import Comments               | Ctrl + I         |
 | Export Full Comments          | Ctrl + E         |
-| Export Separated Comments     | Shift + E        |
+| Export Separated Comments     | Ctrl + W         |
 | Open Cache Folder             | Ctrl + O         |
 | Clear Project                 | Ctrl + D         |
 | Check for Missing             | Ctrl + M         |
@@ -58,6 +58,7 @@ Custom fonts are included in the `Fonts` directory and are embedded as resources
 | Select All Actors             | Ctrl + A         |
 | Parse Subtitles               | Ctrl + P         |
 | Find                          | Ctrl + F         |
+| Find And Replace              | Ctrl + H         |
 | Undo Deleted Lines            | Ctrl + Z         |
 
 ## Project Structure
