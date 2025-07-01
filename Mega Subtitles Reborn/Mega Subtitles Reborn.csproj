@@ -110,9 +110,6 @@
     <None Update="Required lua librarys\utf8_filenames.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="UpdateProgram.bat">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Updater\Updater.deps.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
