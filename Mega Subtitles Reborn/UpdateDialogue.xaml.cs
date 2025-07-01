@@ -22,6 +22,7 @@ namespace Mega_Subtitles_Reborn
         public static string? DownloadedContentPath = string.Empty;
         public static string? DownloadedContentDirectoryPath = string.Empty;
         private static readonly string ApplicationPath = AppDomain.CurrentDomain.BaseDirectory;
+        private static readonly string UpdaterPath = Path.Combine(ApplicationPath, @"Updater\Updater.exe");
 
 
         public UpdateDialogue()
@@ -69,9 +70,9 @@ namespace Mega_Subtitles_Reborn
                 // Get last release using .GetLatest(), can substitute with other available methods
                 var release = ReleaseManager.Instance.GetLatest(owner, repo);
                 if (release is null) return;
-                
+
                 var downloadPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "temp");
-                
+
                 DownloadedContentDirectoryPath = Path.Combine(downloadPath, $"Mega.Subtitles.Reborn.{release.TagName}");
                 if (!Directory.Exists(DownloadedContentDirectoryPath))
                     Directory.CreateDirectory(DownloadedContentDirectoryPath);
@@ -99,28 +100,15 @@ namespace Mega_Subtitles_Reborn
         {
             try
             {
-                File.WriteAllText($"{ApplicationPath}UpdateProgram.bat", $""""
-                    chcp 65001 >nul
-                    tar -xf "{DownloadedContentPath}" -C "{DownloadedContentDirectoryPath}"
-                    timeout 1 >nul
-                    move -y "{DownloadedContentDirectoryPath}*" "{ApplicationPath}"
-                    del /q "{DownloadedContentPath}"
-                    rmdir "{DownloadedContentDirectoryPath}" /q /s
-                    timeout 1 >nul
-                    start "" "{ApplicationPath}Mega Subtitles Reborn.exe"
-                    timeout 0 >nul
-                    exit 
-                    """", Encoding.UTF8);
-
                 if (GeneralSettings.Default.Language == "Русский")
                     MessageBox.Show("Приложение будет закрыто для обновления", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
                 else
                     MessageBox.Show("Application will be closed for update", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                string str = $"""
-                            "{ApplicationPath}UpdateProgram.bat"
-                            """;
-                Process.Start("cmd", $"/k {str}");
+                // Call the updater with the necessary parameters
+                Process.Start($"\"{UpdaterPath}\"", $"-e -d -i \"{DownloadedContentPath}\" -o \"{ApplicationPath[..^1]}\" -r \"{ApplicationPath}Mega Subtitles Reborn.exe\"");
+
+                // Close the application after starting the updater
                 Application.Current.Shutdown();
 
             }
