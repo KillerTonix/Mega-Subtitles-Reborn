@@ -262,5 +262,29 @@ namespace Mega_Subtitles_Reborn {
                 this["ButtonsStatePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AddZeroLineChkBox {
+            get {
+                return ((bool)(this["AddZeroLineChkBox"]));
+            }
+            set {
+                this["AddZeroLineChkBox"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AddTenSecForNoiseChkBox {
+            get {
+                return ((bool)(this["AddTenSecForNoiseChkBox"]));
+            }
+            set {
+                this["AddTenSecForNoiseChkBox"] = value;
+            }
+        }
     }
 }

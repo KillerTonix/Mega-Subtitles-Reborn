@@ -57,6 +57,9 @@ namespace Mega_Subtitles_Reborn
                             .Distinct()
                             .OrderBy(name => name)];
 
+            AddTenSecForNoiseChkBox.IsChecked = GeneralSettings.Default.AddTenSecForNoiseChkBox; // Load the state of the checkbox
+            AddZeroLineChkBox.IsChecked = GeneralSettings.Default.AddZeroLineChkBox; // Load the state of the checkbox
+
 
             if (actorNames.Count < 10)
             {
@@ -117,9 +120,13 @@ namespace Mega_Subtitles_Reborn
         {
             try
             {
+                GeneralSettings.Default.AddTenSecForNoiseChkBox = AddTenSecForNoiseChkBox.IsChecked ?? false; // Save the state of the checkbox
+                GeneralSettings.Default.AddZeroLineChkBox = AddZeroLineChkBox.IsChecked ?? false; // Save the state of the checkbox
+                GeneralSettings.Default.Save(); // Save the settings
+
                 List<string?> selectedActors = [.. actorCheckBoxes
-            .Where(cb => cb.IsChecked == true)
-            .Select(cb => cb.Content.ToString())];
+                    .Where(cb => cb.IsChecked == true)
+                    .Select(cb => cb.Content.ToString())];
 
                 if (selectedActors.Count == 0) //repla
                 {
