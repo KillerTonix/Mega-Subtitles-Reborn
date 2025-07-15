@@ -1,0 +1,15 @@
+﻿<Window x:Class="Mega_Subtitles_Reborn.HelpGuidesMarkDownWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Mega_Subtitles_Reborn"
+        mc:Ignorable="d"      
+        Title="Help" Height="600" Width="1000" WindowStartupLocation="CenterScreen" Visibility="Visible" WindowState="Normal"
+        WindowStyle="ToolWindow" FontFamily="Nunito SemiBold" FontSize="14"
+        ShowInTaskbar="True" ResizeMode="CanResize" SizeToContent="Manual" MinHeight="400" MinWidth="600"
+        BorderThickness="2" Background="#FF3B3254" BorderBrush="Black">
+    <Grid>
+        <WebBrowser Name="MarkdownWebBrowser"/>
+    </Grid>
+</Window>

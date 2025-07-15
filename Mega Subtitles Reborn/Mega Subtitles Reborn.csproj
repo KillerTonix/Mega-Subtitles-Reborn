@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="GithubReleaseDownloader" Version="1.0.0" />
+    <PackageReference Include="Markdig" Version="0.41.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   
@@ -43,6 +44,9 @@
     <None Update="GeneralSettings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>GeneralSettings.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="Help\SaveWithTemplate_Help.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="LanguagesFile.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

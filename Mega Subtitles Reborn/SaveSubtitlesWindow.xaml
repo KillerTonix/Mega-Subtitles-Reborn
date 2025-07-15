@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Save Subtitles" Width="900" BorderThickness="2" Background="#FF3B3254" 
-        Visibility="Visible" WindowState="Normal"
-        ShowInTaskbar="True" ResizeMode="CanResize" SizeToContent="Manual" WindowStyle="ToolWindow" SizeChanged="Window_SizeChanged" BorderBrush="#FF120F19" WindowStartupLocation="CenterScreen">
-
+        WindowStartupLocation="CenterScreen" Visibility="Visible" WindowState="Normal"
+        WindowStyle="ToolWindow" FontFamily="Nunito SemiBold" FontSize="14"
+        ShowInTaskbar="True" ResizeMode="CanResize" SizeToContent="Manual" MinHeight="300" MinWidth="600">
     <Window.Resources>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
@@ -175,10 +175,13 @@
 
         <Button x:Name="SaveWithTemplateBtn" Margin="0,10,10,0" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Right" Width="170" Background="#FFEFCFE3" BorderBrush="#FFE27396" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="SaveWithTemplateBtn_Click">
             <Grid Width="165">
-                <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74E;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE792;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
                 <TextBlock x:Name="SaveWithTemplateTB" Text="Save with template" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
             </Grid>
         </Button>
+
+        <Button x:Name="InfoSaveWithTemplateBtn" Margin="0,10,190,0" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Right" Content="?" Width="20"  Background="#FFFF8F64" BorderBrush="#FFFBD485" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="InfoSaveWithTemplateBtn_Click"/>
+
 
     </Grid>
 </Window>

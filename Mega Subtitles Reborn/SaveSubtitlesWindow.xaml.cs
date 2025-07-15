@@ -305,5 +305,12 @@ namespace Mega_Subtitles_Reborn
             }
             return result;
         }
+
+        private void InfoSaveWithTemplateBtn_Click(object sender, RoutedEventArgs e)
+        {
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Help", "SaveWithTemplate_Help.md");
+            var helpGuidesMarkDownWindow = new HelpGuidesMarkDownWindow(path) { Owner = this }; // Create a new instance of ReplaceWindow and set the owner to the current window
+            helpGuidesMarkDownWindow.Show(); // Show the replace line text window as a dialog
+        }
     }
 }

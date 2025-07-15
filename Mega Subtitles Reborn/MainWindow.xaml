@@ -27,7 +27,6 @@
         <KeyBinding Modifiers="Control" Key="Z" Command="{Binding CtrlZ}" />
         <KeyBinding Modifiers="Control" Key="H" Command="{Binding CtrlH}" />
     </Window.InputBindings>
-
     <Window.Resources>
         <Style x:Key="CustomToggleButton" TargetType="ToggleButton">
             <Setter Property="Background" Value="#FFFFDAB3"/>
