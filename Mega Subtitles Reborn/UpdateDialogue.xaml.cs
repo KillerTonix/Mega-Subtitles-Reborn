@@ -22,7 +22,8 @@ namespace Mega_Subtitles_Reborn
         public static string? DownloadedContentPath = string.Empty;
         public static string? DownloadedContentDirectoryPath = string.Empty;
         private static readonly string ApplicationPath = AppDomain.CurrentDomain.BaseDirectory;
-        private static readonly string UpdaterPath = Path.Combine(ApplicationPath, @"Updater\Updater.exe");
+        private static readonly string UpdaterAppPath = Path.Combine(ApplicationPath, @"Updater\MegaUpdater.exe");
+        private static readonly string UpdaterFilesPath = Path.Combine(ApplicationPath, @"Updater\FilePaths.txt");
 
 
         public UpdateDialogue()
@@ -104,12 +105,27 @@ namespace Mega_Subtitles_Reborn
                     MessageBox.Show("Приложение будет закрыто для обновления", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
                 else
                     MessageBox.Show("Application will be closed for update", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
+                
 
-                // Call the updater with the necessary parameters
-                Process.Start($"\"{UpdaterPath}\"", $"-e -d -i \"{DownloadedContentPath}\" -o \"{ApplicationPath[..^1]}\" -r \"{ApplicationPath}Mega Subtitles Reborn.exe\"");
+                string content = $"{DownloadedContentPath}\n" +
+                                 $"{ApplicationPath[..^1]}\n" +
+                                 $"{ApplicationPath}Mega Subtitles Reborn.exe";
+                File.WriteAllText(UpdaterFilesPath, content, Encoding.UTF8);
 
-                // Close the application after starting the updater
-                Application.Current.Shutdown();
+                Delay(400); // Delay to allow Reaper to process the command and check for missing entries
+                static async void Delay(int milliseconds)
+                {
+                    await Task.Delay(milliseconds); // Wait asynchronously for the specified delay
+                                                    // Call the updater with the necessary parameters
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = $"\"{UpdaterAppPath}\"",
+                        UseShellExecute = true
+                    });
+
+                    Application.Current.Shutdown(); // Close the main app to release all file handles
+                }
+                
 
             }
             catch (Exception ex)
