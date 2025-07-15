@@ -55,7 +55,8 @@ namespace Mega_Subtitles_Reborn
         public List<int> _matchedIndices = [];
         public int _currentMatchIndex = -1;
         public string _lastKeyword = "";
-
+        public bool sendCommandToReaper = true;
+        public List<int> parsedActorsID = [];
 
         public MainWindow()
         {
@@ -169,7 +170,10 @@ namespace Mega_Subtitles_Reborn
                     ActorsListView.Items.Refresh(); // Refresh the ActorsListView to reflect the changes made to the ActorEnteries collection
 
                     ListViewColumnsAutoResize.AutoResizeColumns(); // Auto-resize the columns in the ListView to fit the content
-                    ReaperCommandsWriter.Write("CreateRegionsWithOutColor"); // Create regions without color command
+
+                    if (sendCommandToReaper)
+                        ReaperCommandsWriter.Write("CreateRegionsWithOutColor"); // Create regions without color command
+
                 }
                 else
                 {
@@ -229,6 +233,19 @@ namespace Mega_Subtitles_Reborn
 
         private void SaveSubtitlesBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (SubtitleEntries.Count == 0) // Check if there are no subtitle entries
+            {
+                if (GeneralSettings.Default.Language == "English")
+                    MessageBox.Show("There are no subtitles to save.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                else
+                    MessageBox.Show("Нет субтитров для сохранения.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return; // Exit the method if there are no subtitles
+            }
+            parsedActorsID.Add(ActorsListView.SelectedIndex);
+            SelectAllActorsBtn.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent)); // Trigger the ParseSubtitlesBtn_Click event
+            sendCommandToReaper = false; // Set the flag to false to prevent sending commands to Reaper during the save operation
+            ParseSubtitlesBtn.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent)); // Trigger the ParseSubtitlesBtn_Click event
+
             var saveSubtitlesWindow = new SaveSubtitlesWindow { Owner = this }; // Create a new instance of SaveSubtitlesWindow and set the owner to the current window
             saveSubtitlesWindow.ShowDialog(); // Show the save subtitles window as a dialog
         }

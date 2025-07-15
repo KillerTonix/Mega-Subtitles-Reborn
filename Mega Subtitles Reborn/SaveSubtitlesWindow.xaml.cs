@@ -8,6 +8,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 
 namespace Mega_Subtitles_Reborn
@@ -19,6 +20,7 @@ namespace Mega_Subtitles_Reborn
     {
         private List<string?> actorNames = [];
         private readonly List<CheckBox> actorCheckBoxes = [];
+        MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
 
         public SaveSubtitlesWindow()
@@ -51,6 +53,7 @@ namespace Mega_Subtitles_Reborn
             AddZeroLineChkBox.Content = lang["AddZeroLineChkBox"][id];
             AddTenSecForNoiseChkBox.Content = lang["AddTenSecForNoiseChkBox"][id];
             SaveTB.Text = lang["SaveTB"][id];
+            SaveWithTemplateTB.Text = lang["SaveWithTemplateTB"][id];
 
             actorNames = [.. ((MainWindow)Application.Current.MainWindow)
                             .ActorEnteries
@@ -73,11 +76,6 @@ namespace Mega_Subtitles_Reborn
                 this.MinHeight = 400;
             }
 
-            UpdateCheckboxGrid();
-        }
-
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
             UpdateCheckboxGrid();
         }
 
@@ -308,9 +306,28 @@ namespace Mega_Subtitles_Reborn
 
         private void InfoSaveWithTemplateBtn_Click(object sender, RoutedEventArgs e)
         {
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Help", "SaveWithTemplate_Help.md");
+            string fileName = "SaveWithTemplate_Help.md";
+            if (GeneralSettings.Default.Language == "Русский")
+                fileName = "SaveWithTemplate_RuHelp.md";
+
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Help", fileName);
             var helpGuidesMarkDownWindow = new HelpGuidesMarkDownWindow(path) { Owner = this }; // Create a new instance of ReplaceWindow and set the owner to the current window
             helpGuidesMarkDownWindow.Show(); // Show the replace line text window as a dialog
+        }
+
+        private void SaveSubtitlesWindow1_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            mainWindow.ActorsListView.SelectedItems.Clear(); // Clear the selected items in the ActorsListView
+            foreach (int index in mainWindow.parsedActorsID)
+            {
+                mainWindow.ActorsListView.SelectedItems.Add(mainWindow.ActorEnteries[index]);
+                MessageBox.Show($"Actor {mainWindow.ActorEnteries[index].Actors} has been selected in the main window.", "Actor Selected", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            mainWindow.ActorsListView.Items.Refresh(); // Refresh the ActorsListView to show the selected actors
+            mainWindow.sendCommandToReaper = true;
+            mainWindow.ParseSubtitlesBtn.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent)); // Trigger the ParseSubtitlesBtn_Click event
+            mainWindow.RegionManagerListView.Items.Refresh(); // Refresh the ActorsListView to show the selected actors*/
+
         }
     }
 }

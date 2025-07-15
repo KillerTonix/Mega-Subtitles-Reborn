@@ -285,6 +285,11 @@
                             <MenuItem x:Name="DeleteActorContext" Header="Delete an actor" Click="DeleteActorContext_Click" />
                         </ContextMenu>
                     </ListView.ContextMenu>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="IsSelected" Value="{Binding IsGroovy}"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <ListView.View>
                         <GridView>
                             <!-- # column -->
@@ -331,7 +336,6 @@
                             <TextBlock x:Name="FilterActorsTB" Text="Filter" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
                         </Grid>
                     </ToggleButton>
-                    <Button x:Name="ParseSRTSubtitlesBtn" Content="Parse" Height="25"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="100" HorizontalContentAlignment="Center" Visibility="Collapsed" FontFamily="Nunito SemiBold" FontSize="14"/>
                 </Grid>
 
                 <Grid x:Name="ColorPickerGrid" Visibility="Collapsed" Height="90" Margin="0,20,0,0" >

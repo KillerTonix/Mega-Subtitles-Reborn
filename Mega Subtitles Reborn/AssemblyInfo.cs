@@ -18,6 +18,6 @@ using System.Windows;
 [assembly: AssemblyTrademark("Artur Tonoyan")] // Optional
 [assembly: AssemblyCulture("")] // Optional
 
-[assembly: AssemblyFileVersion("0.1.3.1")]
-[assembly: AssemblyVersion("0.1.3.1")]
+[assembly: AssemblyFileVersion("0.1.3.2")]
+[assembly: AssemblyVersion("0.1.3.2")]
 

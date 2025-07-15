@@ -19,8 +19,7 @@
 
   "ActorsColorColumn": [ "Color", "Цвет" ],
   "ActorsColumnHeader": [ "Actor", "Актёр" ],
-  "ActorsLineCountHeader": [ "Line Count", "Количество строк" ],
-
+  "ActorsLineCountHeader": [ "Line Count", "Кол.во строк" ],
 
   "SelectAllActorsTB": [ "Select all", "Выбрать всех" ],
   "ParseSubtitlesTB": [ "Parse", "Обработать" ],
@@ -77,6 +76,7 @@
   "AddZeroLineChkBox": [ "Add zero line", "Добавить нулевую строку" ],
   "AddTenSecForNoiseChkBox": [ "Add 10 seconds for noise", "Добавить 10 секунд для шума" ],
   "SaveTB": [ "Save", "Сохранить" ],
+  "SaveWithTemplateTB": [ "Save with template", "Сохранить с шаблоном" ],
 
   "UpdateDialogue1": [ "New Update Found", "Найдено новое обновление" ],
   "NewVersionText": [ "Mega Subtitles Reborn version XYZ has been released!", "Вышла новая версия XYZ для Mega Subtitles Reborn" ],

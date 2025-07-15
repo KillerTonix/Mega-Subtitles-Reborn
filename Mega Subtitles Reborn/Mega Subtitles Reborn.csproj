@@ -48,6 +48,9 @@
     <None Update="Help\SaveWithTemplate_Help.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Help\SaveWithTemplate_RuHelp.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="LanguagesFile.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
