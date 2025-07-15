@@ -159,17 +159,24 @@
             </StackPanel>
         </Grid>
 
-        <Button x:Name="SelectAllActorsBtn" Margin="10,10,0,0" Grid.Row="2" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="115" FontFamily="Nunito SemiBold" FontSize="14" Background="#FFFFF0C2" BorderBrush="#FFFBD485" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="SelectAllActorsBtn_Click">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Width="110">
+        <Button x:Name="SelectAllActorsBtn" Margin="10,10,0,0" Grid.Row="2" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="170" FontFamily="Nunito SemiBold" FontSize="14" Background="#FFFFF0C2" BorderBrush="#FFFBD485" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="SelectAllActorsBtn_Click">
+            <Grid Width="165">
                 <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE762;" FontSize="16" VerticalAlignment="Center" Margin="0,0,5,0"/>
                 <TextBlock x:Name="SelectAllActorsTB" Text="Select аll" FontSize="14" HorizontalAlignment="Center" />
-            </StackPanel>
+            </Grid>
         </Button>
         
-        <Button x:Name="SaveBtn" Margin="0,10,0,0" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" Width="150" Background="#FFEFCFE3" BorderBrush="#FFE27396" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="SaveBtn_Click">
-            <Grid Width="145">
+        <Button x:Name="SaveBtn" Margin="0,10,0,0" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" Width="170" Background="#FFEFCFE3" BorderBrush="#FFE27396" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="SaveBtn_Click">
+            <Grid Width="165">
                 <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74E;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
                 <TextBlock x:Name="SaveTB" Text="Save" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
+            </Grid>
+        </Button>
+
+        <Button x:Name="SaveWithTemplateBtn" Margin="0,10,10,0" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Right" Width="170" Background="#FFEFCFE3" BorderBrush="#FFE27396" FontFamily="Nunito SemiBold" FontSize="14" Style="{DynamicResource CustomButtonStyleWithGreenOwer}" Click="SaveWithTemplateBtn_Click">
+            <Grid Width="165">
+                <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74E;" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                <TextBlock x:Name="SaveWithTemplateTB" Text="Save with template" FontSize="14" HorizontalAlignment="Center" Margin="10,0,0,0"/>
             </Grid>
         </Button>
 

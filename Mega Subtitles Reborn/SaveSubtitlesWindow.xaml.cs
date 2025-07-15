@@ -1,4 +1,5 @@
-﻿using Mega_Subtitles_Reborn.Utilities.FileWriter;
+﻿using Mega_Subtitles_Reborn.Utilities.FileReader;
+using Mega_Subtitles_Reborn.Utilities.FileWriter;
 using Mega_Subtitles_Reborn.Utilitis.FileReader;
 using Mega_Subtitles_Reborn.Utilitis.FileWriter;
 using Mega_Subtitles_Reborn.Utilitis.Logger;
@@ -70,7 +71,7 @@ namespace Mega_Subtitles_Reborn
             {
                 this.Height = 400;
                 this.MinHeight = 400;
-            }           
+            }
 
             UpdateCheckboxGrid();
         }
@@ -222,6 +223,87 @@ namespace Mega_Subtitles_Reborn
                     cb.IsChecked = false;
             }
 
+        }
+
+        private void SaveWithTemplateBtn_Click(object sender, RoutedEventArgs e)
+        {
+            GeneralSettings.Default.AddTenSecForNoiseChkBox = AddTenSecForNoiseChkBox.IsChecked ?? false; // Save the state of the checkbox
+            GeneralSettings.Default.AddZeroLineChkBox = AddZeroLineChkBox.IsChecked ?? false; // Save the state of the checkbox
+            GeneralSettings.Default.Save(); // Save the settings
+
+            bool _zeroline = AddZeroLineChkBox.IsChecked ?? false;
+            bool _addTenSec = AddTenSecForNoiseChkBox.IsChecked ?? false;
+
+            string? filePath = SubtitlesDistributionTermplateReader.GetTemplate();
+            if (string.IsNullOrEmpty(filePath))
+            {
+                MessageBox.Show("Template file not selected or invalid.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var dubberActors = ParseDubberActorTemplate(filePath);
+            string title = "Select folder for saving subtitles";
+            if (GeneralSettings.Default.Language == "Русский")
+                title = "Выберите папку для сохранения субтитров";
+
+            var folderDialog = new OpenFolderDialog
+            {
+                Title = title,
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+            };
+
+            if (folderDialog.ShowDialog() == true)
+            {
+                string? folderName = folderDialog.FolderName;
+                int template = dubberActors.Keys.Count;
+                foreach (var kvp in dubberActors)
+                {
+                    IEnumerable<string?> existedActors = kvp.Value.Intersect(actorNames);
+                    var actors = existedActors.ToList();
+
+                    if (AssRadioBtn.IsChecked == true)
+                    {
+                        folderName = Path.Combine(folderName, kvp.Key + ".ass");
+                        AssFileWriter.WriteAssFile(actors, folderName, isSingleFile: true, zeroLine: _zeroline, addTenSec: _addTenSec, template);
+                    }
+                    else if (SrtRadioBtn.IsChecked == true)
+                    {
+                        folderName = Path.Combine(folderName, kvp.Key + ".srt");
+                        SrtFileWriter.WriteSrtFile(actors, folderName, isSingleFile: true, zeroLine: _zeroline, addTenSec: _addTenSec, template);
+                    }
+                    else
+                    {
+                        folderName = Path.Combine(folderName, kvp.Key + ".txt");
+                        TxtFileWriter.WriteSrtFile(actors, folderName, isSingleFile: true, zeroLine: _zeroline, addTenSec: _addTenSec, template);
+                    }
+                    folderName = folderDialog.FolderName;
+                    template -= 1; // Decrease the template count for each dubber processed
+                }
+            }
+        }
+
+
+        // Add this method to your SaveSubtitlesWindow class
+        private static Dictionary<string, List<string>> ParseDubberActorTemplate(string filePath)
+        {
+            var result = new Dictionary<string, List<string>>();
+            foreach (var line in File.ReadLines(filePath))
+            {
+                var trimmedLine = line.Trim();
+                if (string.IsNullOrEmpty(trimmedLine) || !trimmedLine.Contains(':'))
+                    continue;
+
+                var parts = trimmedLine.Split(':', 2);
+                var dubber = parts[0].Trim();
+                var actors = parts[1].Split(',')
+                    .Select(a => a.Trim())
+                    .Where(a => !string.IsNullOrEmpty(a))
+                    .ToList();
+
+                if (!string.IsNullOrEmpty(dubber) && actors.Count > 0)
+                    result[dubber] = actors;
+            }
+            return result;
         }
     }
 }

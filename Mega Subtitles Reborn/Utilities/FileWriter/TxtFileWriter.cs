@@ -13,7 +13,7 @@ namespace Mega_Subtitles_Reborn.Utilities.FileWriter
     {
         private static readonly MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
-        public static void WriteSrtFile(List<string?> selectedActors, string srtFilePath, bool isSingleFile = false, bool zeroLine = false, bool addTenSec = false)
+        public static void WriteSrtFile(List<string?> selectedActors, string srtFilePath, bool isSingleFile = false, bool zeroLine = false, bool addTenSec = false, int template = 1)
         {
             var allEntries = mainWindow.subtitleViewSource.View.OfType<SubtitlesEnteries>().ToList();
 
@@ -72,7 +72,7 @@ namespace Mega_Subtitles_Reborn.Utilities.FileWriter
                     .OrderBy(e => TimeSpan.Parse(e.Start, CultureInfo.InvariantCulture))
                     .ToList();
                 WriteToFile(srtFilePath, entries);
-                Succses(srtFilePath, true);
+                Succses(srtFilePath, true, template);
             }
             else
             {
@@ -101,12 +101,15 @@ namespace Mega_Subtitles_Reborn.Utilities.FileWriter
 
                     WriteToFile(outputPath, entries);
                 }
-                Succses(srtFilePath, false);
+                Succses(srtFilePath, false, template);
             }
         }
 
-        private static void Succses(string OutputPath, bool isSingleFile)
+        private static void Succses(string OutputPath, bool isSingleFile, int template)
         {
+            if (template != 1)
+                return;
+
             string text = "Файлы были успешно записаны.\nОткрыть выходную папку?";
             if (GeneralSettings.Default.Language == "English")
                 text = "The files were successfully writed.\nOpen the output folder?";
